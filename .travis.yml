@@ -2,7 +2,7 @@ sudo: false
 
 language: node_js
 node_js:
-  - 8
+  - 'lts/*'
 
 before_install:
   - npm install
@@ -11,7 +11,3 @@ before_install:
 after_success:
   - cat ./coverage/lcov.info | ./node_modules/codecov.io/bin/codecov.io.js
   - cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js
-
-branches:
-  only:
-    - master
