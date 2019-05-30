@@ -1,15 +1,15 @@
-import React, {Component} from 'react'
 import {render} from 'react-dom'
 
-import Example from '../../src'
+import mirador from 'mirador';
+import { miradorDownloadPlugin } from '../../src';
 
-class Demo extends Component {
-  render() {
-    return <div>
-      <h1>mirador-download-plugin Demo</h1>
-      <Example/>
-    </div>
-  }
+const config = {
+  id: 'demo',
+  windows: [{
+    loadedManifest: 'https://purl.stanford.edu/sn904cj3429/iiif/manifest'
+  }]
 }
 
-render(<Demo/>, document.querySelector('#demo'))
+const miradorInstance = mirador.viewer(config, [
+  miradorDownloadPlugin,
+]);
