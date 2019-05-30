@@ -1,7 +1,7 @@
 import {render} from 'react-dom'
 
 import mirador from 'mirador';
-import { miradorDownloadPlugin } from '../../src';
+import miradorDownloadPlugin from '../../src';
 
 const config = {
   id: 'demo',
