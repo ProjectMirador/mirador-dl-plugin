@@ -1,0 +1,7 @@
+dist/
+config/
+coverage/
+node_modules/
+lib/
+es/
+umd/
