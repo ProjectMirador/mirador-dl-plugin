@@ -1,1 +1,3 @@
-export miradorDownloadPlugin from './miradorDownloadPlugin';
+import miradorDownloadPlugin from './miradorDownloadPlugin';
+
+export default miradorDownloadPlugin;

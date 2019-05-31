@@ -5,8 +5,8 @@ module.exports = {
     umd: {
       global: 'MiradorDownload',
       externals: {
-        react: 'React'
-      }
-    }
-  }
-}
+        react: 'React',
+      },
+    },
+  },
+};
