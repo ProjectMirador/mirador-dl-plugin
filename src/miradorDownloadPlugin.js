@@ -9,10 +9,12 @@ import ListItemText from '@material-ui/core/ListItemText';
 import MenuItem from '@material-ui/core/MenuItem';
 import Typography from '@material-ui/core/Typography';
 import DownloadIcon from '@material-ui/icons/VerticalAlignBottomSharp';
-import { getCanvasLabel } from 'mirador/dist/es/src/state/selectors/canvases';
+import { getCanvasLabel, getSelectedCanvases } from 'mirador/dist/es/src/state/selectors/canvases';
+import CanvasDownloadLinks from './CanvasDownloadLinks';
 
 const mapStateToProps = (state, { windowId }) => ({
-  title: getCanvasLabel(state, { windowId }),
+  canvases: getSelectedCanvases(state, { windowId }),
+  canvasLabel: canvasIndex => (getCanvasLabel(state, { canvasIndex, windowId })),
 });
 
 class MiradorDownload extends Component {
@@ -37,7 +39,7 @@ class MiradorDownload extends Component {
   }
 
   render() {
-    const { title } = this.props;
+    const { canvases, canvasLabel } = this.props;
     const { modalDisplayed } = this.state;
     return (
       <div>
@@ -54,12 +56,16 @@ class MiradorDownload extends Component {
           scroll="paper"
         >
           <DialogTitle disableTypography>
-            <Typography variant="h2">
-              Download
-            </Typography>
+            <Typography variant="h2">Download</Typography>
           </DialogTitle>
           <DialogContent>
-            <Typography variant="h3">{title}</Typography>
+            {canvases.map(canvas => (
+              <CanvasDownloadLinks
+                canvas={canvas}
+                canvasLabel={canvasLabel(canvas.index)}
+                key={canvas.id}
+              />
+            ))}
           </DialogContent>
           <DialogActions>
             <Button onClick={this.handleDialogClose} color="primary">
@@ -73,7 +79,10 @@ class MiradorDownload extends Component {
 }
 
 MiradorDownload.propTypes = {
-  title: PropTypes.string.isRequired,
+  canvasLabel: PropTypes.func.isRequired,
+  canvases: PropTypes.arrayOf(
+    PropTypes.shape({ id: PropTypes.string, index: PropTypes.number }),
+  ).isRequired,
 };
 
 

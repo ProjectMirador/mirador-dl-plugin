@@ -5,7 +5,8 @@ import miradorDownloadPlugin from '../src';
 function createWrapper(props) {
   return shallow(
     <miradorDownloadPlugin.component
-      title="My Canvas Title"
+      canvasLabel={label => (label || 'My Canvas Title')}
+      canvases={[]}
       {...props}
     />,
   );
@@ -40,9 +41,15 @@ describe('miradorDownloadPlugin', () => {
       expect(wrapper.find('WithStyles(Dialog)').props().open).toBe(true);
     });
 
-    it('renders the title prop in an h3', () => {
-      const wrapper = createWrapper();
-      expect(wrapper.find('WithStyles(Typography)[variant="h3"]').props().children).toEqual('My Canvas Title');
+    it('renders a CanvasDownloadLinks componewnt for every canvas', () => {
+      const mockCanvas = id => ({
+        id,
+        getHeight: () => 4000,
+        getWidth: () => 1000,
+        getCanonicalImageUri: () => 'https://example.com/iiif/abc123/full/9000,/0/default.jpg',
+      });
+      const wrapper = createWrapper({ canvases: [mockCanvas('abc123'), mockCanvas('xyz321')] });
+      expect(wrapper.find('CanvasDownloadLinks').length).toBe(2);
     });
 
     it('has a close button that updates the modealDisplay state to false', () => {
