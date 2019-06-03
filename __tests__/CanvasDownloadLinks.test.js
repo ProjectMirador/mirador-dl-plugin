@@ -1,12 +1,14 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import CanvasDownloadLinks from '../src/CanvasDownloadLinks';
+import { OSDReferences } from '../src/OSDReferences';
 
 function createWrapper(props) {
   return shallow(
     <CanvasDownloadLinks
       canvasId="abc123"
       canvasLabel="My Canvas Label"
+      windowId="wid123"
       {...props}
     />,
   );
@@ -24,6 +26,29 @@ describe('CanvasDownloadLinks', () => {
     getHeight: () => 1000,
     getWidth: () => 4000,
   };
+  const viewport = {
+    getBounds: () => ({
+      x: 0, y: 0, width: 4000, height: 1000,
+    }),
+    getZoom: () => 0.5,
+    getHomeZoom: () => 0.5,
+  };
+  const zoomedInViewport = {
+    getBounds: () => ({
+      x: 0, y: 0, width: 2000, height: 500,
+    }),
+    getZoom: () => 1.0,
+    getHomeZoom: () => 0.5,
+  };
+
+  beforeAll(() => {
+    OSDReferences.set('wid123', {
+      current: { viewer: { viewport } },
+    });
+    OSDReferences.set('zoomedInWindow', {
+      current: { viewer: { viewport: zoomedInViewport } },
+    });
+  });
 
   it('renders canvas label in an h3 typography', () => {
     wrapper = createWrapper({ canvas });
@@ -35,6 +60,23 @@ describe('CanvasDownloadLinks', () => {
     expect(wrapper.find(
       'WithStyles(Link)[href="http://example.com/iiif/abc123/full/full/0/default.jpg?download=true"]',
     ).props().children).toEqual('Whole image (4000 x 1000px)');
+  });
+
+  describe('Zoomed image link', () => {
+    it('is not present when the current zoom is the same as the home zoom', () => {
+      wrapper = createWrapper({ canvas });
+
+      expect(wrapper.find('WithStyles(Link)').length).toBe(2);
+    });
+
+    it('is present when zoomed in', () => {
+      wrapper = createWrapper({ canvas, windowId: 'zoomedInWindow' });
+
+      expect(wrapper.find('WithStyles(Link)').length).toBe(3);
+      expect(wrapper.find(
+        'WithStyles(Link)[href="http://example.com/iiif/abc123/0,0,2000,500/full/0/default.jpg"]',
+      ).props().children).toEqual('Zoomed image (2000 x 500px)');
+    });
   });
 
   describe('when the image is > 1000px wide', () => {

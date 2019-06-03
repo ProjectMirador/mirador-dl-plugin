@@ -54,7 +54,7 @@ class MiradorDownload extends Component {
   }
 
   render() {
-    const { canvases, canvasLabel } = this.props;
+    const { canvases, canvasLabel, windowId } = this.props;
     const { modalDisplayed } = this.state;
 
     return (
@@ -80,6 +80,7 @@ class MiradorDownload extends Component {
                 canvas={canvas}
                 canvasLabel={canvasLabel(canvas.index)}
                 key={canvas.id}
+                windowId={windowId}
               />
             ))}
             {this.renderings().length > 0
@@ -105,6 +106,7 @@ MiradorDownload.propTypes = {
   manifest: PropTypes.shape({
     getSequences: PropTypes.func.isRequired,
   }).isRequired,
+  windowId: PropTypes.string.isRequired,
 };
 
 

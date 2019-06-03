@@ -4,11 +4,18 @@ import Typography from '@material-ui/core/Typography';
 import Link from '@material-ui/core/Link';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
+import { OSDReferences } from './OSDReferences';
+
 
 /**
  * CanvasDownloadLinks ~
 */
 export default class CanvasDownloadLinks extends Component {
+  zoomedImageLabel() {
+    const bounds = this.currentBounds();
+    return `Zoomed image (${Math.floor(bounds.width)} x ${Math.floor(bounds.height)}px)`;
+  }
+
   fullImageLabel() {
     const { canvas } = this.props;
 
@@ -19,6 +26,16 @@ export default class CanvasDownloadLinks extends Component {
     const { canvas } = this.props;
 
     return `Whole image (1000 x ${Math.floor((1000 * canvas.getHeight()) / canvas.getWidth())}px)`;
+  }
+
+  zoomedImageUrl() {
+    const { canvas } = this.props;
+    const bounds = this.currentBounds();
+
+    return canvas.getCanonicalImageUri().replace(
+      /\/full\/.*\/0\//,
+      `/${bounds.x},${bounds.y},${bounds.width},${bounds.height}/full/0/`,
+    );
   }
 
   fullImageUrl() {
@@ -33,6 +50,24 @@ export default class CanvasDownloadLinks extends Component {
     return `${canvas.getCanonicalImageUri('1000')}?download=true`;
   }
 
+  osdViewport() {
+    const { windowId } = this.props;
+    return OSDReferences.get(windowId).current.viewer.viewport;
+  }
+
+  currentBounds() {
+    const bounds = this.osdViewport().getBounds();
+
+    return Object.keys(bounds).reduce((object, key) => {
+      object[key] = Math.ceil(bounds[key]); // eslint-disable-line no-param-reassign
+      return object;
+    }, {});
+  }
+
+  displayCurrentZoomLink() {
+    return this.osdViewport().getZoom() > this.osdViewport().getHomeZoom();
+  }
+
   /**
    * Returns the rendered component
   */
@@ -41,10 +76,20 @@ export default class CanvasDownloadLinks extends Component {
       canvas,
       canvasLabel,
     } = this.props;
+
     return (
       <span key={canvas.id}>
         <Typography noWrap variant="h3">{canvasLabel}</Typography>
         <List>
+          {this.displayCurrentZoomLink()
+            && (
+              <ListItem disableGutters divider>
+                <Link href={this.zoomedImageUrl()} rel="noopener noreferrer" target="_blank" variant="body1">
+                  {this.zoomedImageLabel()}
+                </Link>
+              </ListItem>
+            )
+          }
           <ListItem disableGutters divider>
             <Link href={this.fullImageUrl()} rel="noopener noreferrer" target="_blank" variant="body1">
               {this.fullImageLabel()}
@@ -73,4 +118,5 @@ CanvasDownloadLinks.propTypes = {
     getWidth: PropTypes.func.isRequired,
   }).isRequired,
   canvasLabel: PropTypes.string.isRequired, // canvasLabel is passed because we need access to redux
+  windowId: PropTypes.string.isRequired,
 };

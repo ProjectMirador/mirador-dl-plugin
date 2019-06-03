@@ -8,6 +8,7 @@ function createWrapper(props) {
       canvasLabel={label => (label || 'My Canvas Title')}
       canvases={[]}
       manifest={{ getSequences: () => [] }}
+      windowId="wid123"
       {...props}
     />,
   );
