@@ -65,6 +65,9 @@ export default class CanvasDownloadLinks extends Component {
   }
 
   displayCurrentZoomLink() {
+    const { viewType } = this.props;
+
+    if (viewType === 'book') return false;
     return this.osdViewport().getZoom() > this.osdViewport().getHomeZoom();
   }
 
@@ -118,5 +121,6 @@ CanvasDownloadLinks.propTypes = {
     getWidth: PropTypes.func.isRequired,
   }).isRequired,
   canvasLabel: PropTypes.string.isRequired, // canvasLabel is passed because we need access to redux
+  viewType: PropTypes.string.isRequired,
   windowId: PropTypes.string.isRequired,
 };

@@ -8,6 +8,7 @@ function createWrapper(props) {
     <CanvasDownloadLinks
       canvasId="abc123"
       canvasLabel="My Canvas Label"
+      viewType="single"
       windowId="wid123"
       {...props}
     />,
@@ -76,6 +77,12 @@ describe('CanvasDownloadLinks', () => {
       expect(wrapper.find(
         'WithStyles(Link)[href="http://example.com/iiif/abc123/0,0,2000,500/full/0/default.jpg"]',
       ).props().children).toEqual('Zoomed image (2000 x 500px)');
+    });
+
+    it('is not present when the window is in book view', () => {
+      wrapper = createWrapper({ canvas, viewType: 'book', windowId: 'zoomedInWindow' });
+
+      expect(wrapper.find('WithStyles(Link)').length).toBe(2);
     });
   });
 
