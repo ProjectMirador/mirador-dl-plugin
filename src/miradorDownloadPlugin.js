@@ -9,12 +9,15 @@ import ListItemText from '@material-ui/core/ListItemText';
 import MenuItem from '@material-ui/core/MenuItem';
 import Typography from '@material-ui/core/Typography';
 import DownloadIcon from '@material-ui/icons/VerticalAlignBottomSharp';
+import { getManifestoInstance } from 'mirador/dist/es/src/state/selectors/manifests';
 import { getCanvasLabel, getSelectedCanvases } from 'mirador/dist/es/src/state/selectors/canvases';
 import CanvasDownloadLinks from './CanvasDownloadLinks';
+import ManifestDownloadLinks from './ManifestDownloadLinks';
 
 const mapStateToProps = (state, { windowId }) => ({
   canvases: getSelectedCanvases(state, { windowId }),
   canvasLabel: canvasIndex => (getCanvasLabel(state, { canvasIndex, windowId })),
+  manifest: getManifestoInstance(state, { windowId }),
 });
 
 class MiradorDownload extends Component {
@@ -38,9 +41,22 @@ class MiradorDownload extends Component {
     this.setState({ modalDisplayed: false });
   }
 
+  renderings() {
+    const { manifest } = this.props;
+    if (!(
+      manifest
+      && manifest.getSequences()
+      && manifest.getSequences()[0]
+      && manifest.getSequences()[0].getRenderings()
+    )) return [];
+
+    return manifest.getSequences()[0].getRenderings();
+  }
+
   render() {
     const { canvases, canvasLabel } = this.props;
     const { modalDisplayed } = this.state;
+
     return (
       <div>
         <MenuItem onClick={this.handleClick}>
@@ -66,6 +82,9 @@ class MiradorDownload extends Component {
                 key={canvas.id}
               />
             ))}
+            {this.renderings().length > 0
+              && <ManifestDownloadLinks renderings={this.renderings()} />
+            }
           </DialogContent>
           <DialogActions>
             <Button onClick={this.handleDialogClose} color="primary">
@@ -83,6 +102,9 @@ MiradorDownload.propTypes = {
   canvases: PropTypes.arrayOf(
     PropTypes.shape({ id: PropTypes.string, index: PropTypes.number }),
   ).isRequired,
+  manifest: PropTypes.shape({
+    getSequences: PropTypes.func.isRequired,
+  }).isRequired,
 };
 
 

@@ -7,6 +7,7 @@ function createWrapper(props) {
     <miradorDownloadPlugin.component
       canvasLabel={label => (label || 'My Canvas Title')}
       canvases={[]}
+      manifest={{ getSequences: () => [] }}
       {...props}
     />,
   );
@@ -58,6 +59,26 @@ describe('miradorDownloadPlugin', () => {
       expect(wrapper.state().modalDisplayed).toBe(true);
       wrapper.find('WithStyles(Button)').simulate('click');
       expect(wrapper.state().modalDisplayed).toBe(false);
+    });
+
+    describe('ManifestDownloadLinks', () => {
+      it('is not rendered if hte manifest has no renderings', () => {
+        const wrapper = createWrapper();
+
+        expect(wrapper.find('ManifestDownloadLinks').length).toBe(0);
+      });
+      it('rendered if the manifest has renderings', () => {
+        const rendering = { id: '', getLabel: () => {}, getFormat: () => {} };
+        const wrapper = createWrapper({
+          manifest: {
+            getSequences: () => [
+              { getRenderings: () => [rendering] },
+            ],
+          },
+        });
+
+        expect(wrapper.find('ManifestDownloadLinks').length).toBe(1);
+      });
     });
   });
 });
