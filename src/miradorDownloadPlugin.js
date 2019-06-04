@@ -11,6 +11,7 @@ import Typography from '@material-ui/core/Typography';
 import DownloadIcon from '@material-ui/icons/VerticalAlignBottomSharp';
 import { getManifestoInstance } from 'mirador/dist/es/src/state/selectors/manifests';
 import { getCanvasLabel, getSelectedCanvases } from 'mirador/dist/es/src/state/selectors/canvases';
+import { getWindowViewType } from 'mirador/dist/es/src/state/selectors/windows';
 import CanvasDownloadLinks from './CanvasDownloadLinks';
 import ManifestDownloadLinks from './ManifestDownloadLinks';
 
@@ -18,6 +19,7 @@ const mapStateToProps = (state, { windowId }) => ({
   canvases: getSelectedCanvases(state, { windowId }),
   canvasLabel: canvasIndex => (getCanvasLabel(state, { canvasIndex, windowId })),
   manifest: getManifestoInstance(state, { windowId }),
+  viewType: getWindowViewType(state, { windowId }),
 });
 
 class MiradorDownload extends Component {
@@ -54,7 +56,9 @@ class MiradorDownload extends Component {
   }
 
   render() {
-    const { canvases, canvasLabel } = this.props;
+    const {
+      canvases, canvasLabel, viewType, windowId,
+    } = this.props;
     const { modalDisplayed } = this.state;
 
     return (
@@ -80,6 +84,8 @@ class MiradorDownload extends Component {
                 canvas={canvas}
                 canvasLabel={canvasLabel(canvas.index)}
                 key={canvas.id}
+                viewType={viewType}
+                windowId={windowId}
               />
             ))}
             {this.renderings().length > 0
@@ -105,6 +111,8 @@ MiradorDownload.propTypes = {
   manifest: PropTypes.shape({
     getSequences: PropTypes.func.isRequired,
   }).isRequired,
+  viewType: PropTypes.string.isRequired,
+  windowId: PropTypes.string.isRequired,
 };
 
 

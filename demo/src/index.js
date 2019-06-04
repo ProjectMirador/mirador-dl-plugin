@@ -1,5 +1,6 @@
 import mirador from 'mirador';
 import miradorDownloadPlugin from '../../src';
+import osdReferencePlugin from '../../src/OSDReferences';
 
 const config = {
   id: 'demo',
@@ -14,5 +15,6 @@ const config = {
 };
 
 mirador.viewer(config, [
+  osdReferencePlugin,
   miradorDownloadPlugin,
 ]);
