@@ -6,6 +6,7 @@ module.exports = {
       global: 'MiradorDownload',
       externals: {
         react: 'React',
+        'react-dom': 'ReactDOM',
       },
     },
   },
