@@ -1,140 +1,67 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogTitle from '@material-ui/core/DialogTitle';
 import ListItemText from '@material-ui/core/ListItemText';
 import MenuItem from '@material-ui/core/MenuItem';
-import Typography from '@material-ui/core/Typography';
 import DownloadIcon from '@material-ui/icons/VerticalAlignBottomSharp';
-import { getManifestoInstance } from 'mirador/dist/es/src/state/selectors/manifests';
-import { getCanvasLabel, getSelectedCanvases } from 'mirador/dist/es/src/state/selectors/canvases';
-import { getWindowViewType } from 'mirador/dist/es/src/state/selectors/windows';
-import CanvasDownloadLinks from './CanvasDownloadLinks';
-import ManifestDownloadLinks from './ManifestDownloadLinks';
 
-const mapStateToProps = (state, { windowId }) => ({
-  canvases: getSelectedCanvases(state, { windowId }),
-  canvasLabel: canvasIndex => (getCanvasLabel(state, { canvasIndex, windowId })),
-  manifest: getManifestoInstance(state, { windowId }),
-  viewType: getWindowViewType(state, { windowId }),
+const downloadDialogReducer = (state = {}, action) => {
+  if (action.type === 'OPEN_WINDOW_DIALOG') {
+    return {
+      ...state,
+      [action.windowId]: {
+        openDialog: action.dialogType,
+      },
+    };
+  }
+
+  if (action.type === 'CLOSE_WINDOW_DIALOG') {
+    return {
+      ...state,
+      [action.windowId]: {
+        openDialog: null,
+      },
+    };
+  }
+  return state;
+};
+
+const mapDispatchToProps = (dispatch, { windowId }) => ({
+  openDownloadDialog: () => dispatch({ type: 'OPEN_WINDOW_DIALOG', windowId, dialogType: 'download' }),
 });
 
 class MiradorDownload extends Component {
-  constructor(props) {
-    super(props);
+  openDialogAndCloseMenu() {
+    const { handleClose, openDownloadDialog } = this.props;
 
-    this.state = {
-      modalDisplayed: false,
-    };
-
-    this.handleClick = this.handleClick.bind(this);
-    this.handleDialogClose = this.handleDialogClose.bind(this);
-  }
-
-  handleClick() {
-    const { modalDisplayed } = this.state;
-    this.setState({ modalDisplayed: !modalDisplayed });
-  }
-
-  handleDialogClose() {
-    this.setState({ modalDisplayed: false });
-  }
-
-  renderings() {
-    const { manifest } = this.props;
-    if (!(
-      manifest
-      && manifest.getSequences()
-      && manifest.getSequences()[0]
-      && manifest.getSequences()[0].getRenderings()
-    )) return [];
-
-    return manifest.getSequences()[0].getRenderings();
+    openDownloadDialog();
+    handleClose();
   }
 
   render() {
-    const {
-      canvases, canvasLabel, classes, viewType, windowId,
-    } = this.props;
-    const { modalDisplayed } = this.state;
-
     return (
       <React.Fragment>
-        <MenuItem onClick={this.handleClick}>
+        <MenuItem onClick={() => this.openDialogAndCloseMenu()}>
           <DownloadIcon />
           <ListItemText inset primaryTypographyProps={{ variant: 'body1' }}>
             Download
           </ListItemText>
         </MenuItem>
-        <Dialog
-          disableEnforceFocus
-          onClose={this.handleDialogClose}
-          open={modalDisplayed}
-          scroll="paper"
-          fullWidth
-          maxWidth="xs"
-        >
-          <DialogTitle disableTypography className={classes.h2}>
-            <Typography variant="h2">Download</Typography>
-          </DialogTitle>
-          <DialogContent>
-            {canvases.map(canvas => (
-              <CanvasDownloadLinks
-                canvas={canvas}
-                canvasLabel={canvasLabel(canvas.index)}
-                classes={classes}
-                key={canvas.id}
-                viewType={viewType}
-                windowId={windowId}
-              />
-            ))}
-            {this.renderings().length > 0
-              && <ManifestDownloadLinks classes={classes} renderings={this.renderings()} />
-            }
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={this.handleDialogClose} color="primary">
-              Close
-            </Button>
-          </DialogActions>
-        </Dialog>
       </React.Fragment>
     );
   }
 }
 
 MiradorDownload.propTypes = {
-  canvasLabel: PropTypes.func.isRequired,
-  canvases: PropTypes.arrayOf(
-    PropTypes.shape({ id: PropTypes.string, index: PropTypes.number }),
-  ).isRequired,
-  classes: PropTypes.shape({
-    h2: PropTypes.string,
-    h3: PropTypes.string,
-  }).isRequired,
-  manifest: PropTypes.shape({
-    getSequences: PropTypes.func.isRequired,
-  }).isRequired,
-  viewType: PropTypes.string.isRequired,
-  windowId: PropTypes.string.isRequired,
+  handleClose: PropTypes.func.isRequired,
+  openDownloadDialog: PropTypes.func.isRequired,
 };
-
-const styles = () => ({
-  h2: {
-    paddingBottom: 0,
-  },
-  h3: {
-    marginTop: '20px',
-  },
-});
 
 export default {
   target: 'WindowTopMenu',
   mode: 'add',
-  component: withStyles(styles)(MiradorDownload),
-  mapStateToProps,
+  component: MiradorDownload,
+  mapDispatchToProps,
+  reducers: {
+    windowDialogs: downloadDialogReducer,
+  },
 };
