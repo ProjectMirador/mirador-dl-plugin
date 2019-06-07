@@ -1,7 +1,7 @@
 {
-  "name": "mirador-download-plugin",
+  "name": "mirador-dl-plugin",
   "version": "0.1.0",
-  "description": "mirador-download-plugin React component",
+  "description": "mirador-dl-plugin React component",
   "main": "lib/index.js",
   "module": "es/index.js",
   "files": [
