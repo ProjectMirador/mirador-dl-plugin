@@ -76,7 +76,7 @@ describe('CanvasDownloadLinks', () => {
 
       expect(wrapper.find('WithStyles(Link)').length).toBe(3);
       expect(wrapper.find(
-        'WithStyles(Link)[href="http://example.com/iiif/abc123/0,0,2000,500/full/0/default.jpg"]',
+        'WithStyles(Link)[href="http://example.com/iiif/abc123/0,0,2000,500/full/0/default.jpg?download=true"]',
       ).props().children).toEqual('Zoomed region (2000 x 500px)');
     });
 
