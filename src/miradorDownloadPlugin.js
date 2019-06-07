@@ -74,6 +74,8 @@ class MiradorDownload extends Component {
           onClose={this.handleDialogClose}
           open={modalDisplayed}
           scroll="paper"
+          fullWidth
+          maxWidth="xs"
         >
           <DialogTitle disableTypography>
             <Typography variant="h2">Download</Typography>
