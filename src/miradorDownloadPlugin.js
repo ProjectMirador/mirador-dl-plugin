@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -57,12 +58,12 @@ class MiradorDownload extends Component {
 
   render() {
     const {
-      canvases, canvasLabel, viewType, windowId,
+      canvases, canvasLabel, classes, viewType, windowId,
     } = this.props;
     const { modalDisplayed } = this.state;
 
     return (
-      <div>
+      <React.Fragment>
         <MenuItem onClick={this.handleClick}>
           <DownloadIcon />
           <ListItemText inset primaryTypographyProps={{ variant: 'body1' }}>
@@ -77,7 +78,7 @@ class MiradorDownload extends Component {
           fullWidth
           maxWidth="xs"
         >
-          <DialogTitle disableTypography>
+          <DialogTitle disableTypography className={classes.h2}>
             <Typography variant="h2">Download</Typography>
           </DialogTitle>
           <DialogContent>
@@ -85,13 +86,14 @@ class MiradorDownload extends Component {
               <CanvasDownloadLinks
                 canvas={canvas}
                 canvasLabel={canvasLabel(canvas.index)}
+                classes={classes}
                 key={canvas.id}
                 viewType={viewType}
                 windowId={windowId}
               />
             ))}
             {this.renderings().length > 0
-              && <ManifestDownloadLinks renderings={this.renderings()} />
+              && <ManifestDownloadLinks classes={classes} renderings={this.renderings()} />
             }
           </DialogContent>
           <DialogActions>
@@ -100,7 +102,7 @@ class MiradorDownload extends Component {
             </Button>
           </DialogActions>
         </Dialog>
-      </div>
+      </React.Fragment>
     );
   }
 }
@@ -110,6 +112,10 @@ MiradorDownload.propTypes = {
   canvases: PropTypes.arrayOf(
     PropTypes.shape({ id: PropTypes.string, index: PropTypes.number }),
   ).isRequired,
+  classes: PropTypes.shape({
+    h2: PropTypes.string,
+    h3: PropTypes.string,
+  }).isRequired,
   manifest: PropTypes.shape({
     getSequences: PropTypes.func.isRequired,
   }).isRequired,
@@ -117,10 +123,18 @@ MiradorDownload.propTypes = {
   windowId: PropTypes.string.isRequired,
 };
 
+const styles = () => ({
+  h2: {
+    paddingBottom: 0,
+  },
+  h3: {
+    marginTop: '20px',
+  },
+});
 
 export default {
   target: 'WindowTopMenu',
   mode: 'add',
-  component: MiradorDownload,
+  component: withStyles(styles)(MiradorDownload),
   mapStateToProps,
 };

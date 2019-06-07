@@ -8,6 +8,7 @@ function createWrapper(props) {
     <CanvasDownloadLinks
       canvasId="abc123"
       canvasLabel="My Canvas Label"
+      classes={{}}
       viewType="single"
       windowId="wid123"
       {...props}
@@ -63,7 +64,7 @@ describe('CanvasDownloadLinks', () => {
     ).props().children).toEqual('Whole image (4000 x 1000px)');
   });
 
-  describe('Zoomed image link', () => {
+  describe('Zoomed region link', () => {
     it('is not present when the current zoom is the same as the home zoom', () => {
       wrapper = createWrapper({ canvas });
 
@@ -76,7 +77,7 @@ describe('CanvasDownloadLinks', () => {
       expect(wrapper.find('WithStyles(Link)').length).toBe(3);
       expect(wrapper.find(
         'WithStyles(Link)[href="http://example.com/iiif/abc123/0,0,2000,500/full/0/default.jpg"]',
-      ).props().children).toEqual('Zoomed image (2000 x 500px)');
+      ).props().children).toEqual('Zoomed region (2000 x 500px)');
     });
 
     it('is not present when the window is in book view', () => {

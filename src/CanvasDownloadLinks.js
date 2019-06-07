@@ -13,7 +13,7 @@ import { OSDReferences } from './OSDReferences';
 export default class CanvasDownloadLinks extends Component {
   zoomedImageLabel() {
     const bounds = this.currentBounds();
-    return `Zoomed image (${Math.floor(bounds.width)} x ${Math.floor(bounds.height)}px)`;
+    return `Zoomed region (${Math.floor(bounds.width)} x ${Math.floor(bounds.height)}px)`;
   }
 
   fullImageLabel() {
@@ -78,11 +78,12 @@ export default class CanvasDownloadLinks extends Component {
     const {
       canvas,
       canvasLabel,
+      classes,
     } = this.props;
 
     return (
-      <span key={canvas.id}>
-        <Typography noWrap variant="h3">{canvasLabel}</Typography>
+      <React.Fragment>
+        <Typography noWrap variant="h3" className={classes.h3}>{canvasLabel}</Typography>
         <List>
           {this.displayCurrentZoomLink()
             && (
@@ -108,7 +109,7 @@ export default class CanvasDownloadLinks extends Component {
             )
           }
         </List>
-      </span>
+      </React.Fragment>
     );
   }
 }
@@ -121,6 +122,9 @@ CanvasDownloadLinks.propTypes = {
     getWidth: PropTypes.func.isRequired,
   }).isRequired,
   canvasLabel: PropTypes.string.isRequired, // canvasLabel is passed because we need access to redux
+  classes: PropTypes.shape({
+    h3: PropTypes.string,
+  }).isRequired,
   viewType: PropTypes.string.isRequired,
   windowId: PropTypes.string.isRequired,
 };
