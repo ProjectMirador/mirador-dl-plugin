@@ -5,6 +5,7 @@ import ManifestDownloadLinks from '../src/ManifestDownloadLinks';
 function createWrapper(props) {
   return shallow(
     <ManifestDownloadLinks
+      classes={{}}
       renderings={[]}
       {...props}
     />,

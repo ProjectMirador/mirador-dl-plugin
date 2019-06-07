@@ -14,11 +14,11 @@ export default class ManifestDownloadLinks extends Component {
    * Returns the rendered component
   */
   render() {
-    const { renderings } = this.props;
+    const { classes, renderings } = this.props;
 
     return (
       <React.Fragment>
-        <Typography variant="h3">Other download options</Typography>
+        <Typography variant="h3" className={classes.h3}>Other download options</Typography>
         <List>
           {renderings.map(rendering => (
             <ListItem disableGutters divider key={rendering.id}>
@@ -41,6 +41,9 @@ export default class ManifestDownloadLinks extends Component {
 }
 
 ManifestDownloadLinks.propTypes = {
+  classes: PropTypes.shape({
+    h3: PropTypes.string,
+  }).isRequired,
   renderings: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.string.isRequired,

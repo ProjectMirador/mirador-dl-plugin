@@ -8,6 +8,7 @@ function createWrapper(props) {
     <CanvasDownloadLinks
       canvasId="abc123"
       canvasLabel="My Canvas Label"
+      classes={{}}
       viewType="single"
       windowId="wid123"
       {...props}

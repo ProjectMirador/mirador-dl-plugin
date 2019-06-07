@@ -78,11 +78,12 @@ export default class CanvasDownloadLinks extends Component {
     const {
       canvas,
       canvasLabel,
+      classes,
     } = this.props;
 
     return (
       <React.Fragment>
-        <Typography noWrap variant="h3">{canvasLabel}</Typography>
+        <Typography noWrap variant="h3" className={classes.h3}>{canvasLabel}</Typography>
         <List>
           {this.displayCurrentZoomLink()
             && (
@@ -121,6 +122,9 @@ CanvasDownloadLinks.propTypes = {
     getWidth: PropTypes.func.isRequired,
   }).isRequired,
   canvasLabel: PropTypes.string.isRequired, // canvasLabel is passed because we need access to redux
+  classes: PropTypes.shape({
+    h3: PropTypes.string,
+  }).isRequired,
   viewType: PropTypes.string.isRequired,
   windowId: PropTypes.string.isRequired,
 };

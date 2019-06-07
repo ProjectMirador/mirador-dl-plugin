@@ -7,12 +7,13 @@ function createWrapper(props) {
     <miradorDownloadPlugin.component
       canvasLabel={label => (label || 'My Canvas Title')}
       canvases={[]}
+      classes={{}}
       manifest={{ getSequences: () => [] }}
       viewType="single"
       windowId="wid123"
       {...props}
     />,
-  );
+  ).dive();
 }
 
 describe('miradorDownloadPlugin', () => {
