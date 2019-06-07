@@ -81,7 +81,7 @@ export default class CanvasDownloadLinks extends Component {
     } = this.props;
 
     return (
-      <span key={canvas.id}>
+      <React.Fragment>
         <Typography noWrap variant="h3">{canvasLabel}</Typography>
         <List>
           {this.displayCurrentZoomLink()
@@ -108,7 +108,7 @@ export default class CanvasDownloadLinks extends Component {
             )
           }
         </List>
-      </span>
+      </React.Fragment>
     );
   }
 }

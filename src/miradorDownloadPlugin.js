@@ -62,7 +62,7 @@ class MiradorDownload extends Component {
     const { modalDisplayed } = this.state;
 
     return (
-      <div>
+      <React.Fragment>
         <MenuItem onClick={this.handleClick}>
           <DownloadIcon />
           <ListItemText inset primaryTypographyProps={{ variant: 'body1' }}>
@@ -100,7 +100,7 @@ class MiradorDownload extends Component {
             </Button>
           </DialogActions>
         </Dialog>
-      </div>
+      </React.Fragment>
     );
   }
 }

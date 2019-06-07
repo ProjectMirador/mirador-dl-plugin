@@ -17,7 +17,7 @@ export default class ManifestDownloadLinks extends Component {
     const { renderings } = this.props;
 
     return (
-      <span>
+      <React.Fragment>
         <Typography variant="h3">Other download options</Typography>
         <List>
           {renderings.map(rendering => (
@@ -35,7 +35,7 @@ export default class ManifestDownloadLinks extends Component {
             </ListItem>
           ))}
         </List>
-      </span>
+      </React.Fragment>
     );
   }
 }
