@@ -13,7 +13,7 @@ import { OSDReferences } from './OSDReferences';
 export default class CanvasDownloadLinks extends Component {
   zoomedImageLabel() {
     const bounds = this.currentBounds();
-    return `Zoomed image (${Math.floor(bounds.width)} x ${Math.floor(bounds.height)}px)`;
+    return `Zoomed region (${Math.floor(bounds.width)} x ${Math.floor(bounds.height)}px)`;
   }
 
   fullImageLabel() {
