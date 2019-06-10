@@ -1,4 +1,4 @@
-import mirador from 'mirador';
+import Mirador from 'mirador/dist/es/src/index';
 import miradorDownloadPlugin from '../../src/miradorDownloadPlugin';
 import miradorDownloadDialogPlugin from '../../src/MiradorDownloadDialog';
 import osdReferencePlugin from '../../src/OSDReferences';
@@ -15,7 +15,7 @@ const config = {
   }],
 };
 
-mirador.viewer(config, [
+Mirador.viewer(config, [
   osdReferencePlugin,
   miradorDownloadPlugin,
   miradorDownloadDialogPlugin,
