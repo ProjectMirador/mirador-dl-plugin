@@ -1,6 +1,6 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import miradorDownloadPlugin from '../src';
+import miradorDownloadPlugin from '../src/miradorDownloadPlugin';
 
 function createWrapper(props) {
   return shallow(

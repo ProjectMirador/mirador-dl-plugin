@@ -1,3 +1,9 @@
 import miradorDownloadPlugin from './miradorDownloadPlugin';
+import MiradorDownloadDialogPlugin from './MiradorDownloadDialog';
+import OSDReferencesPlugin from './OSDReferences';
 
-export default miradorDownloadPlugin;
+export default {
+  OSDReferencesPlugin,
+  miradorDownloadPlugin,
+  MiradorDownloadDialogPlugin,
+};
