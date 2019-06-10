@@ -31,11 +31,12 @@ export default class CanvasDownloadLinks extends Component {
   zoomedImageUrl() {
     const { canvas } = this.props;
     const bounds = this.currentBounds();
-
-    return canvas.getCanonicalImageUri().replace(
+    const boundsUrl = canvas.getCanonicalImageUri().replace(
       /\/full\/.*\/0\//,
       `/${bounds.x},${bounds.y},${bounds.width},${bounds.height}/full/0/`,
     );
+
+    return `${boundsUrl}?download=true`;
   }
 
   fullImageUrl() {
