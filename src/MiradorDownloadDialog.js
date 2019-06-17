@@ -131,6 +131,7 @@ const styles = () => ({
 export default {
   target: 'Window',
   mode: 'add',
+  name: 'MiradorDownloadDialog',
   component: withStyles(styles)(MiradorDownloadDialog),
   mapDispatchToProps,
   mapStateToProps,

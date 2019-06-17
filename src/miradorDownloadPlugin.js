@@ -59,6 +59,7 @@ MiradorDownload.propTypes = {
 export default {
   target: 'WindowTopMenu',
   mode: 'add',
+  name: 'MiradorDownloadPlugin',
   component: MiradorDownload,
   mapDispatchToProps,
   reducers: {
