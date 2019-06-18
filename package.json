@@ -1,6 +1,6 @@
 {
   "name": "mirador-dl-plugin",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "description": "mirador-dl-plugin React component",
   "main": "lib/index.js",
   "module": "es/index.js",
@@ -23,7 +23,7 @@
   "peerDependencies": {
     "@material-ui/core": "^4.1.0",
     "@material-ui/icons": "^4.1.0",
-    "mirador": "^3.0.0-alpha.11",
+    "mirador": "^3.0.0-alpha.12",
     "prop-types": "^15.7.2",
     "react": "16.x",
     "react-dom": "16.x"
@@ -45,7 +45,7 @@
     "eslint-plugin-jsx-a11y": "^6.2.1",
     "eslint-plugin-react": "^7.13.0",
     "jest": "^24.8.0",
-    "mirador": "^3.0.0-alpha.11",
+    "mirador": "^3.0.0-alpha.12",
     "node-sass": "^4.12.0",
     "nwb": "0.23.x",
     "nwb-sass": "^0.9.0",
