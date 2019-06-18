@@ -1,5 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
+import Link from '@material-ui/core/Link';
+import Typography from '@material-ui/core/Typography';
 import CanvasDownloadLinks from '../src/CanvasDownloadLinks';
 import { OSDReferences } from '../src/OSDReferences';
 
@@ -54,49 +56,66 @@ describe('CanvasDownloadLinks', () => {
 
   it('renders canvas label in an h3 typography', () => {
     wrapper = createWrapper({ canvas });
-    expect(wrapper.find('WithStyles(Typography)[variant="h3"]').props().children).toEqual('My Canvas Label');
+    expect(
+      wrapper.find(Typography)
+        .find({ variant: 'h3' })
+        .props().children,
+    ).toEqual('My Canvas Label');
   });
 
   it('renders a link to the whole image', () => {
     wrapper = createWrapper({ canvas });
-    expect(wrapper.find(
-      'WithStyles(Link)[href="http://example.com/iiif/abc123/full/full/0/default.jpg?download=true"]',
-    ).props().children).toEqual('Whole image (4000 x 1000px)');
+    expect(
+      wrapper
+        .find(Link)
+        .find({ href: 'http://example.com/iiif/abc123/full/full/0/default.jpg?download=true' })
+        .props()
+        .children,
+    ).toEqual('Whole image (4000 x 1000px)');
   });
 
   describe('Zoomed region link', () => {
     it('is not present when the current zoom is the same as the home zoom', () => {
       wrapper = createWrapper({ canvas });
 
-      expect(wrapper.find('WithStyles(Link)').length).toBe(2);
+      expect(wrapper.find(Link).length).toBe(2);
     });
 
     it('is present when zoomed in', () => {
       wrapper = createWrapper({ canvas, windowId: 'zoomedInWindow' });
 
-      expect(wrapper.find('WithStyles(Link)').length).toBe(3);
-      expect(wrapper.find(
-        'WithStyles(Link)[href="http://example.com/iiif/abc123/0,0,2000,500/full/0/default.jpg?download=true"]',
-      ).props().children).toEqual('Zoomed region (2000 x 500px)');
+      expect(wrapper.find(Link).length).toBe(3);
+      expect(
+        wrapper
+          .find(Link)
+          .find({ href: 'http://example.com/iiif/abc123/0,0,2000,500/full/0/default.jpg?download=true' })
+          .props().children,
+      ).toEqual('Zoomed region (2000 x 500px)');
     });
 
     it('is not present when the window is in book view', () => {
       wrapper = createWrapper({ canvas, viewType: 'book', windowId: 'zoomedInWindow' });
 
-      expect(wrapper.find('WithStyles(Link)').length).toBe(2);
+      expect(wrapper.find(Link).length).toBe(2);
     });
   });
 
   describe('when the image is > 1000px wide', () => {
     it('renders a link to a small image (1000px wide), and calculates the correct height', () => {
       wrapper = createWrapper({ canvas });
-      expect(wrapper.find('WithStyles(Link)').length).toEqual(2);
-      expect(wrapper.find(
-        'WithStyles(Link)[href="http://example.com/iiif/abc123/full/1000,/0/default.jpg?download=true"]',
-      ).length).toEqual(1);
-      expect(wrapper.find(
-        'WithStyles(Link)[href="http://example.com/iiif/abc123/full/1000,/0/default.jpg?download=true"]',
-      ).props().children).toEqual('Whole image (1000 x 250px)');
+      expect(wrapper.find(Link).length).toEqual(2);
+      expect(
+        wrapper
+          .find(Link)
+          .find({ href: 'http://example.com/iiif/abc123/full/1000,/0/default.jpg?download=true' })
+          .length,
+      ).toEqual(1);
+      expect(
+        wrapper
+          .find(Link)
+          .find({ href: 'http://example.com/iiif/abc123/full/1000,/0/default.jpg?download=true' })
+          .props().children,
+      ).toEqual('Whole image (1000 x 250px)');
     });
   });
 
@@ -104,7 +123,7 @@ describe('CanvasDownloadLinks', () => {
     it('does not render a link to a small image', () => {
       canvas.getWidth = () => 999;
       wrapper = createWrapper({ canvas });
-      expect(wrapper.find('WithStyles(Link)').length).toEqual(1); // Does not include the 2nd link
+      expect(wrapper.find(Link).length).toEqual(1); // Does not include the 2nd link
     });
   });
 });

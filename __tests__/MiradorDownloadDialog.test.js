@@ -1,5 +1,6 @@
 import React from 'react';
 import { shallow } from 'enzyme';
+import Button from '@material-ui/core/Button';
 import miradorDownloadDialog from '../src/MiradorDownloadDialog';
 
 /** Utility function to wrap  */
@@ -41,7 +42,7 @@ describe('Dialog', () => {
   it('has a close button that triggers the closeDialog prop', () => {
     const closeDialog = jest.fn();
     wrapper = createWrapper({ closeDialog });
-    wrapper.find('WithStyles(Button)').simulate('click');
+    wrapper.find(Button).simulate('click');
     expect(closeDialog).toHaveBeenCalled();
   });
 
