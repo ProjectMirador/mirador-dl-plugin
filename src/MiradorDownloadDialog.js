@@ -7,7 +7,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Typography from '@material-ui/core/Typography';
-import { getCanvasLabel, getSelectedCanvases } from 'mirador/dist/es/src/state/selectors/canvases';
+import { getCanvasLabel, getSelectedCanvases, selectInfoResponse } from 'mirador/dist/es/src/state/selectors/canvases';
 import { getWindowViewType } from 'mirador/dist/es/src/state/selectors/windows';
 import { getManifestoInstance } from 'mirador/dist/es/src/state/selectors/manifests';
 import CanvasDownloadLinks from './CanvasDownloadLinks';
@@ -17,13 +17,17 @@ const mapDispatchToProps = (dispatch, { windowId }) => ({
   closeDialog: () => dispatch({ type: 'CLOSE_WINDOW_DIALOG', windowId }),
 });
 
-const mapStateToProps = (state, { windowId }) => ({
-  canvases: getSelectedCanvases(state, { windowId }),
-  canvasLabel: canvasIndex => (getCanvasLabel(state, { canvasIndex, windowId })),
-  manifest: getManifestoInstance(state, { windowId }),
-  open: (state.windowDialogs[windowId] && state.windowDialogs[windowId].openDialog === 'download'),
-  viewType: getWindowViewType(state, { windowId }),
-});
+const mapStateToProps = (state, { windowId }) => {
+  const infoResponse = selectInfoResponse(state, { windowId });
+  return {
+    canvases: getSelectedCanvases(state, { windowId }),
+    canvasLabel: canvasIndex => (getCanvasLabel(state, { canvasIndex, windowId })),
+    infoResponse,
+    manifest: getManifestoInstance(state, { windowId }),
+    open: (state.windowDialogs[windowId] && state.windowDialogs[windowId].openDialog === 'download'),
+    viewType: getWindowViewType(state, { windowId }),
+  };
+};
 
 
 /**
@@ -51,6 +55,7 @@ export class MiradorDownloadDialog extends Component {
       canvasLabel,
       classes,
       closeDialog,
+      infoResponse,
       open,
       viewType,
       windowId,
@@ -77,6 +82,7 @@ export class MiradorDownloadDialog extends Component {
                 canvas={canvas}
                 canvasLabel={canvasLabel(canvas.index)}
                 classes={classes}
+                infoResponse={infoResponse}
                 key={canvas.id}
                 viewType={viewType}
                 windowId={windowId}
@@ -107,6 +113,9 @@ MiradorDownloadDialog.propTypes = {
     h3: PropTypes.string,
   }).isRequired,
   closeDialog: PropTypes.func.isRequired,
+  infoResponse: PropTypes.shape({
+    json: PropTypes.object,
+  }),
   manifest: PropTypes.shape({
     getSequences: PropTypes.func.isRequired,
   }).isRequired,
@@ -116,6 +125,7 @@ MiradorDownloadDialog.propTypes = {
 };
 MiradorDownloadDialog.defaultProps = {
   canvases: [],
+  infoResponse: {},
   open: false,
 };
 

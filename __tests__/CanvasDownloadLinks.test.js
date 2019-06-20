@@ -11,6 +11,7 @@ function createWrapper(props) {
       canvasId="abc123"
       canvasLabel="My Canvas Label"
       classes={{}}
+      infoResponse={{}}
       viewType="single"
       windowId="wid123"
       {...props}
@@ -63,17 +64,6 @@ describe('CanvasDownloadLinks', () => {
     ).toEqual('My Canvas Label');
   });
 
-  it('renders a link to the whole image', () => {
-    wrapper = createWrapper({ canvas });
-    expect(
-      wrapper
-        .find(Link)
-        .find({ href: 'http://example.com/iiif/abc123/full/full/0/default.jpg?download=true' })
-        .props()
-        .children,
-    ).toEqual('Whole image (4000 x 1000px)');
-  });
-
   describe('Zoomed region link', () => {
     it('is not present when the current zoom is the same as the home zoom', () => {
       wrapper = createWrapper({ canvas });
@@ -100,30 +90,59 @@ describe('CanvasDownloadLinks', () => {
     });
   });
 
-  describe('when the image is > 1000px wide', () => {
-    it('renders a link to a small image (1000px wide), and calculates the correct height', () => {
-      wrapper = createWrapper({ canvas });
-      expect(wrapper.find(Link).length).toEqual(2);
-      expect(
-        wrapper
-          .find(Link)
-          .find({ href: 'http://example.com/iiif/abc123/full/1000,/0/default.jpg?download=true' })
-          .length,
-      ).toEqual(1);
-      expect(
-        wrapper
-          .find(Link)
-          .find({ href: 'http://example.com/iiif/abc123/full/1000,/0/default.jpg?download=true' })
-          .props().children,
-      ).toEqual('Whole image (1000 x 250px)');
+  describe('when there is are sizes defined in the infoResponse', () => {
+    const sizes = [
+      { width: 4000, height: 1000 },
+      { width: 2000, height: 500 },
+      { width: 1000, height: 250 },
+    ];
+    it('uses those sizes for links in the download dialog', () => {
+      wrapper = createWrapper({ canvas, infoResponse: { json: { sizes } } });
+
+      // console.log(wrapper.debug());
+      expect(wrapper.find(Link).at(0).props().children).toEqual('Whole image (4000 x 1000px)');
+      expect(wrapper.find(Link).at(1).props().children).toEqual('Whole image (2000 x 500px)');
+      expect(wrapper.find(Link).at(2).props().children).toEqual('Whole image (1000 x 250px)');
     });
   });
 
-  describe('when the image is < 1000px wide', () => {
-    it('does not render a link to a small image', () => {
-      canvas.getWidth = () => 999;
+  describe('when there are no defined sizes', () => {
+    it('renders a link to the whole image', () => {
       wrapper = createWrapper({ canvas });
-      expect(wrapper.find(Link).length).toEqual(1); // Does not include the 2nd link
+      expect(
+        wrapper
+          .find(Link)
+          .find({ href: 'http://example.com/iiif/abc123/full/full/0/default.jpg?download=true' })
+          .props()
+          .children,
+      ).toEqual('Whole image (4000 x 1000px)');
+    });
+
+    describe('when the image is > 1000px wide', () => {
+      it('renders a link to a small image (1000px wide), and calculates the correct height', () => {
+        wrapper = createWrapper({ canvas });
+        expect(wrapper.find(Link).length).toEqual(2);
+        expect(
+          wrapper
+            .find(Link)
+            .find({ href: 'http://example.com/iiif/abc123/full/1000,/0/default.jpg?download=true' })
+            .length,
+        ).toEqual(1);
+        expect(
+          wrapper
+            .find(Link)
+            .find({ href: 'http://example.com/iiif/abc123/full/1000,/0/default.jpg?download=true' })
+            .props().children,
+        ).toEqual('Whole image (1000 x 250px)');
+      });
+    });
+
+    describe('when the image is < 1000px wide', () => {
+      it('does not render a link to a small image', () => {
+        canvas.getWidth = () => 999;
+        wrapper = createWrapper({ canvas });
+        expect(wrapper.find(Link).length).toEqual(1); // Does not include the 2nd link
+      });
     });
   });
 });

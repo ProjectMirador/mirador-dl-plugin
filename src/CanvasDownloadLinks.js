@@ -4,6 +4,7 @@ import Typography from '@material-ui/core/Typography';
 import Link from '@material-ui/core/Link';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
+import uniqBy from 'lodash.uniqby';
 import { OSDReferences } from './OSDReferences';
 
 
@@ -37,6 +38,12 @@ export default class CanvasDownloadLinks extends Component {
     );
 
     return `${boundsUrl}?download=true`;
+  }
+
+  imageUrlForSize(size) {
+    const { canvas } = this.props;
+
+    return `${canvas.getCanonicalImageUri(size.width)}?download=true`;
   }
 
   fullImageUrl() {
@@ -73,11 +80,56 @@ export default class CanvasDownloadLinks extends Component {
   }
 
   /**
+   * This only returns unique sizes
+  */
+  definedSizes() {
+    const { infoResponse } = this.props;
+    if (!(infoResponse && infoResponse.json && infoResponse.json.sizes)) return [];
+
+    return uniqBy(infoResponse.json.sizes, size => `${size.width}${size.height}`);
+  }
+
+  fullImageLink() {
+    return (
+      <ListItem disableGutters divider key={this.fullImageUrl()}>
+        <Link href={this.fullImageUrl()} rel="noopener noreferrer" target="_blank" variant="body1">
+          {this.fullImageLabel()}
+        </Link>
+      </ListItem>
+    );
+  }
+
+  thousandPixelWideLink() {
+    const { canvas } = this.props;
+
+    if (canvas.getWidth() < 1000) return '';
+
+    return (
+      <ListItem disableGutters divider key={this.thousandPixelWideImage()}>
+        <Link href={this.thousandPixelWideImage()} rel="noopener noreferrer" target="_blank" variant="body1">
+          {this.smallImageLabel()}
+        </Link>
+      </ListItem>
+    );
+  }
+
+  linksForDefinedSizes() {
+    return (
+      this.definedSizes().map(size => (
+        <ListItem disableGutters divider key={`${size.width}${size.height}`}>
+          <Link href={this.imageUrlForSize(size)} rel="noopener noreferrer" target="_blank" variant="body1">
+            {`Whole image (${size.width} x ${size.height}px)`}
+          </Link>
+        </ListItem>
+      ))
+    );
+  }
+
+  /**
    * Returns the rendered component
   */
   render() {
     const {
-      canvas,
       canvasLabel,
       classes,
     } = this.props;
@@ -95,20 +147,10 @@ export default class CanvasDownloadLinks extends Component {
               </ListItem>
             )
           }
-          <ListItem disableGutters divider>
-            <Link href={this.fullImageUrl()} rel="noopener noreferrer" target="_blank" variant="body1">
-              {this.fullImageLabel()}
-            </Link>
-          </ListItem>
-          {(canvas.getWidth() > 1000)
-            && (
-            <ListItem disableGutters divider>
-              <Link href={this.thousandPixelWideImage()} rel="noopener noreferrer" target="_blank" variant="body1">
-                {this.smallImageLabel()}
-              </Link>
-            </ListItem>
-            )
-          }
+          {this.definedSizes().length === 0
+            && ([this.fullImageLink(), this.thousandPixelWideLink()])}
+          {this.definedSizes().length > 0
+            && (this.linksForDefinedSizes())}
         </List>
       </React.Fragment>
     );
@@ -125,6 +167,13 @@ CanvasDownloadLinks.propTypes = {
   canvasLabel: PropTypes.string.isRequired, // canvasLabel is passed because we need access to redux
   classes: PropTypes.shape({
     h3: PropTypes.string,
+  }).isRequired,
+  infoResponse: PropTypes.shape({
+    json: PropTypes.shape({
+      sizes: PropTypes.arrayOf(
+        PropTypes.shape({ height: PropTypes.number, width: PropTypes.number }),
+      ),
+    }),
   }).isRequired,
   viewType: PropTypes.string.isRequired,
   windowId: PropTypes.string.isRequired,
