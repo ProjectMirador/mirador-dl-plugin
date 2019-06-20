@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import MenuItem from '@material-ui/core/MenuItem';
 import DownloadIcon from '@material-ui/icons/VerticalAlignBottomSharp';
@@ -41,8 +42,10 @@ class MiradorDownload extends Component {
     return (
       <React.Fragment>
         <MenuItem onClick={() => this.openDialogAndCloseMenu()}>
-          <DownloadIcon />
-          <ListItemText inset primaryTypographyProps={{ variant: 'body1' }}>
+          <ListItemIcon>
+            <DownloadIcon />
+          </ListItemIcon>
+          <ListItemText primaryTypographyProps={{ variant: 'body1' }}>
             Download
           </ListItemText>
         </MenuItem>
