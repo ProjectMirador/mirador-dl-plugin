@@ -12,6 +12,7 @@ function createWrapper(props) {
       canvasLabel="My Canvas Label"
       classes={{}}
       infoResponse={{}}
+      restrictDownloadOnSizeDefinition={false}
       viewType="single"
       windowId="wid123"
       {...props}
@@ -87,6 +88,29 @@ describe('CanvasDownloadLinks', () => {
       wrapper = createWrapper({ canvas, viewType: 'book', windowId: 'zoomedInWindow' });
 
       expect(wrapper.find(Link).length).toBe(2);
+    });
+
+    describe('when the zoom link is set to be restricted', () => {
+      it('has just the whole image link from the sizes and does not present a zoomed region link', () => {
+        wrapper = createWrapper({
+          canvas,
+          infoResponse: {
+            json: {
+              width: 4000,
+              height: 1000,
+              sizes: [{
+                width: 400,
+                height: 100,
+              }],
+            },
+          },
+          restrictDownloadOnSizeDefinition: true,
+          windowId: 'zoomedInWindow',
+        });
+
+        expect(wrapper.find(Link).length).toBe(1);
+        expect(wrapper.find(Link).props().children).toEqual('Whole image (400 x 100px)');
+      });
     });
   });
 

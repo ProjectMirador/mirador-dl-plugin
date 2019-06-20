@@ -72,10 +72,22 @@ export default class CanvasDownloadLinks extends Component {
     }, {});
   }
 
+  definedSizesRestrictsDownload() {
+    const { infoResponse } = this.props;
+    const { height, width } = infoResponse.json;
+
+    if (this.definedSizes().length !== 1) return false;
+
+    return this.definedSizes()[0].width <= width
+           && this.definedSizes()[0].height <= height;
+  }
+
   displayCurrentZoomLink() {
-    const { viewType } = this.props;
+    const { restrictDownloadOnSizeDefinition, viewType } = this.props;
 
     if (viewType === 'book') return false;
+    if (restrictDownloadOnSizeDefinition && this.definedSizesRestrictsDownload()) return false;
+
     return this.osdViewport().getZoom() > this.osdViewport().getHomeZoom();
   }
 
@@ -175,6 +187,7 @@ CanvasDownloadLinks.propTypes = {
       ),
     }),
   }).isRequired,
+  restrictDownloadOnSizeDefinition: PropTypes.bool.isRequired,
   viewType: PropTypes.string.isRequired,
   windowId: PropTypes.string.isRequired,
 };
