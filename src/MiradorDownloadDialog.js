@@ -7,7 +7,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Typography from '@material-ui/core/Typography';
-import { getCanvasLabel, getSelectedCanvases } from 'mirador/dist/es/src/state/selectors/canvases';
+import { getCanvasLabel, getSelectedCanvases, selectInfoResponse } from 'mirador/dist/es/src/state/selectors/canvases';
 import { getWindowViewType } from 'mirador/dist/es/src/state/selectors/windows';
 import { getManifestoInstance } from 'mirador/dist/es/src/state/selectors/manifests';
 import CanvasDownloadLinks from './CanvasDownloadLinks';
@@ -20,7 +20,12 @@ const mapDispatchToProps = (dispatch, { windowId }) => ({
 const mapStateToProps = (state, { windowId }) => ({
   canvases: getSelectedCanvases(state, { windowId }),
   canvasLabel: canvasIndex => (getCanvasLabel(state, { canvasIndex, windowId })),
+  infoResponse: selectInfoResponse(state, { windowId }),
   manifest: getManifestoInstance(state, { windowId }),
+  restrictDownloadOnSizeDefinition: state.config.miradorDownloadPlugin
+                                    && state.config
+                                      .miradorDownloadPlugin
+                                      .restrictDownloadOnSizeDefinition,
   open: (state.windowDialogs[windowId] && state.windowDialogs[windowId].openDialog === 'download'),
   viewType: getWindowViewType(state, { windowId }),
 });
@@ -51,7 +56,9 @@ export class MiradorDownloadDialog extends Component {
       canvasLabel,
       classes,
       closeDialog,
+      infoResponse,
       open,
+      restrictDownloadOnSizeDefinition,
       viewType,
       windowId,
     } = this.props;
@@ -77,6 +84,8 @@ export class MiradorDownloadDialog extends Component {
                 canvas={canvas}
                 canvasLabel={canvasLabel(canvas.index)}
                 classes={classes}
+                infoResponse={infoResponse}
+                restrictDownloadOnSizeDefinition={restrictDownloadOnSizeDefinition}
                 key={canvas.id}
                 viewType={viewType}
                 windowId={windowId}
@@ -107,16 +116,23 @@ MiradorDownloadDialog.propTypes = {
     h3: PropTypes.string,
   }).isRequired,
   closeDialog: PropTypes.func.isRequired,
+  infoResponse: PropTypes.shape({
+    json: PropTypes.object,
+  }),
   manifest: PropTypes.shape({
-    getSequences: PropTypes.func.isRequired,
-  }).isRequired,
+    getSequences: PropTypes.func,
+  }),
   open: PropTypes.bool,
+  restrictDownloadOnSizeDefinition: PropTypes.bool,
   viewType: PropTypes.string.isRequired,
   windowId: PropTypes.string.isRequired,
 };
 MiradorDownloadDialog.defaultProps = {
   canvases: [],
+  infoResponse: {},
+  manifest: {},
   open: false,
+  restrictDownloadOnSizeDefinition: false,
 };
 
 const styles = () => ({
