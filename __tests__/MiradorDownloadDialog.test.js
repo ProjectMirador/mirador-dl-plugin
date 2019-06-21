@@ -11,6 +11,7 @@ function createWrapper(props) {
       canvases={[]}
       classes={{}}
       closeDialog={() => {}}
+      containerId="container-123"
       manifest={{ getSequences: () => [] }}
       open
       viewType="single"
