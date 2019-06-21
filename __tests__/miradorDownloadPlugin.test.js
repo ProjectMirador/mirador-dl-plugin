@@ -17,7 +17,7 @@ function createWrapper(props) {
 
 describe('miradorDownloadPlugin', () => {
   it('has the correct target', () => {
-    expect(miradorDownloadPlugin.target).toBe('WindowTopMenu');
+    expect(miradorDownloadPlugin.target).toBe('WindowTopBarPluginMenu');
   });
   describe('renders a component', () => {
     it('renders a thing', () => {
