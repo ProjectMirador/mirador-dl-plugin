@@ -10,6 +10,7 @@ import Typography from '@material-ui/core/Typography';
 import { getCanvasLabel, getSelectedCanvases, selectInfoResponse } from 'mirador/dist/es/src/state/selectors/canvases';
 import { getWindowViewType } from 'mirador/dist/es/src/state/selectors/windows';
 import { getManifestoInstance } from 'mirador/dist/es/src/state/selectors/manifests';
+import { getContainerId } from 'mirador/dist/es/src/state/selectors/config';
 import CanvasDownloadLinks from './CanvasDownloadLinks';
 import ManifestDownloadLinks from './ManifestDownloadLinks';
 
@@ -20,6 +21,7 @@ const mapDispatchToProps = (dispatch, { windowId }) => ({
 const mapStateToProps = (state, { windowId }) => ({
   canvases: getSelectedCanvases(state, { windowId }),
   canvasLabel: canvasIndex => (getCanvasLabel(state, { canvasIndex, windowId })),
+  containerId: getContainerId(state),
   infoResponse: selectInfoResponse(state, { windowId }),
   manifest: getManifestoInstance(state, { windowId }),
   restrictDownloadOnSizeDefinition: state.config.miradorDownloadPlugin
@@ -56,6 +58,7 @@ export class MiradorDownloadDialog extends Component {
       canvasLabel,
       classes,
       closeDialog,
+      containerId,
       infoResponse,
       open,
       restrictDownloadOnSizeDefinition,
@@ -68,6 +71,7 @@ export class MiradorDownloadDialog extends Component {
     return (
       <React.Fragment>
         <Dialog
+          container={document.querySelector(`#${containerId} .mirador-viewer`)}
           disableEnforceFocus
           onClose={closeDialog}
           open={open}
@@ -116,6 +120,7 @@ MiradorDownloadDialog.propTypes = {
     h3: PropTypes.string,
   }).isRequired,
   closeDialog: PropTypes.func.isRequired,
+  containerId: PropTypes.string.isRequired,
   infoResponse: PropTypes.shape({
     json: PropTypes.object,
   }),
