@@ -22,16 +22,15 @@ export default class ManifestDownloadLinks extends Component {
         <List>
           {renderings.map(rendering => (
             <ListItem disableGutters divider key={rendering.id}>
-              <Link href={rendering.id} rel="noopener noreferrer" target="_blank" variant="body1">
-                {rendering.getLabel().map(label => label.value)[0]}
-              </Link>
-              {(rendering.getFormat() && rendering.getFormat().value)
-                && (
-                  <ListItemText primaryTypographyProps={{ variant: 'body1' }}>
-                    {`(${rendering.getFormat().value})`}
-                  </ListItemText>
-                )
-              }
+              <ListItemText primaryTypographyProps={{ variant: 'body1' }}>
+                <Link href={rendering.id} rel="noopener noreferrer" target="_blank" variant="body1">
+                  {rendering.getLabel().map(label => label.value)[0]}
+                </Link>
+                {rendering.getFormat()
+                  && rendering.getFormat().value
+                  && ` (${rendering.getFormat().value})`
+                }
+              </ListItemText>
             </ListItem>
           ))}
         </List>

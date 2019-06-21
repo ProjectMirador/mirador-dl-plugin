@@ -50,6 +50,6 @@ describe('ManifestDownloadLinks', () => {
 
     expect(wrapper.find(Link).at(0).props().children).toEqual('Link to the PDF');
     expect(wrapper.find(Link).at(0).props().href).toEqual('http://example.com/abc123.pdf');
-    expect(wrapper.find(ListItemText).at(0).props().children).toEqual('(application/pdf)');
+    expect(wrapper.find(ListItemText).at(0).props().children[1]).toEqual(' (application/pdf)');
   });
 });
