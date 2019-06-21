@@ -83,12 +83,17 @@ export default class CanvasDownloadLinks extends Component {
   }
 
   displayCurrentZoomLink() {
-    const { restrictDownloadOnSizeDefinition, viewType } = this.props;
+    const { restrictDownloadOnSizeDefinition, infoResponse, viewType } = this.props;
+    const bounds = this.currentBounds();
 
     if (viewType === 'book') return false;
     if (restrictDownloadOnSizeDefinition && this.definedSizesRestrictsDownload()) return false;
+    if (!(infoResponse && infoResponse.json)) return false;
 
-    return this.osdViewport().getZoom() > this.osdViewport().getHomeZoom();
+    return bounds.height < infoResponse.json.height
+      && bounds.width < infoResponse.json.width
+      && bounds.x >= 0
+      && bounds.y >= 0;
   }
 
   /**

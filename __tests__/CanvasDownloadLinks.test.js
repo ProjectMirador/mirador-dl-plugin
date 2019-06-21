@@ -36,15 +36,23 @@ describe('CanvasDownloadLinks', () => {
     getBounds: () => ({
       x: 0, y: 0, width: 4000, height: 1000,
     }),
-    getZoom: () => 0.5,
-    getHomeZoom: () => 0.5,
   };
   const zoomedInViewport = {
     getBounds: () => ({
       x: 0, y: 0, width: 2000, height: 500,
     }),
-    getZoom: () => 1.0,
-    getHomeZoom: () => 0.5,
+  };
+
+  const zoomedOutViewport = {
+    getBounds: () => ({
+      x: 0, y: 0, width: 6000, height: 1000,
+    }),
+  };
+
+  const zoomedIntoNonImageSpaceViewport = {
+    getBounds: () => ({
+      x: -100, y: 100, width: 2000, height: 500,
+    }),
   };
 
   beforeAll(() => {
@@ -53,6 +61,12 @@ describe('CanvasDownloadLinks', () => {
     });
     OSDReferences.set('zoomedInWindow', {
       current: { viewer: { viewport: zoomedInViewport } },
+    });
+    OSDReferences.set('zoomedOutWindow', {
+      current: { viewer: { viewport: zoomedOutViewport } },
+    });
+    OSDReferences.set('zoomedIntoNonImageSpaceWindow', {
+      current: { viewer: { viewport: zoomedIntoNonImageSpaceViewport } },
     });
   });
 
@@ -66,14 +80,26 @@ describe('CanvasDownloadLinks', () => {
   });
 
   describe('Zoomed region link', () => {
-    it('is not present when the current zoom is the same as the home zoom', () => {
-      wrapper = createWrapper({ canvas });
+    const infoResponse = {
+      json: { width: 4000, height: 1000 },
+    };
+
+    it('it does not render a link when the viewer is zoomed out/at the entire image', () => {
+      wrapper = createWrapper({ canvas, infoResponse, windowId: 'zoomedOutWindow' });
+      expect(wrapper.find(Link).length).toBe(2);
+
+      wrapper = createWrapper({ canvas, infoResponse, windowId: 'wid123' });
+      expect(wrapper.find(Link).length).toBe(2);
+    });
+
+    it('does not render a link when the viewer is zoomed into non-image space (e.g. a reponse the image server cannot handle)', () => {
+      wrapper = createWrapper({ canvas, infoResponse, windowId: 'zoomedIntoNonImageSpaceWindow' });
 
       expect(wrapper.find(Link).length).toBe(2);
     });
 
-    it('is present when zoomed in', () => {
-      wrapper = createWrapper({ canvas, windowId: 'zoomedInWindow' });
+    it('is present when the viewer is zoomed into the image', () => {
+      wrapper = createWrapper({ canvas, infoResponse, windowId: 'zoomedInWindow' });
 
       expect(wrapper.find(Link).length).toBe(3);
       expect(
@@ -85,7 +111,9 @@ describe('CanvasDownloadLinks', () => {
     });
 
     it('is not present when the window is in book view', () => {
-      wrapper = createWrapper({ canvas, viewType: 'book', windowId: 'zoomedInWindow' });
+      wrapper = createWrapper({
+        canvas, infoResponse, viewType: 'book', windowId: 'zoomedInWindow',
+      });
 
       expect(wrapper.find(Link).length).toBe(2);
     });
