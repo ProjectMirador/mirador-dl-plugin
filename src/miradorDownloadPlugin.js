@@ -65,7 +65,7 @@ MiradorDownload.defaultProps = {
 };
 
 export default {
-  target: 'WindowTopMenu',
+  target: 'WindowTopBarPluginMenu',
   mode: 'add',
   name: 'MiradorDownloadPlugin',
   component: MiradorDownload,
