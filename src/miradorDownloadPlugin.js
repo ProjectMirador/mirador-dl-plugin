@@ -55,8 +55,13 @@ class MiradorDownload extends Component {
 }
 
 MiradorDownload.propTypes = {
-  handleClose: PropTypes.func.isRequired,
-  openDownloadDialog: PropTypes.func.isRequired,
+  handleClose: PropTypes.func,
+  openDownloadDialog: PropTypes.func,
+};
+
+MiradorDownload.defaultProps = {
+  handleClose: () => {},
+  openDownloadDialog: () => {},
 };
 
 export default {
