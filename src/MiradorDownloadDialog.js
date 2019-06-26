@@ -4,13 +4,13 @@ import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Typography from '@material-ui/core/Typography';
 import { getCanvasLabel, getSelectedCanvases, selectInfoResponse } from 'mirador/dist/es/src/state/selectors/canvases';
 import { getWindowViewType } from 'mirador/dist/es/src/state/selectors/windows';
 import { getManifestoInstance } from 'mirador/dist/es/src/state/selectors/manifests';
 import { getContainerId } from 'mirador/dist/es/src/state/selectors/config';
+import ScrollIndicatedDialogContent from 'mirador/dist/es/src/containers/ScrollIndicatedDialogContent';
 import CanvasDownloadLinks from './CanvasDownloadLinks';
 import ManifestDownloadLinks from './ManifestDownloadLinks';
 
@@ -82,7 +82,7 @@ export class MiradorDownloadDialog extends Component {
           <DialogTitle disableTypography className={classes.h2}>
             <Typography variant="h2">Download</Typography>
           </DialogTitle>
-          <DialogContent>
+          <ScrollIndicatedDialogContent>
             {canvases.map(canvas => (
               <CanvasDownloadLinks
                 canvas={canvas}
@@ -98,7 +98,7 @@ export class MiradorDownloadDialog extends Component {
             {this.renderings().length > 0
               && <ManifestDownloadLinks classes={classes} renderings={this.renderings()} />
             }
-          </DialogContent>
+          </ScrollIndicatedDialogContent>
           <DialogActions>
             <Button onClick={closeDialog} color="primary">
               Close
