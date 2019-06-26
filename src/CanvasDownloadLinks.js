@@ -187,9 +187,11 @@ CanvasDownloadLinks.propTypes = {
   }).isRequired,
   infoResponse: PropTypes.shape({
     json: PropTypes.shape({
+      height: PropTypes.number,
       sizes: PropTypes.arrayOf(
         PropTypes.shape({ height: PropTypes.number, width: PropTypes.number }),
       ),
+      width: PropTypes.number,
     }),
   }).isRequired,
   restrictDownloadOnSizeDefinition: PropTypes.bool.isRequired,
