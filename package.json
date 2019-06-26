@@ -23,7 +23,7 @@
   "peerDependencies": {
     "@material-ui/core": "^4.1.0",
     "@material-ui/icons": "^4.1.0",
-    "lodash.uniqby": "^4.7.0",
+    "lodash": "^4.17.11",
     "mirador": "^3.0.0-alpha.13",
     "prop-types": "^15.7.2",
     "react": "16.x",
@@ -46,7 +46,7 @@
     "eslint-plugin-jsx-a11y": "^6.2.1",
     "eslint-plugin-react": "^7.13.0",
     "jest": "^24.8.0",
-    "lodash.uniqby": "^4.7.0",
+    "lodash": "^4.17.11",
     "mirador": "^3.0.0-alpha.13",
     "node-sass": "^4.12.0",
     "nwb": "0.23.x",

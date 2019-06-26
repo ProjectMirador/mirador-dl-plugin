@@ -4,7 +4,7 @@ import Typography from '@material-ui/core/Typography';
 import Link from '@material-ui/core/Link';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
-import uniqBy from 'lodash.uniqby';
+import uniqBy from 'lodash/uniqBy';
 import { OSDReferences } from './OSDReferences';
 
 
