@@ -84,12 +84,12 @@ export default class CanvasDownloadLinks extends Component {
 
   displayCurrentZoomLink() {
     const { restrictDownloadOnSizeDefinition, infoResponse, viewType } = this.props;
-    const bounds = this.currentBounds();
 
-    if (viewType === 'book') return false;
+    if (viewType !== 'single') return false;
     if (restrictDownloadOnSizeDefinition && this.definedSizesRestrictsDownload()) return false;
     if (!(infoResponse && infoResponse.json)) return false;
 
+    const bounds = this.currentBounds();
     return bounds.height < infoResponse.json.height
       && bounds.width < infoResponse.json.width
       && bounds.x >= 0
