@@ -110,9 +110,15 @@ describe('CanvasDownloadLinks', () => {
       ).toEqual('Zoomed region (2000 x 500px)');
     });
 
-    it('is not present when the window is in book view', () => {
+    it('is not present when the window is in book or gallery view (only single view)', () => {
       wrapper = createWrapper({
         canvas, infoResponse, viewType: 'book', windowId: 'zoomedInWindow',
+      });
+
+      expect(wrapper.find(Link).length).toBe(2);
+
+      wrapper = createWrapper({
+        canvas, infoResponse, viewType: 'gallery', windowId: 'zoomedInWindow',
       });
 
       expect(wrapper.find(Link).length).toBe(2);
