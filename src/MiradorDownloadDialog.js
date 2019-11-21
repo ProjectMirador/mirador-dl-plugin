@@ -22,7 +22,7 @@ const mapStateToProps = (state, { windowId }) => ({
   canvases: getVisibleCanvases(state, { windowId }),
   canvasLabel: canvasIndex => (getCanvasLabel(state, { canvasIndex, windowId })),
   containerId: getContainerId(state),
-  infoResponse: selectInfoResponse(state, { windowId }),
+  infoResponse: selectInfoResponse(state, { windowId }) || {},
   manifest: getManifestoInstance(state, { windowId }),
   restrictDownloadOnSizeDefinition: state.config.miradorDownloadPlugin
                                     && state.config
