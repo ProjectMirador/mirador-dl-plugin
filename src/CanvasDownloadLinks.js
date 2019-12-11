@@ -74,6 +74,7 @@ export default class CanvasDownloadLinks extends Component {
 
   definedSizesRestrictsDownload() {
     const { infoResponse } = this.props;
+    if (!infoResponse.json) return false;
     const { height, width } = infoResponse.json;
 
     if (this.definedSizes().length !== 1) return false;
