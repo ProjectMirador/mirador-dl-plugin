@@ -1,7 +1,7 @@
 import Mirador from 'mirador/dist/es/src/index';
+import OSDReferencesPlugin from 'mirador/dist/es/src/plugins/OSDReferences';
 import miradorDownloadPlugin from '../../src/miradorDownloadPlugin';
 import miradorDownloadDialogPlugin from '../../src/MiradorDownloadDialog';
-import osdReferencePlugin from '../../src/OSDReferences';
 
 const config = {
   id: 'demo',
@@ -22,7 +22,7 @@ const config = {
 };
 
 Mirador.viewer(config, [
-  osdReferencePlugin,
+  OSDReferencesPlugin,
   miradorDownloadPlugin,
   miradorDownloadDialogPlugin,
 ]);

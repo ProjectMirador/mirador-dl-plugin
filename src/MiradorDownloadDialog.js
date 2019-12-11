@@ -6,7 +6,7 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Typography from '@material-ui/core/Typography';
-import { getCanvasLabel, getSelectedCanvases, selectInfoResponse } from 'mirador/dist/es/src/state/selectors/canvases';
+import { getCanvasLabel, getVisibleCanvases, selectInfoResponse } from 'mirador/dist/es/src/state/selectors/canvases';
 import { getWindowViewType } from 'mirador/dist/es/src/state/selectors/windows';
 import { getManifestoInstance } from 'mirador/dist/es/src/state/selectors/manifests';
 import { getContainerId } from 'mirador/dist/es/src/state/selectors/config';
@@ -19,7 +19,7 @@ const mapDispatchToProps = (dispatch, { windowId }) => ({
 });
 
 const mapStateToProps = (state, { windowId }) => ({
-  canvases: getSelectedCanvases(state, { windowId }),
+  canvases: getVisibleCanvases(state, { windowId }),
   canvasLabel: canvasIndex => (getCanvasLabel(state, { canvasIndex, windowId })),
   containerId: getContainerId(state),
   infoResponse: selectInfoResponse(state, { windowId }),

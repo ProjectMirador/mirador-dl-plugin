@@ -5,7 +5,7 @@ import Link from '@material-ui/core/Link';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import uniqBy from 'lodash/uniqBy';
-import { OSDReferences } from './OSDReferences';
+import { OSDReferences } from 'mirador/dist/es/src/plugins/OSDReferences';
 
 
 /**
