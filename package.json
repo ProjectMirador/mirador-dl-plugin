@@ -1,6 +1,6 @@
 {
   "name": "mirador-dl-plugin",
-  "version": "0.8.0",
+  "version": "0.9.0",
   "description": "mirador-dl-plugin React component",
   "main": "lib/index.js",
   "module": "es/index.js",
