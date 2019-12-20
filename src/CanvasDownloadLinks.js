@@ -5,7 +5,7 @@ import Link from '@material-ui/core/Link';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import uniqBy from 'lodash/uniqBy';
-import { OSDReferences } from './OSDReferences';
+import { OSDReferences } from 'mirador/dist/es/src/plugins/OSDReferences';
 
 
 /**
@@ -74,6 +74,7 @@ export default class CanvasDownloadLinks extends Component {
 
   definedSizesRestrictsDownload() {
     const { infoResponse } = this.props;
+    if (!infoResponse.json) return false;
     const { height, width } = infoResponse.json;
 
     if (this.definedSizes().length !== 1) return false;

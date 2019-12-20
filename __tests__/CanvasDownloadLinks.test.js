@@ -2,8 +2,8 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import Link from '@material-ui/core/Link';
 import Typography from '@material-ui/core/Typography';
+import { OSDReferences } from 'mirador/dist/es/src/plugins/OSDReferences';
 import CanvasDownloadLinks from '../src/CanvasDownloadLinks';
-import { OSDReferences } from '../src/OSDReferences';
 
 function createWrapper(props) {
   return shallow(
