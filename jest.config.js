@@ -10,4 +10,7 @@ module.exports = {
   setupFiles: [
     '<rootDir>/setupJest.js',
   ],
+  transformIgnorePatterns: [
+    '<rootDir>/node_modules/(?!mirador)',
+  ],
 };
