@@ -22,7 +22,7 @@ const mapStateToProps = (state, { windowId }) => ({
   canvases: getVisibleCanvases(state, { windowId }),
   canvasLabel: canvasIndex => (getCanvasLabel(state, { canvasIndex, windowId })),
   containerId: getContainerId(state),
-  infoResponse: selectInfoResponse(state, { windowId }) || {},
+  infoResponse: canvasIndex => (selectInfoResponse(state, { windowId, canvasIndex }) || {}),
   manifest: getManifestoInstance(state, { windowId }),
   restrictDownloadOnSizeDefinition: state.config.miradorDownloadPlugin
                                     && state.config
@@ -88,7 +88,7 @@ export class MiradorDownloadDialog extends Component {
                 canvas={canvas}
                 canvasLabel={canvasLabel(canvas.index)}
                 classes={classes}
-                infoResponse={infoResponse}
+                infoResponse={infoResponse(canvas.index)}
                 restrictDownloadOnSizeDefinition={restrictDownloadOnSizeDefinition}
                 key={canvas.id}
                 viewType={viewType}
@@ -121,9 +121,7 @@ MiradorDownloadDialog.propTypes = {
   }).isRequired,
   closeDialog: PropTypes.func.isRequired,
   containerId: PropTypes.string.isRequired,
-  infoResponse: PropTypes.shape({
-    json: PropTypes.object,
-  }),
+  infoResponse: PropTypes.func.isRequired,
   manifest: PropTypes.shape({
     getSequences: PropTypes.func,
   }),
@@ -134,7 +132,6 @@ MiradorDownloadDialog.propTypes = {
 };
 MiradorDownloadDialog.defaultProps = {
   canvases: [],
-  infoResponse: {},
   manifest: {},
   open: false,
   restrictDownloadOnSizeDefinition: false,
