@@ -4,6 +4,7 @@ import Link from '@material-ui/core/Link';
 import Typography from '@material-ui/core/Typography';
 import { OSDReferences } from 'mirador/dist/es/src/plugins/OSDReferences';
 import CanvasDownloadLinks from '../src/CanvasDownloadLinks';
+import RenderingDownloadLink from '../src/RenderingDownloadLink';
 
 function createWrapper(props) {
   return shallow(
@@ -31,6 +32,13 @@ describe('CanvasDownloadLinks', () => {
     ),
     getHeight: () => 1000,
     getWidth: () => 4000,
+    getRenderings: () => [
+      {
+        id: 'http://example.com/abc123.pdf',
+        getLabel: () => [{ value: 'Link to the PDF' }],
+        getFormat: () => ({ value: 'application/pdf' }),
+      },
+    ],
   };
   const viewport = {
     getBounds: () => ({
@@ -77,6 +85,13 @@ describe('CanvasDownloadLinks', () => {
         .find({ variant: 'h3' })
         .props().children,
     ).toEqual('My Canvas Label');
+  });
+
+  it('renders canvas level renderings', () => {
+    wrapper = createWrapper({ canvas });
+    expect(
+      wrapper.find(RenderingDownloadLink).length,
+    ).toEqual(1);
   });
 
   describe('Zoomed region link', () => {

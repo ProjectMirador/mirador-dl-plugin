@@ -19,7 +19,7 @@ export default class ManifestDownloadLinks extends Component {
         <Typography variant="h3" className={classes.h3}>Other download options</Typography>
         <List>
           {renderings.map(rendering => (
-            <RenderingDownloadLink rendering={rendering} />
+            <RenderingDownloadLink rendering={rendering} key={rendering.id} />
           ))}
         </List>
       </React.Fragment>
