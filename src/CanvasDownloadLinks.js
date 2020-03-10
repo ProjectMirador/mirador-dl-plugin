@@ -6,6 +6,7 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import uniqBy from 'lodash/uniqBy';
 import { OSDReferences } from 'mirador/dist/es/src/plugins/OSDReferences';
+import RenderingDownloadLink from './RenderingDownloadLink';
 
 
 /**
@@ -148,6 +149,7 @@ export default class CanvasDownloadLinks extends Component {
   */
   render() {
     const {
+      canvas,
       canvasLabel,
       classes,
     } = this.props;
@@ -169,6 +171,9 @@ export default class CanvasDownloadLinks extends Component {
             && ([this.fullImageLink(), this.thousandPixelWideLink()])}
           {this.definedSizes().length > 0
             && (this.linksForDefinedSizes())}
+          {canvas.getRenderings().map(rendering => (
+            <RenderingDownloadLink rendering={rendering} key={rendering.id} />
+          ))}
         </List>
       </React.Fragment>
     );
@@ -180,6 +185,7 @@ CanvasDownloadLinks.propTypes = {
     id: PropTypes.string.isRequired,
     getCanonicalImageUri: PropTypes.func.isRequired,
     getHeight: PropTypes.func.isRequired,
+    getRenderings: PropTypes.func.isRequired,
     getWidth: PropTypes.func.isRequired,
   }).isRequired,
   canvasLabel: PropTypes.string.isRequired, // canvasLabel is passed because we need access to redux

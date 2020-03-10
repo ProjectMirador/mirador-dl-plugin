@@ -35,6 +35,7 @@ describe('Dialog', () => {
       id,
       getHeight: () => 4000,
       getWidth: () => 1000,
+      getRenderings: () => [],
       getCanonicalImageUri: () => 'https://example.com/iiif/abc123/full/9000,/0/default.jpg',
     });
     wrapper = createWrapper({ canvases: [mockCanvas('abc123'), mockCanvas('xyz321')] });

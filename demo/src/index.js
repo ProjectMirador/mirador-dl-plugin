@@ -18,6 +18,9 @@ const config = {
   },
   {
     loadedManifest: 'https://purl.stanford.edu/xh756kf1140/iiif/manifest',
+  },
+  {
+    loadedManifest: 'https://digital.library.villanova.edu/Item/vudl:24299/Manifest',
   }],
 };
 
