@@ -61,7 +61,8 @@ export default class CanvasDownloadLinks extends Component {
 
   osdViewport() {
     const { windowId } = this.props;
-    return OSDReferences.get(windowId).current.viewer.viewport;
+
+    return OSDReferences.get(windowId).current.viewport;
   }
 
   currentBounds() {

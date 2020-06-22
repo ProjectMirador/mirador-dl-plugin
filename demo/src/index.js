@@ -1,5 +1,4 @@
 import Mirador from 'mirador/dist/es/src/index';
-import OSDReferencesPlugin from 'mirador/dist/es/src/plugins/OSDReferences';
 import miradorDownloadPlugin from '../../src/miradorDownloadPlugin';
 import miradorDownloadDialogPlugin from '../../src/MiradorDownloadDialog';
 
@@ -25,7 +24,6 @@ const config = {
 };
 
 Mirador.viewer(config, [
-  OSDReferencesPlugin,
   miradorDownloadPlugin,
   miradorDownloadDialogPlugin,
 ]);

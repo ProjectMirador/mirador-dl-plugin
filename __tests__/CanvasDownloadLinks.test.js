@@ -65,16 +65,16 @@ describe('CanvasDownloadLinks', () => {
 
   beforeAll(() => {
     OSDReferences.set('wid123', {
-      current: { viewer: { viewport } },
+      current: { viewport },
     });
     OSDReferences.set('zoomedInWindow', {
-      current: { viewer: { viewport: zoomedInViewport } },
+      current: { viewport: zoomedInViewport },
     });
     OSDReferences.set('zoomedOutWindow', {
-      current: { viewer: { viewport: zoomedOutViewport } },
+      current: { viewport: zoomedOutViewport },
     });
     OSDReferences.set('zoomedIntoNonImageSpaceWindow', {
-      current: { viewer: { viewport: zoomedIntoNonImageSpaceViewport } },
+      current: { viewport: zoomedIntoNonImageSpaceViewport },
     });
   });
 

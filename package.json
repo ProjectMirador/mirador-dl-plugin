@@ -21,10 +21,10 @@
     "test:watch": "jest --watch"
   },
   "peerDependencies": {
-    "@material-ui/core": "^4.1.0",
-    "@material-ui/icons": "^4.1.0",
+    "@material-ui/core": "^4.9.11",
+    "@material-ui/icons": "^4.9.1",
     "lodash": "^4.17.11",
-    "mirador": "^3.0.0-beta.0",
+    "mirador": "^3.0.0-rc.1",
     "prop-types": "^15.7.2",
     "react": "16.x",
     "react-dom": "16.x"
@@ -33,8 +33,8 @@
     "@babel/core": "^7.7.2",
     "@babel/preset-env": "^7.7.1",
     "@babel/preset-react": "^7.7.0",
-    "@material-ui/core": "^4.7.0",
-    "@material-ui/icons": "^4.5.1",
+    "@material-ui/core": "^4.9.11",
+    "@material-ui/icons": "^4.9.1",
     "babel-eslint": "^10.0.3",
     "babel-jest": "^24.9.0",
     "enzyme": "^3.9.0",
@@ -47,7 +47,7 @@
     "eslint-plugin-react": "^7.16.0",
     "jest": "^24.9.0",
     "lodash": "^4.17.15",
-    "mirador": "^3.0.0-beta.0",
+    "mirador": "^3.0.0-rc.1",
     "nwb": "0.23.x",
     "prop-types": "^15.7.2",
     "react": "^16.12.0",
