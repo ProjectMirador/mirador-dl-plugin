@@ -114,6 +114,7 @@ describe('mapStateToProps', () => {
             {
               canvases: [
                 {
+                  '@id': 'http://example.com/abc123/canvas/0',
                   images: [
                     {
                       resource: {
@@ -143,7 +144,7 @@ describe('mapStateToProps', () => {
 
   describe('infoResponse', () => {
     it('gets the correct info response from state', () => {
-      expect(mapStateToProps.infoResponse(0).json.sizes.length).toBe(6);
+      expect(mapStateToProps.infoResponse('http://example.com/abc123/canvas/0').json.sizes.length).toBe(6);
     });
   });
 });
