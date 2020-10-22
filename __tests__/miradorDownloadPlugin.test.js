@@ -9,7 +9,6 @@ function createWrapper(props) {
     <miradorDownloadPlugin.component
       handleClose={() => {}}
       openDownloadDialog={() => {}}
-
       {...props}
     />,
   );

@@ -1,7 +1,12 @@
 import miradorDownloadPlugin from './miradorDownloadPlugin';
 import MiradorDownloadDialogPlugin from './MiradorDownloadDialog';
 
-export default {
+export {
   miradorDownloadPlugin,
   MiradorDownloadDialogPlugin,
 };
+
+export default [
+  miradorDownloadPlugin,
+  MiradorDownloadDialogPlugin,
+];
