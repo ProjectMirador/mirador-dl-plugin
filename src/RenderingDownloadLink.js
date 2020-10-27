@@ -14,7 +14,7 @@ export default class RenderingDownloadLink extends Component {
       <ListItem disableGutters divider key={rendering.id}>
         <ListItemText primaryTypographyProps={{ variant: 'body1' }}>
           <Link href={rendering.id} rel="noopener noreferrer" target="_blank" variant="body1">
-            {rendering.getLabel().map(label => label.value)[0]}
+            {rendering.getLabel().getValue()}
           </Link>
           {rendering.getFormat()
             && rendering.getFormat().value

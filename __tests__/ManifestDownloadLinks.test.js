@@ -18,12 +18,12 @@ describe('ManifestDownloadLinks', () => {
   const renderings = [
     {
       id: 'http://example.com/abc123.pdf',
-      getLabel: () => [{ value: 'Link to the PDF' }],
+      getLabel: () => ({ getValue: () => 'Link to the PDF' }),
       getFormat: () => ({ value: 'application/pdf' }),
     },
     {
       id: 'http://example.com/abc123.txt',
-      getLabel: () => [{ value: 'Link to the OCR' }],
+      getLabel: () => ({ getValue: () => 'Link to the OCR' }),
       getFormat: () => ({ value: 'application/text' }),
     },
   ];
