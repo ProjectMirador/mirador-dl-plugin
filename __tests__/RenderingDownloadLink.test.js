@@ -16,7 +16,7 @@ function createWrapper(props) {
 describe('RenderingDownloadLink', () => {
   const rendering = {
     id: 'http://example.com/abc123.pdf',
-    getLabel: () => [{ value: 'Link to the PDF' }],
+    getLabel: () => ({ getValue: () => 'Link to the PDF' }),
     getFormat: () => ({ value: 'application/pdf' }),
   };
 
