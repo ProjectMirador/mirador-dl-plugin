@@ -31,32 +31,32 @@ export default class CanvasDownloadLinks extends Component {
   }
 
   zoomedImageUrl() {
-    const { canvas } = this.props;
+    const { canvas, downloadQueryString } = this.props;
     const bounds = this.currentBounds();
     const boundsUrl = canvas.getCanonicalImageUri().replace(
       /\/full\/.*\/0\//,
       `/${bounds.x},${bounds.y},${bounds.width},${bounds.height}/full/0/`,
     );
 
-    return `${boundsUrl}?download=true`;
+    return `${boundsUrl}?${downloadQueryString}`;
   }
 
   imageUrlForSize(size) {
-    const { canvas } = this.props;
+    const { canvas, downloadQueryString } = this.props;
 
-    return `${canvas.getCanonicalImageUri(size.width)}?download=true`;
+    return `${canvas.getCanonicalImageUri(size.width)}?${downloadQueryString}`;
   }
 
   fullImageUrl() {
-    const { canvas } = this.props;
+    const { canvas, downloadQueryString } = this.props;
 
-    return `${canvas.getCanonicalImageUri().replace(/\/full\/.*\/0\//, '/full/full/0/')}?download=true`;
+    return `${canvas.getCanonicalImageUri().replace(/\/full\/.*\/0\//, '/full/full/0/')}?${downloadQueryString}`;
   }
 
   thousandPixelWideImage() {
-    const { canvas } = this.props;
+    const { canvas, downloadQueryString } = this.props;
 
-    return `${canvas.getCanonicalImageUri('1000')}?download=true`;
+    return `${canvas.getCanonicalImageUri('1000')}?${downloadQueryString}`;
   }
 
   osdViewport() {
@@ -203,6 +203,7 @@ CanvasDownloadLinks.propTypes = {
     }),
   }).isRequired,
   restrictDownloadOnSizeDefinition: PropTypes.bool.isRequired,
+  downloadQueryString: PropTypes.string.isRequired,
   viewType: PropTypes.string.isRequired,
   windowId: PropTypes.string.isRequired,
 };

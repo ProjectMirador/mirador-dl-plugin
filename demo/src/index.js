@@ -5,6 +5,7 @@ const config = {
   id: 'demo',
   miradorDownloadPlugin: {
     restrictDownloadOnSizeDefinition: true,
+    downloadQueryString: 'download=true',
   },
   windows: [{
     loadedManifest: 'https://purl.stanford.edu/bb020ty1503/iiif/manifest',

@@ -14,6 +14,7 @@ function createWrapper(props) {
       classes={{}}
       infoResponse={{}}
       restrictDownloadOnSizeDefinition={false}
+      downloadQueryString="download=true"
       viewType="single"
       windowId="wid123"
       {...props}
@@ -215,6 +216,18 @@ describe('CanvasDownloadLinks', () => {
         canvas.getWidth = () => 999;
         wrapper = createWrapper({ canvas });
         expect(wrapper.find(Link).length).toEqual(1); // Does not include the 2nd link
+      });
+    });
+
+    describe('when there is configured download query string', () => {
+      it('has image href with configured download query string', () => {
+        wrapper = createWrapper({ canvas, downloadQueryString: 'response-content-disposition=attachment' });
+        expect(
+          wrapper
+            .find(Link)
+            .find({ href: 'http://example.com/iiif/abc123/full/full/0/default.jpg?response-content-disposition=attachment' })
+            .length,
+        ).toEqual(1);
       });
     });
   });

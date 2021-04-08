@@ -40,6 +40,7 @@ Configurations for this plugin are injected when Mirador is initialized under th
 | Config Key | Type | Description |
 | --- | --- | --- |
 | `restrictDownloadOnSizeDefinition` | boolean (default: false) | If set to true the `Zoomed region` link will not be rendered if the image API returns a single size in the `sizes` section and the single size height/width is the same size or smaller than the reported height/width. |
+| `downloadQueryString` | string (default: download=true) | Query string passed to IIIF image server to request download of image. |
 
 ## Contribute
 Mirador's development, design, and maintenance is driven by community needs and ongoing feedback and discussion. Join us at our regularly scheduled community calls, on [IIIF slack #mirador](http://bit.ly/iiif-slack), or the [mirador-tech](https://groups.google.com/forum/#!forum/mirador-tech) and [iiif-discuss](https://groups.google.com/forum/#!forum/iiif-discuss) mailing lists. To suggest features, report bugs, and clarify usage, please submit a GitHub issue.

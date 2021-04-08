@@ -28,6 +28,10 @@ const mapStateToProps = (state, { windowId }) => ({
                                     && state.config
                                       .miradorDownloadPlugin
                                       .restrictDownloadOnSizeDefinition,
+  downloadQueryString: state.config.miradorDownloadPlugin
+                       && state.config
+                         .miradorDownloadPlugin
+                         .downloadQueryString,
   open: (state.windowDialogs[windowId] && state.windowDialogs[windowId].openDialog === 'download'),
   viewType: getWindowViewType(state, { windowId }),
 });
@@ -62,6 +66,7 @@ export class MiradorDownloadDialog extends Component {
       infoResponse,
       open,
       restrictDownloadOnSizeDefinition,
+      downloadQueryString,
       viewType,
       windowId,
     } = this.props;
@@ -90,6 +95,7 @@ export class MiradorDownloadDialog extends Component {
                 classes={classes}
                 infoResponse={infoResponse(canvas.id)}
                 restrictDownloadOnSizeDefinition={restrictDownloadOnSizeDefinition}
+                downloadQueryString={downloadQueryString}
                 key={canvas.id}
                 viewType={viewType}
                 windowId={windowId}
@@ -127,6 +133,7 @@ MiradorDownloadDialog.propTypes = {
   }),
   open: PropTypes.bool,
   restrictDownloadOnSizeDefinition: PropTypes.bool,
+  downloadQueryString: PropTypes.string,
   viewType: PropTypes.string.isRequired,
   windowId: PropTypes.string.isRequired,
 };
@@ -135,6 +142,7 @@ MiradorDownloadDialog.defaultProps = {
   manifest: {},
   open: false,
   restrictDownloadOnSizeDefinition: false,
+  downloadQueryString: 'download=true',
 };
 
 const styles = () => ({
