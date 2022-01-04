@@ -162,7 +162,7 @@ export default class CanvasDownloadLinks extends Component {
           {this.displayCurrentZoomLink()
             && (
               <ListItem disableGutters divider>
-                <Link href={this.zoomedImageUrl()} rel="noopener noreferrer" target="_blank" variant="body1">
+                <Link href={this.zoomedImageUrl()} download rel="noopener noreferrer" target="_blank" variant="body1">
                   {this.zoomedImageLabel()}
                 </Link>
               </ListItem>
