@@ -9,6 +9,7 @@ function createWrapper(props) {
     <miradorDownloadPlugin.component
       handleClose={() => {}}
       openDownloadDialog={() => {}}
+      t={k => k}
       {...props}
     />,
   );
@@ -21,7 +22,7 @@ describe('miradorDownloadPlugin', () => {
   describe('renders a component', () => {
     it('renders a thing', () => {
       const wrapper = createWrapper();
-      expect(wrapper.find(ListItemText).props().children).toEqual('Download');
+      expect(wrapper.find(ListItemText).props().children).toEqual('download');
     });
   });
 

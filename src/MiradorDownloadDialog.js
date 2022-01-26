@@ -13,6 +13,7 @@ import { getContainerId } from 'mirador/dist/es/src/state/selectors/config';
 import ScrollIndicatedDialogContent from 'mirador/dist/es/src/containers/ScrollIndicatedDialogContent';
 import CanvasDownloadLinks from './CanvasDownloadLinks';
 import ManifestDownloadLinks from './ManifestDownloadLinks';
+import translations from './translations';
 
 const mapDispatchToProps = (dispatch, { windowId }) => ({
   closeDialog: () => dispatch({ type: 'CLOSE_WINDOW_DIALOG', windowId }),
@@ -62,6 +63,7 @@ export class MiradorDownloadDialog extends Component {
       infoResponse,
       open,
       restrictDownloadOnSizeDefinition,
+      t,
       viewType,
       windowId,
     } = this.props;
@@ -80,7 +82,7 @@ export class MiradorDownloadDialog extends Component {
           maxWidth="xs"
         >
           <DialogTitle disableTypography className={classes.h2}>
-            <Typography variant="h2">Download</Typography>
+            <Typography variant="h2">{t('download')}</Typography>
           </DialogTitle>
           <ScrollIndicatedDialogContent>
             {canvases.map(canvas => (
@@ -93,15 +95,16 @@ export class MiradorDownloadDialog extends Component {
                 key={canvas.id}
                 viewType={viewType}
                 windowId={windowId}
+                t={t}
               />
             ))}
             {this.renderings().length > 0
-              && <ManifestDownloadLinks classes={classes} renderings={this.renderings()} />
+              && <ManifestDownloadLinks classes={classes} renderings={this.renderings()} t={t} />
             }
           </ScrollIndicatedDialogContent>
           <DialogActions>
             <Button onClick={closeDialog} color="primary">
-              Close
+              {t('close')}
             </Button>
           </DialogActions>
         </Dialog>
@@ -127,6 +130,7 @@ MiradorDownloadDialog.propTypes = {
   }),
   open: PropTypes.bool,
   restrictDownloadOnSizeDefinition: PropTypes.bool,
+  t: PropTypes.func.isRequired,
   viewType: PropTypes.string.isRequired,
   windowId: PropTypes.string.isRequired,
 };
@@ -151,6 +155,9 @@ export default {
   mode: 'add',
   name: 'MiradorDownloadDialog',
   component: withStyles(styles)(MiradorDownloadDialog),
+  config: {
+    translations,
+  },
   mapDispatchToProps,
   mapStateToProps,
 };

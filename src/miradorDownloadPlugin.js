@@ -4,6 +4,7 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import MenuItem from '@material-ui/core/MenuItem';
 import DownloadIcon from '@material-ui/icons/VerticalAlignBottomSharp';
+import translations from './translations';
 
 const downloadDialogReducer = (state = {}, action) => {
   if (action.type === 'OPEN_WINDOW_DIALOG') {
@@ -39,6 +40,8 @@ class MiradorDownload extends Component {
   }
 
   render() {
+    const { t } = this.props;
+
     return (
       <React.Fragment>
         <MenuItem onClick={() => this.openDialogAndCloseMenu()}>
@@ -46,7 +49,7 @@ class MiradorDownload extends Component {
             <DownloadIcon />
           </ListItemIcon>
           <ListItemText primaryTypographyProps={{ variant: 'body1' }}>
-            Download
+            {t('download')}
           </ListItemText>
         </MenuItem>
       </React.Fragment>
@@ -57,6 +60,7 @@ class MiradorDownload extends Component {
 MiradorDownload.propTypes = {
   handleClose: PropTypes.func,
   openDownloadDialog: PropTypes.func,
+  t: PropTypes.func.isRequired,
 };
 
 MiradorDownload.defaultProps = {
@@ -69,6 +73,9 @@ export default {
   mode: 'add',
   name: 'MiradorDownloadPlugin',
   component: MiradorDownload,
+  config: {
+    translations,
+  },
   mapDispatchToProps,
   reducers: {
     windowDialogs: downloadDialogReducer,

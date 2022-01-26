@@ -15,6 +15,7 @@ function createWrapper(props) {
       infoResponse={() => ({})}
       manifest={{ getSequences: () => [] }}
       open
+      t={k => k}
       viewType="single"
       windowId="wid123"
       {...props}

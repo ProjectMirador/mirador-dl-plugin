@@ -8,26 +8,24 @@ import uniqBy from 'lodash/uniqBy';
 import { OSDReferences } from 'mirador/dist/es/src/plugins/OSDReferences';
 import RenderingDownloadLink from './RenderingDownloadLink';
 
-
 /**
  * CanvasDownloadLinks ~
 */
 export default class CanvasDownloadLinks extends Component {
   zoomedImageLabel() {
+    const { t } = this.props;
     const bounds = this.currentBounds();
-    return `Zoomed region (${Math.floor(bounds.width)} x ${Math.floor(bounds.height)}px)`;
+    return `${t('zoomed_region')} (${Math.floor(bounds.width)} x ${Math.floor(bounds.height)}px)`;
   }
 
   fullImageLabel() {
-    const { canvas } = this.props;
-
-    return `Whole image (${canvas.getWidth()} x ${canvas.getHeight()}px)`;
+    const { canvas, t } = this.props;
+    return `${t('whole_image')} (${canvas.getWidth()} x ${canvas.getHeight()}px)`;
   }
 
   smallImageLabel() {
-    const { canvas } = this.props;
-
-    return `Whole image (1000 x ${Math.floor((1000 * canvas.getHeight()) / canvas.getWidth())}px)`;
+    const { canvas, t } = this.props;
+    return `${t('whole_image')} (1000 x ${Math.floor((1000 * canvas.getHeight()) / canvas.getWidth())}px)`;
   }
 
   zoomedImageUrl() {
@@ -134,11 +132,12 @@ export default class CanvasDownloadLinks extends Component {
   }
 
   linksForDefinedSizes() {
+    const { t } = this.props;
     return (
       this.definedSizes().map(size => (
         <ListItem disableGutters divider key={`${size.width}${size.height}`}>
           <Link href={this.imageUrlForSize(size)} rel="noopener noreferrer" target="_blank" variant="body1">
-            {`Whole image (${size.width} x ${size.height}px)`}
+            {`${t('whole_image')} (${size.width} x ${size.height}px)`}
           </Link>
         </ListItem>
       ))
@@ -203,6 +202,7 @@ CanvasDownloadLinks.propTypes = {
     }),
   }).isRequired,
   restrictDownloadOnSizeDefinition: PropTypes.bool.isRequired,
+  t: PropTypes.func.isRequired,
   viewType: PropTypes.string.isRequired,
   windowId: PropTypes.string.isRequired,
 };

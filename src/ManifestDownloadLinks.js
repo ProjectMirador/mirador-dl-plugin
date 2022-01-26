@@ -12,11 +12,11 @@ export default class ManifestDownloadLinks extends Component {
    * Returns the rendered component
   */
   render() {
-    const { classes, renderings } = this.props;
+    const { classes, renderings, t } = this.props;
 
     return (
       <React.Fragment>
-        <Typography variant="h3" className={classes.h3}>Other download options</Typography>
+        <Typography variant="h3" className={classes.h3}>{t('other_download')}</Typography>
         <List>
           {renderings.map(rendering => (
             <RenderingDownloadLink rendering={rendering} key={rendering.id} />
@@ -32,4 +32,5 @@ ManifestDownloadLinks.propTypes = {
     h3: PropTypes.string,
   }).isRequired,
   renderings: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
+  t: PropTypes.func.isRequired,
 };

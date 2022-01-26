@@ -9,6 +9,7 @@ function createWrapper(props) {
     <ManifestDownloadLinks
       classes={{}}
       renderings={[]}
+      t={k => k}
       {...props}
     />,
   );
@@ -35,7 +36,7 @@ describe('ManifestDownloadLinks', () => {
       wrapper.find(Typography)
         .find({ variant: 'h3' })
         .props().children,
-    ).toEqual('Other download options');
+    ).toEqual('other_download');
   });
 
   it('renders a RenderingDownloadLink for each rendering', () => {

@@ -16,6 +16,7 @@ function createWrapper(props) {
       restrictDownloadOnSizeDefinition={false}
       viewType="single"
       windowId="wid123"
+      t={k => k}
       {...props}
     />,
   );
@@ -122,7 +123,7 @@ describe('CanvasDownloadLinks', () => {
           .find(Link)
           .find({ href: 'http://example.com/iiif/abc123/0,0,2000,500/full/0/default.jpg?download=true' })
           .props().children,
-      ).toEqual('Zoomed region (2000 x 500px)');
+      ).toEqual('zoomed_region (2000 x 500px)');
     });
 
     it('is not present when the window is in book or gallery view (only single view)', () => {
@@ -158,7 +159,7 @@ describe('CanvasDownloadLinks', () => {
         });
 
         expect(wrapper.find(Link).length).toBe(1);
-        expect(wrapper.find(Link).props().children).toEqual('Whole image (400 x 100px)');
+        expect(wrapper.find(Link).props().children).toEqual('whole_image (400 x 100px)');
       });
     });
   });
@@ -173,9 +174,9 @@ describe('CanvasDownloadLinks', () => {
       wrapper = createWrapper({ canvas, infoResponse: { json: { sizes } } });
 
       // console.log(wrapper.debug());
-      expect(wrapper.find(Link).at(0).props().children).toEqual('Whole image (4000 x 1000px)');
-      expect(wrapper.find(Link).at(1).props().children).toEqual('Whole image (2000 x 500px)');
-      expect(wrapper.find(Link).at(2).props().children).toEqual('Whole image (1000 x 250px)');
+      expect(wrapper.find(Link).at(0).props().children).toEqual('whole_image (4000 x 1000px)');
+      expect(wrapper.find(Link).at(1).props().children).toEqual('whole_image (2000 x 500px)');
+      expect(wrapper.find(Link).at(2).props().children).toEqual('whole_image (1000 x 250px)');
     });
   });
 
@@ -188,7 +189,7 @@ describe('CanvasDownloadLinks', () => {
           .find({ href: 'http://example.com/iiif/abc123/full/full/0/default.jpg?download=true' })
           .props()
           .children,
-      ).toEqual('Whole image (4000 x 1000px)');
+      ).toEqual('whole_image (4000 x 1000px)');
     });
 
     describe('when the image is > 1000px wide', () => {
@@ -206,7 +207,7 @@ describe('CanvasDownloadLinks', () => {
             .find(Link)
             .find({ href: 'http://example.com/iiif/abc123/full/1000,/0/default.jpg?download=true' })
             .props().children,
-        ).toEqual('Whole image (1000 x 250px)');
+        ).toEqual('whole_image (1000 x 250px)');
       });
     });
 
