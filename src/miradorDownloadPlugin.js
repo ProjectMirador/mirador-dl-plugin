@@ -39,9 +39,11 @@ class MiradorDownload extends Component {
   }
 
   render() {
+    const { handleClose, openDownloadDialog, ...menuProps } = this.props;
+
     return (
       <React.Fragment>
-        <MenuItem onClick={() => this.openDialogAndCloseMenu()}>
+        <MenuItem {...menuProps} onClick={() => this.openDialogAndCloseMenu()}>
           <ListItemIcon>
             <DownloadIcon />
           </ListItemIcon>
