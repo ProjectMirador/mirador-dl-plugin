@@ -3,6 +3,7 @@ const fs = require('fs');
 const webpack = require('webpack');
 const TerserPlugin = require('terser-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
 
 /** */
 const baseConfig = (mode) => ({
@@ -91,6 +92,7 @@ module.exports = (env, options) => {
     plugins: [
       ...(config.plugins || []),
       new HtmlWebpackPlugin({ template: path.join(__dirname, 'demo/src/index.html') }),
+      new ReactRefreshWebpackPlugin(),
     ],
   };
 };

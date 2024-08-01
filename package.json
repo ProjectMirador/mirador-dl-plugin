@@ -42,6 +42,7 @@
     "@babel/preset-env": "^7.16.11",
     "@babel/preset-react": "^7.16.7",
     "@mui/material": "^5.x",
+    "@pmmmwh/react-refresh-webpack-plugin": "^0.5.15",
     "@testing-library/dom": "^9.2.0",
     "@testing-library/jest-dom": "^6.1.5",
     "@testing-library/react": "^14.1.0",
