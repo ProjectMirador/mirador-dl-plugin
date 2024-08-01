@@ -23,6 +23,12 @@
     "test:coverage": "jest --coverage",
     "test:watch": "jest --watch"
   },
+  "dependencies": {
+    "@emotion/babel-plugin": "^11.11.0",
+    "@emotion/cache": "^11.11.0",
+    "@emotion/react": "^11.10.6",
+    "@emotion/styled": "^11.10.6"
+  },
   "peerDependencies": {
     "@mui/material": "^5.x",
     "lodash": "^4.17.11",
