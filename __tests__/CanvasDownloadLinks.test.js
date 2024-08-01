@@ -1,13 +1,10 @@
 import React from 'react';
-import { shallow } from 'enzyme';
-import Link from '@material-ui/core/Link';
-import Typography from '@material-ui/core/Typography';
-import { OSDReferences } from 'mirador/dist/es/src/plugins/OSDReferences';
 import CanvasDownloadLinks from '../src/CanvasDownloadLinks';
-import RenderingDownloadLink from '../src/RenderingDownloadLink';
+
+import { render, screen } from './test-utils';
 
 function createWrapper(props) {
-  return shallow(
+  return render(
     <CanvasDownloadLinks
       canvasId="abc123"
       canvasLabel="My Canvas Label"
@@ -22,10 +19,9 @@ function createWrapper(props) {
 }
 
 describe('CanvasDownloadLinks', () => {
-  let wrapper;
   const canvas = {
     id: 'abc123',
-    getCanonicalImageUri: width => (
+    getCanonicalImageUri: (width) => (
       width
         ? `http://example.com/iiif/abc123/full/${width},/0/default.jpg`
         : 'http://example.com/iiif/abc123/full/4000,/0/default.jpg'
@@ -40,58 +36,30 @@ describe('CanvasDownloadLinks', () => {
       },
     ],
   };
-  const viewport = {
-    getBounds: () => ({
-      x: 0, y: 0, width: 4000, height: 1000,
-    }),
-  };
-  const zoomedInViewport = {
-    getBounds: () => ({
-      x: 0, y: 0, width: 2000, height: 500,
-    }),
-  };
 
-  const zoomedOutViewport = {
-    getBounds: () => ({
-      x: 0, y: 0, width: 6000, height: 1000,
-    }),
-  };
+  let currentBoundsSpy;
+  beforeEach(() => {
+    currentBoundsSpy = jest.spyOn(CanvasDownloadLinks.prototype, 'currentBounds');
+  });
 
-  const zoomedIntoNonImageSpaceViewport = {
-    getBounds: () => ({
-      x: -100, y: 100, width: 2000, height: 500,
-    }),
-  };
-
-  beforeAll(() => {
-    OSDReferences.set('wid123', {
-      current: { viewport },
-    });
-    OSDReferences.set('zoomedInWindow', {
-      current: { viewport: zoomedInViewport },
-    });
-    OSDReferences.set('zoomedOutWindow', {
-      current: { viewport: zoomedOutViewport },
-    });
-    OSDReferences.set('zoomedIntoNonImageSpaceWindow', {
-      current: { viewport: zoomedIntoNonImageSpaceViewport },
-    });
+  afterEach(() => {
+    currentBoundsSpy.mockRestore();
   });
 
   it('renders canvas label in an h3 typography', () => {
-    wrapper = createWrapper({ canvas });
-    expect(
-      wrapper.find(Typography)
-        .find({ variant: 'h3' })
-        .props().children,
-    ).toEqual('My Canvas Label');
+    createWrapper({ canvas });
+
+    screen.getByRole('heading');
+    const headingElement = screen.getByText('My Canvas Label');
+    expect(headingElement).toBeInTheDocument();
+    expect(headingElement.tagName).toBe('H3');
   });
 
   it('renders canvas level renderings', () => {
-    wrapper = createWrapper({ canvas });
-    expect(
-      wrapper.find(RenderingDownloadLink).length,
-    ).toEqual(1);
+    createWrapper({ canvas });
+
+    const dlElement = screen.getByRole('link', { name: /Whole image \(4000 x 1000px\)/i });
+    expect(dlElement).toBeInTheDocument();
   });
 
   describe('Zoomed region link', () => {
@@ -99,49 +67,54 @@ describe('CanvasDownloadLinks', () => {
       json: { width: 4000, height: 1000 },
     };
 
-    it('it does not render a link when the viewer is zoomed out/at the entire image', () => {
-      wrapper = createWrapper({ canvas, infoResponse, windowId: 'zoomedOutWindow' });
-      expect(wrapper.find(Link).length).toBe(2);
+    it('does not render a link when the viewer is zoomed out/at the entire image', () => {
+      currentBoundsSpy.mockImplementation(() => ({
+        x: 0, y: 0, width: 6000, height: 1000,
+      }));
 
-      wrapper = createWrapper({ canvas, infoResponse, windowId: 'wid123' });
-      expect(wrapper.find(Link).length).toBe(2);
+      createWrapper({ canvas, infoResponse, windowId: 'zoomedOutWindow' });
+      const zoomedLink = screen.queryByText('Zoomed region (6000 x 1000px)');
+      expect(zoomedLink).not.toBeInTheDocument();
     });
 
     it('does not render a link when the viewer is zoomed into non-image space (e.g. a reponse the image server cannot handle)', () => {
-      wrapper = createWrapper({ canvas, infoResponse, windowId: 'zoomedIntoNonImageSpaceWindow' });
-
-      expect(wrapper.find(Link).length).toBe(2);
+      currentBoundsSpy.mockImplementation(() => ({
+        x: -100, y: 100, width: 2000, height: 500,
+      }));
+      createWrapper({ canvas, infoResponse, windowId: 'zoomedIntoNonImageSpaceWindow' });
+      const zoomedLink = screen.queryByText('Zoomed region (2000 x 500px)');
+      expect(zoomedLink).not.toBeInTheDocument();
     });
 
     it('is present when the viewer is zoomed into the image', () => {
-      wrapper = createWrapper({ canvas, infoResponse, windowId: 'zoomedInWindow' });
-
-      expect(wrapper.find(Link).length).toBe(3);
-      expect(
-        wrapper
-          .find(Link)
-          .find({ href: 'http://example.com/iiif/abc123/0,0,2000,500/full/0/default.jpg?download=true' })
-          .props().children,
-      ).toEqual('Zoomed region (2000 x 500px)');
+      currentBoundsSpy.mockImplementation(() => ({
+        x: 0, y: 0, width: 2000, height: 500,
+      }));
+      createWrapper({ canvas, infoResponse, windowId: 'zoomedInWindow' });
+      const zoomedLink = screen.queryByText('Zoomed region (2000 x 500px)');
+      expect(zoomedLink).toBeInTheDocument();
     });
 
     it('is not present when the window is in book or gallery view (only single view)', () => {
-      wrapper = createWrapper({
+      currentBoundsSpy.mockImplementation(() => ({
+        x: 0, y: 0, width: 2000, height: 500,
+      }));
+      createWrapper({
         canvas, infoResponse, viewType: 'book', windowId: 'zoomedInWindow',
       });
+      const zoomedLink = screen.queryByText('Zoomed region (2000 x 500px)');
+      expect(zoomedLink).not.toBeInTheDocument();
 
-      expect(wrapper.find(Link).length).toBe(2);
-
-      wrapper = createWrapper({
+      createWrapper({
         canvas, infoResponse, viewType: 'gallery', windowId: 'zoomedInWindow',
       });
-
-      expect(wrapper.find(Link).length).toBe(2);
+      const zoomedLinkGallery = screen.queryByText('Zoomed region (2000 x 500px)');
+      expect(zoomedLinkGallery).not.toBeInTheDocument();
     });
 
     describe('when the zoom link is set to be restricted', () => {
       it('has just the whole image link from the sizes and does not present a zoomed region link', () => {
-        wrapper = createWrapper({
+        createWrapper({
           canvas,
           infoResponse: {
             json: {
@@ -156,9 +129,8 @@ describe('CanvasDownloadLinks', () => {
           restrictDownloadOnSizeDefinition: true,
           windowId: 'zoomedInWindow',
         });
-
-        expect(wrapper.find(Link).length).toBe(1);
-        expect(wrapper.find(Link).props().children).toEqual('Whole image (400 x 100px)');
+        const links = screen.getByRole('link', { name: /Whole image \(400 x 100px\)/i });
+        expect(links).toBeInTheDocument();
       });
     });
   });
@@ -170,51 +142,46 @@ describe('CanvasDownloadLinks', () => {
       { width: 1000, height: 250 },
     ];
     it('uses those sizes for links in the download dialog', () => {
-      wrapper = createWrapper({ canvas, infoResponse: { json: { sizes } } });
+      createWrapper({ canvas, infoResponse: { json: { sizes } } });
+      const link1 = screen.getByRole('link', { name: /Whole image \(4000 x 1000px\)/i });
+      const link2 = screen.getByRole('link', { name: /Whole image \(2000 x 500px\)/i });
+      const link3 = screen.getByRole('link', { name: /Whole image \(1000 x 250px\)/i });
 
-      // console.log(wrapper.debug());
-      expect(wrapper.find(Link).at(0).props().children).toEqual('Whole image (4000 x 1000px)');
-      expect(wrapper.find(Link).at(1).props().children).toEqual('Whole image (2000 x 500px)');
-      expect(wrapper.find(Link).at(2).props().children).toEqual('Whole image (1000 x 250px)');
+      expect(link1).toBeInTheDocument();
+      expect(link2).toBeInTheDocument();
+      expect(link3).toBeInTheDocument();
     });
   });
 
   describe('when there are no defined sizes', () => {
     it('renders a link to the whole image', () => {
-      wrapper = createWrapper({ canvas });
-      expect(
-        wrapper
-          .find(Link)
-          .find({ href: 'http://example.com/iiif/abc123/full/full/0/default.jpg?download=true' })
-          .props()
-          .children,
-      ).toEqual('Whole image (4000 x 1000px)');
+      createWrapper({ canvas });
+      const link = screen.getByRole('link', { name: /Whole image \(4000 x 1000px\)/i });
+      expect(link).toBeInTheDocument();
+      expect(link).toHaveAttribute('href', 'http://example.com/iiif/abc123/full/full/0/default.jpg?download=true');
     });
 
     describe('when the image is > 1000px wide', () => {
       it('renders a link to a small image (1000px wide), and calculates the correct height', () => {
-        wrapper = createWrapper({ canvas });
-        expect(wrapper.find(Link).length).toEqual(2);
-        expect(
-          wrapper
-            .find(Link)
-            .find({ href: 'http://example.com/iiif/abc123/full/1000,/0/default.jpg?download=true' })
-            .length,
-        ).toEqual(1);
-        expect(
-          wrapper
-            .find(Link)
-            .find({ href: 'http://example.com/iiif/abc123/full/1000,/0/default.jpg?download=true' })
-            .props().children,
-        ).toEqual('Whole image (1000 x 250px)');
+        createWrapper({ canvas });
+        const links = screen.getAllByRole('link');
+
+        expect(links).toBeInTheDocument();
+
+        const link1 = screen.getByRole('link', { name: /Whole image \(4000 x 1000px\)/i });
+        expect(link1).toHaveAttribute('href', 'http://example.com/iiif/abc123/full/1000,/0/default.jpg?download=true');
+
+        const link2 = screen.getByRole('link', { name: /Whole image \(1000 x 250px\)/i });
+        expect(link2).toHaveAttribute('href', 'http://example.com/iiif/abc123/full/1000,/0/default.jpg?download=true');
       });
     });
 
     describe('when the image is < 1000px wide', () => {
       it('does not render a link to a small image', () => {
         canvas.getWidth = () => 999;
-        wrapper = createWrapper({ canvas });
-        expect(wrapper.find(Link).length).toEqual(1); // Does not include the 2nd link
+        createWrapper({ canvas });
+        const links = screen.getAllByRole('link');
+        expect(links).toHaveLength(2);
       });
     });
   });
