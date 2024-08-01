@@ -2,8 +2,8 @@ const path = require('path');
 const fs = require('fs');
 const webpack = require('webpack');
 const TerserPlugin = require('terser-webpack-plugin');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 /** */
 const baseConfig = (mode) => ({
@@ -36,9 +36,9 @@ const baseConfig = (mode) => ({
     ],
   },
   output: {
-    filename: 'mirador-dl-plugin.js',
+    filename: 'mirador-image-tools.js',
     hashFunction: 'md5',
-    library: 'MiradorDlPlugin',
+    library: 'MiradorImageTools',
     libraryExport: 'default',
     libraryTarget: 'umd',
     path: path.join(__dirname, 'umd'),
