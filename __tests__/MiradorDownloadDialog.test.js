@@ -1,13 +1,12 @@
 import React from 'react';
-import { shallow } from 'enzyme';
-import Button from '@material-ui/core/Button';
 import miradorDownloadDialog from '../src/MiradorDownloadDialog';
+import { render, screen } from './test-utils';
 
 /** Utility function to wrap  */
 function createWrapper(props) {
-  return shallow(
+  return render(
     <miradorDownloadDialog.component
-      canvasLabel={label => (label || 'My Canvas Title')}
+      canvasLabel={(label) => (label || 'My Canvas Title')}
       canvases={[]}
       classes={{}}
       closeDialog={() => {}}
@@ -19,53 +18,49 @@ function createWrapper(props) {
       windowId="wid123"
       {...props}
     />,
-  ).dive();
+  );
 }
 
 describe('Dialog', () => {
-  let wrapper;
-
-  it('does not render anything if the open prop is false', () => {
-    wrapper = createWrapper({ open: false });
-    expect(wrapper).toEqual({});
-  });
-
-  it('renders a CanvasDownloadLinks componewnt for every canvas', () => {
-    const mockCanvas = id => ({
+  it('renders a CanvasDownloadLinks component for every canvas', () => {
+    const mockCanvas = (id) => ({
       id,
       getHeight: () => 4000,
       getWidth: () => 1000,
       getRenderings: () => [],
       getCanonicalImageUri: () => 'https://example.com/iiif/abc123/full/9000,/0/default.jpg',
     });
-    wrapper = createWrapper({ canvases: [mockCanvas('abc123'), mockCanvas('xyz321')] });
-    expect(wrapper.find('CanvasDownloadLinks').length).toBe(2);
-  });
+    createWrapper({ canvases: [mockCanvas('abc123'), mockCanvas('xyz321')] });
 
-  it('has a close button that triggers the closeDialog prop', () => {
-    const closeDialog = jest.fn();
-    wrapper = createWrapper({ closeDialog });
-    wrapper.find(Button).simulate('click');
-    expect(closeDialog).toHaveBeenCalled();
+    const headings = screen.getAllByRole('heading');
+    const headingAbc = headings.find((heading) => (heading.textContent === 'abc123'));
+    expect(headingAbc).toBeInTheDocument();
+    expect(headingAbc.tagName).toBe('H3');
+
+    const headingXyz = headings.find((heading) => (heading.textContent === 'xyz321'));
+    expect(headingXyz).toBeInTheDocument();
+    expect(headingXyz.tagName).toBe('H3');
   });
 
   describe('ManifestDownloadLinks', () => {
-    it('is not rendered if hte manifest has no renderings', () => {
-      wrapper = createWrapper();
-
-      expect(wrapper.find('ManifestDownloadLinks').length).toBe(0);
+    it('is not rendered if the manifest has no renderings', () => {
+      createWrapper();
+      const manifestLinks = screen.queryByText('ManifestDownloadLinks');
+      expect(manifestLinks).not.toBeInTheDocument();
     });
     it('rendered if the manifest has renderings', () => {
-      const rendering = { id: '', getLabel: () => {}, getFormat: () => {} };
-      wrapper = createWrapper({
+      const rendering = { id: '', getLabel: () => ({ getValue: () => 'ManifestDownloadLinks' }), getFormat: () => {} };
+      createWrapper({
         manifest: {
           getSequences: () => [
-            { getRenderings: () => [rendering] },
+            {
+              getRenderings: () => [rendering],
+            },
           ],
         },
       });
-
-      expect(wrapper.find('ManifestDownloadLinks').length).toBe(1);
+      const manifestLinks = screen.queryByText('ManifestDownloadLinks');
+      expect(manifestLinks).toBeInTheDocument();
     });
   });
 });

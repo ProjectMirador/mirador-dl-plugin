@@ -4,7 +4,7 @@
 [![npm package][npm-badge]][npm]
 [![Coveralls][coveralls-badge]][coveralls]
 
-`mirador-dl-plugin` is a Mirador 3 plugin that adds manifest-provided download links (e.g. `rendering`) to the window options menu. A [live demo](https://mirador-download-plugin.netlify.app/) with several institutions' manifests is available for testing.
+`mirador-dl-plugin` is a Mirador 4 plugin that adds manifest-provided download links (e.g. `rendering`) to the window options menu. A [live demo](https://mirador-download-plugin.netlify.app/) with several institutions' manifests is available for testing.
 
 ![download option in menu](https://user-images.githubusercontent.com/5402927/87057974-5e665a80-c1bc-11ea-8f10-7b783bdc972f.png)
 
@@ -22,7 +22,7 @@
 
 ## Installation
 
-`mirador-dl-plugin` requires an instance of Mirador 3. See the [Mirador wiki](https://github.com/ProjectMirador/mirador/wiki) for examples of embedding Mirador within an application and additional information about plugins. See the [live demo's index.js](https://github.com/ProjectMirador/mirador-dl-plugin/blob/master/demo/src/index.js) for an example of importing and configuring `mirador-dl-plugin`.
+`mirador-dl-plugin` requires an instance of Mirador 4. See the [Mirador wiki](https://github.com/ProjectMirador/mirador/wiki) for examples of embedding Mirador within an application and additional information about plugins. See the [live demo's index.js](https://github.com/ProjectMirador/mirador-dl-plugin/blob/master/demo/src/index.js) for an example of importing and configuring `mirador-dl-plugin`.
 
 ## Configuration
 

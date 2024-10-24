@@ -1,11 +1,9 @@
 import React from 'react';
-import { shallow } from 'enzyme';
-import Link from '@material-ui/core/Link';
-import ListItemText from '@material-ui/core/ListItemText';
 import RenderingDownloadLink from '../src/RenderingDownloadLink';
+import { render, screen } from './test-utils';
 
 function createWrapper(props) {
-  return shallow(
+  return render(
     <RenderingDownloadLink
       rendering={{}}
       {...props}
@@ -21,16 +19,19 @@ describe('RenderingDownloadLink', () => {
   };
 
   it('renders a Link for the rendering', () => {
-    const wrapper = createWrapper({ rendering });
+    createWrapper({ rendering });
 
-    expect(wrapper.find(Link).length).toBe(1);
+    const link = screen.getByRole('link', { name: /Link to the PDF/i });
+    expect(link).toBeInTheDocument();
   });
 
   it('links the label and includes the format (unlinked)', () => {
-    const wrapper = createWrapper({ rendering });
+    createWrapper({ rendering });
 
-    expect(wrapper.find(Link).at(0).props().children).toEqual('Link to the PDF');
-    expect(wrapper.find(Link).at(0).props().href).toEqual('http://example.com/abc123.pdf');
-    expect(wrapper.find(ListItemText).at(0).props().children[1]).toEqual(' (application/pdf)');
+    const link = screen.getByRole('link', { name: /Link to the PDF/i });
+    expect(link).toBeInTheDocument();
+    expect(link).toHaveAttribute('href', 'http://example.com/abc123.pdf');
+    const listItem = screen.getByText(/application\/pdf/i);
+    expect(listItem).toBeInTheDocument();
   });
 });
