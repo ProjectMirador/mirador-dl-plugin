@@ -28,7 +28,6 @@ describe('ManifestDownloadLinks', () => {
 
   it('renders the heading', () => {
     createWrapper({ renderings });
-    screen.debug();
 
     screen.getByRole('heading');
     const headingElement = screen.getByText('Other download options');

@@ -32,7 +32,7 @@
   "peerDependencies": {
     "@mui/material": "^5.x",
     "lodash": "^4.17.11",
-    "mirador": "^4.0.0-alpha.1",
+    "mirador": "^4.0.0-alpha.2",
     "react": "18.x",
     "react-dom": "18.x"
   },
@@ -65,7 +65,7 @@
     "eslint-plugin-jest": "^27.1.5",
     "eslint-plugin-jsx-a11y": "^6.4.1",
     "eslint-plugin-react": "^7.29.4",
-    "eslint-plugin-react-hooks": "^5.0.0",
+    "eslint-plugin-react-hooks": "^4.3.0",
     "html-loader": "^5.0.0",
     "html-webpack-plugin": "^5.6.0",
     "jest": "^29.3.1",

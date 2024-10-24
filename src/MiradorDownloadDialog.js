@@ -83,8 +83,8 @@ export class MiradorDownloadDialog extends Component {
         fullWidth
         maxWidth="xs"
       >
-        <DialogTitle disableTypography sx={{ paddingBottom: 0 }}>
-          <Typography variant="h2">Download</Typography>
+        <DialogTitle sx={{ paddingBottom: 0 }}>
+          <Typography variant="h2" component="span">Download</Typography>
         </DialogTitle>
         <ScrollIndicatedDialogContent>
           {canvases.map((canvas) => (
