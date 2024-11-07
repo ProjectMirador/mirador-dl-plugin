@@ -1,4 +1,5 @@
 import React from 'react';
+import { OSDReferences } from 'mirador/dist/es/src/plugins/OSDReferences';
 import CanvasDownloadLinks from '../src/CanvasDownloadLinks';
 import { render, screen } from './test-utils';
 
@@ -148,9 +149,15 @@ describe('CanvasDownloadLinks', () => {
       { width: 1000, height: 250 },
     ];
 
-    // TODO: Fix the tests that fails because of OSDReferences.get(windowId).current.viewport
-    // eslint-disable-next-line jest/no-disabled-tests
-    it.skip('renders download links for all sizes in the dialog', () => {
+    const viewport = {
+      getBounds: () => ({
+        x: 0, y: 0, width: 4000, height: 1000,
+      }),
+    };
+    OSDReferences.set('wid123', {
+      current: { viewport },
+    });
+    it('renders download links for all sizes in the dialog', () => {
       createWrapper({ canvas, infoResponse: { json: { sizes } } });
 
       const link1 = screen.getByRole('link', { name: /Whole image \(4000 x 1000px\)/i });
