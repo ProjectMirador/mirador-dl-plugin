@@ -40,15 +40,19 @@ class MiradorDownload extends Component {
   }
 
   render() {
+    const { handleClose, openDownloadDialog, ...menuProps } = this.props;
+
     return (
-      <MenuItem onClick={() => this.openDialogAndCloseMenu()}>
-        <ListItemIcon>
-          <VerticalAlignBottomIcon />
-        </ListItemIcon>
-        <ListItemText primaryTypographyProps={{ variant: 'body1' }}>
-          Download
-        </ListItemText>
-      </MenuItem>
+      <React.Fragment>
+        <MenuItem {...menuProps} onClick={() => this.openDialogAndCloseMenu()}>
+          <ListItemIcon>
+            <DownloadIcon />
+          </ListItemIcon>
+          <ListItemText primaryTypographyProps={{ variant: 'body1' }}>
+            Download
+          </ListItemText>
+        </MenuItem>
+      </React.Fragment>
     );
   }
 }
