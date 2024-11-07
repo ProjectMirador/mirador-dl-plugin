@@ -137,6 +137,7 @@ describe('CanvasDownloadLinks', () => {
         });
 
         const downloadLink = screen.getByRole('link', { name: /Whole image \(400 x 100px\)/i });
+        expect(screen.getAllByRole('link')).toHaveLength(2); // Should only show small-size version and link to PDF.
         expect(downloadLink).toBeInTheDocument();
       });
     });
@@ -197,7 +198,7 @@ describe('CanvasDownloadLinks', () => {
         createWrapper({ canvas });
 
         const links = screen.getAllByRole('link');
-        expect(links).toHaveLength(2); // Should only show full-size versions.
+        expect(links).toHaveLength(2); // Should only show full-size version and link to PDF.
       });
     });
   });

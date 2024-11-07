@@ -1,6 +1,6 @@
 import React from 'react';
 import miradorDownloadDialog from '../src/MiradorDownloadDialog';
-import { render, screen } from './test-utils';
+import { fireEvent, render, screen } from './test-utils';
 
 /** Utility function to wrap  */
 function createWrapper(props) {
@@ -22,6 +22,11 @@ function createWrapper(props) {
 }
 
 describe('Dialog', () => {
+  it('does not render anything if the open prop is false', () => {
+    createWrapper({ open: false });
+    expect(screen.queryByTestId('dialog-content')).toBeNull();
+  });
+
   it('renders a CanvasDownloadLinks component for every canvas', () => {
     const mockCanvas = (id) => ({
       id,
@@ -40,6 +45,14 @@ describe('Dialog', () => {
     const headingXyz = headings.find((heading) => (heading.textContent === 'xyz321'));
     expect(headingXyz).toBeInTheDocument();
     expect(headingXyz.tagName).toBe('H3');
+  });
+
+  it('has a close button that triggers the closeDialog prop', async () => {
+    const closeDialog = jest.fn();
+    createWrapper({ closeDialog });
+    const closeButton = await screen.findByText(/Close/);
+    fireEvent.click(closeButton);
+    expect(closeDialog).toHaveBeenCalled();
   });
 
   describe('ManifestDownloadLinks', () => {
