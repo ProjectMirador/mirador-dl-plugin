@@ -13,11 +13,11 @@ function createWrapper(props) {
 }
 
 describe('miradorDownloadPlugin', () => {
-  it('has the correct target', () => {
+  it('sets the correct target to "WindowTopBarPluginMenu"', () => {
     expect(miradorDownloadPlugin.target).toBe('WindowTopBarPluginMenu');
   });
-  describe('renders a component', () => {
-    it('renders a thing', () => {
+  describe('Component Rendering', () => {
+    it('displays a "Download" element when rendered', () => {
       createWrapper();
       const downloadElement = screen.queryByText(/Download/i);
       expect(downloadElement).toBeInTheDocument();
@@ -26,7 +26,7 @@ describe('miradorDownloadPlugin', () => {
 });
 
 describe('MenuItem', () => {
-  it('calls the openShareDialog and handleClose props when clicked', async () => {
+  it('triggers both openDownloadDialog and handleClose when "Download" is clicked', async () => {
     const handleClose = jest.fn();
     const openDownloadDialog = jest.fn();
     createWrapper({ handleClose, openDownloadDialog });

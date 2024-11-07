@@ -22,12 +22,12 @@ function createWrapper(props) {
 }
 
 describe('Dialog', () => {
-  it('does not render anything if the open prop is false', () => {
+  it('does not render content when the open prop is false', () => {
     createWrapper({ open: false });
     expect(screen.queryByTestId('dialog-content')).toBeNull();
   });
 
-  it('renders a CanvasDownloadLinks component for every canvas', () => {
+  it('renders a CanvasDownloadLinks component with headings for each canvas', () => {
     const mockCanvas = (id) => ({
       id,
       getHeight: () => 4000,
@@ -47,7 +47,7 @@ describe('Dialog', () => {
     expect(headingXyz.tagName).toBe('H3');
   });
 
-  it('has a close button that triggers the closeDialog prop', async () => {
+  it('calls the closeDialog function when the close button is clicked', async () => {
     const closeDialog = jest.fn();
     createWrapper({ closeDialog });
     const closeButton = await screen.findByText(/Close/);
@@ -56,12 +56,13 @@ describe('Dialog', () => {
   });
 
   describe('ManifestDownloadLinks', () => {
-    it('is not rendered if the manifest has no renderings', () => {
+    it('does not render when there are no manifest renderings', () => {
       createWrapper();
       const manifestLinks = screen.queryByText('ManifestDownloadLinks');
       expect(manifestLinks).not.toBeInTheDocument();
     });
-    it('rendered if the manifest has renderings', () => {
+
+    it('renders when the manifest contains renderings', () => {
       const rendering = { id: '', getLabel: () => ({ getValue: () => 'ManifestDownloadLinks' }), getFormat: () => {} };
       createWrapper({
         manifest: {
@@ -151,7 +152,7 @@ describe('mapStateToProps', () => {
   const mapStateToProps = miradorDownloadDialog.mapStateToProps(state, props);
 
   describe('infoResponse', () => {
-    it('gets the correct info response from state', () => {
+    it('fetches the correct info response for the given canvas ID', () => {
       expect(mapStateToProps.infoResponse('http://example.com/abc123/canvas/0').json.sizes.length).toBe(6);
     });
   });

@@ -18,14 +18,14 @@ describe('RenderingDownloadLink', () => {
     getFormat: () => ({ value: 'application/pdf' }),
   };
 
-  it('renders a Link for the rendering', () => {
+  it('displays a download link with the label text from the rendering', () => {
     createWrapper({ rendering });
 
     const link = screen.getByRole('link', { name: /Link to the PDF/i });
     expect(link).toBeInTheDocument();
   });
 
-  it('links the label and includes the format (unlinked)', () => {
+  it('renders the download link with the correct URL and format information', () => {
     createWrapper({ rendering });
 
     const link = screen.getByRole('link', { name: /Link to the PDF/i });

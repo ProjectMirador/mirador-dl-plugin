@@ -26,7 +26,7 @@ describe('ManifestDownloadLinks', () => {
     },
   ];
 
-  it('renders the heading', () => {
+  it('displays the heading "Other download options" as an H3 element', () => {
     createWrapper({ renderings });
 
     screen.getByRole('heading');
@@ -35,7 +35,7 @@ describe('ManifestDownloadLinks', () => {
     expect(headingElement.tagName).toBe('H3');
   });
 
-  it('renders a RenderingDownloadLink for each rendering', () => {
+  it('renders a download link for each item in the renderings list', () => {
     createWrapper({ renderings });
 
     const pdfLinkElement = screen.getByRole('link', { name: /Link to the PDF/i });

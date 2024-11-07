@@ -58,19 +58,21 @@ describe('CanvasDownloadLinks', () => {
     expect(headingElement.tagName).toBe('H3');
   });
 
-  it('renders canvas-level renderings', () => {
-    createWrapper({ canvas });
+  describe('Canvas Renderings', () => {
+    it('includes a canvas-level rendering as a download link', () => {
+      createWrapper({ canvas });
 
-    const downloadLink = screen.getByRole('link', { name: /Whole image \(4000 x 1000px\)/i });
-    expect(downloadLink).toBeInTheDocument();
+      const downloadLink = screen.getByRole('link', { name: /Whole image \(4000 x 1000px\)/i });
+      expect(downloadLink).toBeInTheDocument();
+    });
   });
 
-  describe('Zoomed region link behavior', () => {
+  describe('Zoomed Region Links', () => {
     const infoResponse = {
       json: { width: 4000, height: 1000 },
     };
 
-    it('does not render a zoom link when the viewer is zoomed out to the entire image', () => {
+    it('does not render a zoom link when viewer is zoomed out to full image', () => {
       currentBoundsSpy.mockImplementation(() => ({
         x: 0, y: 0, width: 6000, height: 1000,
       }));
@@ -81,7 +83,7 @@ describe('CanvasDownloadLinks', () => {
       expect(zoomedLink).not.toBeInTheDocument();
     });
 
-    it('does not render a link when zoomed into non-image space', () => {
+    it('does not render a zoom link when zoomed into an area outside of the image bounds', () => {
       currentBoundsSpy.mockImplementation(() => ({
         x: -100, y: 100, width: 2000, height: 500,
       }));
@@ -92,7 +94,7 @@ describe('CanvasDownloadLinks', () => {
       expect(zoomedLink).not.toBeInTheDocument();
     });
 
-    it('renders a zoomed region link when zoomed into the image', () => {
+    it('renders a zoomed region link when zoomed into a valid area of the image', () => {
       currentBoundsSpy.mockImplementation(() => ({
         x: 0, y: 0, width: 2000, height: 500,
       }));
@@ -103,7 +105,7 @@ describe('CanvasDownloadLinks', () => {
       expect(zoomedLink).toBeInTheDocument();
     });
 
-    it('does not render a zoomed region link in non-single view types (e.g., book or gallery view)', () => {
+    it('does not render a zoomed region link in non-single view types (e.g., book, gallery views)', () => {
       currentBoundsSpy.mockImplementation(() => ({
         x: 0, y: 0, width: 2000, height: 500,
       }));
@@ -121,8 +123,8 @@ describe('CanvasDownloadLinks', () => {
       expect(zoomedLinkGallery).not.toBeInTheDocument();
     });
 
-    describe('when zoom link is restricted', () => {
-      it('only renders a whole image link based on the available sizes', () => {
+    describe('Download Link Size Restrictions', () => {
+      it('renders only a single download link based on the restricted sizes', () => {
         createWrapper({
           canvas,
           infoResponse: {
@@ -143,7 +145,7 @@ describe('CanvasDownloadLinks', () => {
     });
   });
 
-  describe('when sizes are defined in the infoResponse', () => {
+  describe('When Defined Sizes Are Present in infoResponse', () => {
     const sizes = [
       { width: 4000, height: 1000 },
       { width: 2000, height: 500 },
@@ -158,7 +160,7 @@ describe('CanvasDownloadLinks', () => {
     OSDReferences.set('wid123', {
       current: { viewport },
     });
-    it('renders download links for all sizes in the dialog', () => {
+    it('renders download links for all specified sizes in the dialog', () => {
       createWrapper({ canvas, infoResponse: { json: { sizes } } });
 
       const link1 = screen.getByRole('link', { name: /Whole image \(4000 x 1000px\)/i });
@@ -171,8 +173,8 @@ describe('CanvasDownloadLinks', () => {
     });
   });
 
-  describe('when no sizes are defined', () => {
-    it('renders a link to the full-size image', () => {
+  describe('When No Sizes Are Defined in infoResponse', () => {
+    it('renders a single link to the full-size image', () => {
       createWrapper({ canvas });
 
       const link = screen.getByRole('link', { name: /Whole image \(4000 x 1000px\)/i });
@@ -180,8 +182,8 @@ describe('CanvasDownloadLinks', () => {
       expect(link).toHaveAttribute('href', 'http://example.com/iiif/abc123/full/full/0/default.jpg?download=true');
     });
 
-    describe('when the image width exceeds 1000px', () => {
-      it('renders links to both the full-size and smaller (1000px wide) versions', () => {
+    describe('For Images Wider Than 1000px', () => {
+      it('renders links for both full-size and 1000px wide versions', () => {
         createWrapper({ canvas });
 
         const link1 = screen.getByRole('link', { name: /Whole image \(4000 x 1000px\)/i });
@@ -192,8 +194,8 @@ describe('CanvasDownloadLinks', () => {
       });
     });
 
-    describe('when the image width is less than 1000px', () => {
-      it('does not render a link to a smaller version', () => {
+    describe('For Images Less Than 1000px Wide', () => {
+      it('does not render a smaller version link if image is under 1000px wide', () => {
         canvas.getWidth = () => 999;
         createWrapper({ canvas });
 
