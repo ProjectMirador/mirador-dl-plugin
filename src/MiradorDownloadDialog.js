@@ -61,7 +61,6 @@ export class MiradorDownloadDialog extends Component {
     const {
       canvases,
       canvasLabel,
-      classes,
       closeDialog,
       containerId,
       infoResponse,
@@ -75,6 +74,7 @@ export class MiradorDownloadDialog extends Component {
 
     return (
       <Dialog
+        data-testid="dialog-content"
         container={document.querySelector(`#${containerId} .mirador-viewer`)}
         disableEnforceFocus
         onClose={closeDialog}
@@ -102,7 +102,6 @@ export class MiradorDownloadDialog extends Component {
           ))}
           {this.renderings().length > 0 && (
           <ManifestDownloadLinks
-            classes={classes}
             renderings={this.renderings()}
           />
           )}
@@ -122,9 +121,6 @@ MiradorDownloadDialog.propTypes = {
   canvases: PropTypes.arrayOf(
     PropTypes.shape({ id: PropTypes.string, index: PropTypes.number }),
   ),
-  classes: PropTypes.shape({
-    h2: PropTypes.string,
-  }).isRequired,
   closeDialog: PropTypes.func.isRequired,
   containerId: PropTypes.string.isRequired,
   infoResponse: PropTypes.func.isRequired,
