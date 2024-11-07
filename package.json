@@ -16,9 +16,10 @@
     "build:umd": "NODE_ENV=production webpack --mode=production",
     "build:es": "mkdir -p es && cp -r src/* es && NODE_ENV=production MODULE_FORMAT=es npx babel es -d es",
     "build:cjs": "mkdir -p lib && cp -r src/* lib && NODE_ENV=production MODULE_FORMAT=cjs npx babel lib -d lib",
-    "parcel": "parcel demo/src/index.html",
+    "clean": "rm -rf ./umd && rm -rf ./es && rm -rf ./lib && rm -rf ./demo/dist",
     "lint": "eslint ./src ./__tests__",
-    "prepublishOnly": "npm run build",
+    "prepublishOnly": "npm run clean && npm run build:es && npm run build:cjs && npm run build",
+    "start": "NODE_ENV=development webpack serve --open",
     "test": "npm run lint && jest",
     "test:coverage": "jest --coverage",
     "test:watch": "jest --watch"
@@ -32,7 +33,7 @@
   "peerDependencies": {
     "@mui/material": "^5.x",
     "lodash": "^4.17.11",
-    "mirador": "^4.0.0-alpha.2",
+    "mirador": "^4.0.0-alpha.1",
     "react": "18.x",
     "react-dom": "18.x"
   },
@@ -73,7 +74,6 @@
     "jest-puppeteer": "^9.0.2",
     "lodash": "^4.17.15",
     "mirador": "^4.0.0-alpha.1",
-    "parcel-bundler": "^1.12.4",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
     "terser-webpack-plugin": "^5.3.1",
