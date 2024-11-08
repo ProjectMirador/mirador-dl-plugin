@@ -34,13 +34,13 @@ export default class CanvasDownloadLinks extends Component {
   }
 
   zoomedImageUrl() {
-    const { canvas } = this.props;
+    const { canvas, fullSizeParam } = this.props;
     const bounds = this.currentBounds();
     const boundsUrl = canvas
       .getCanonicalImageUri()
       .replace(
         /\/full\/.*\/0\//,
-        `/${bounds.x},${bounds.y},${bounds.width},${bounds.height}/full/0/`,
+        `/${bounds.x},${bounds.y},${bounds.width},${bounds.height}/${fullSizeParam}/0/`,
       );
 
     return `${boundsUrl}?download=true`;
@@ -53,11 +53,11 @@ export default class CanvasDownloadLinks extends Component {
   }
 
   fullImageUrl() {
-    const { canvas } = this.props;
+    const { canvas, fullSizeParam } = this.props;
 
     return `${canvas
       .getCanonicalImageUri()
-      .replace(/\/full\/.*\/0\//, '/full/full/0/')}?download=true`;
+      .replace(/\/full\/.*\/0\//, `/full/${fullSizeParam}/0/`)}?download=true`;
   }
 
   thousandPixelWideImage() {
@@ -224,6 +224,7 @@ CanvasDownloadLinks.propTypes = {
     getWidth: PropTypes.func.isRequired,
   }).isRequired,
   canvasLabel: PropTypes.string.isRequired, // canvasLabel is passed because we need access to redux
+  fullSizeParam: PropTypes.string.isRequired,
   infoResponse: PropTypes.shape({
     json: PropTypes.shape({
       height: PropTypes.number,
