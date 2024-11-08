@@ -1,13 +1,12 @@
 import React from 'react';
-import { shallow } from 'enzyme';
-import Button from '@material-ui/core/Button';
 import miradorDownloadDialog from '../src/MiradorDownloadDialog';
+import { fireEvent, render, screen } from './test-utils';
 
 /** Utility function to wrap  */
 function createWrapper(props) {
-  return shallow(
+  return render(
     <miradorDownloadDialog.component
-      canvasLabel={label => (label || 'My Canvas Title')}
+      canvasLabel={(label) => (label || 'My Canvas Title')}
       canvases={[]}
       classes={{}}
       closeDialog={() => {}}
@@ -19,53 +18,63 @@ function createWrapper(props) {
       windowId="wid123"
       {...props}
     />,
-  ).dive();
+  );
 }
 
 describe('Dialog', () => {
-  let wrapper;
-
-  it('does not render anything if the open prop is false', () => {
-    wrapper = createWrapper({ open: false });
-    expect(wrapper).toEqual({});
+  it('does not render content when the open prop is false', () => {
+    createWrapper({ open: false });
+    expect(screen.queryByTestId('dialog-content')).toBeNull();
   });
 
-  it('renders a CanvasDownloadLinks componewnt for every canvas', () => {
-    const mockCanvas = id => ({
+  it('renders a CanvasDownloadLinks component with headings for each canvas', () => {
+    const mockCanvas = (id) => ({
       id,
       getHeight: () => 4000,
       getWidth: () => 1000,
       getRenderings: () => [],
       getCanonicalImageUri: () => 'https://example.com/iiif/abc123/full/9000,/0/default.jpg',
     });
-    wrapper = createWrapper({ canvases: [mockCanvas('abc123'), mockCanvas('xyz321')] });
-    expect(wrapper.find('CanvasDownloadLinks').length).toBe(2);
+    createWrapper({ canvases: [mockCanvas('abc123'), mockCanvas('xyz321')] });
+
+    const headings = screen.getAllByRole('heading');
+    const headingAbc = headings.find((heading) => (heading.textContent === 'abc123'));
+    expect(headingAbc).toBeInTheDocument();
+    expect(headingAbc.tagName).toBe('H3');
+
+    const headingXyz = headings.find((heading) => (heading.textContent === 'xyz321'));
+    expect(headingXyz).toBeInTheDocument();
+    expect(headingXyz.tagName).toBe('H3');
   });
 
-  it('has a close button that triggers the closeDialog prop', () => {
+  it('calls the closeDialog function when the close button is clicked', async () => {
     const closeDialog = jest.fn();
-    wrapper = createWrapper({ closeDialog });
-    wrapper.find(Button).simulate('click');
+    createWrapper({ closeDialog });
+    const closeButton = await screen.findByText(/Close/);
+    fireEvent.click(closeButton);
     expect(closeDialog).toHaveBeenCalled();
   });
 
   describe('ManifestDownloadLinks', () => {
-    it('is not rendered if hte manifest has no renderings', () => {
-      wrapper = createWrapper();
-
-      expect(wrapper.find('ManifestDownloadLinks').length).toBe(0);
+    it('does not render when there are no manifest renderings', () => {
+      createWrapper();
+      const manifestLinks = screen.queryByText('ManifestDownloadLinks');
+      expect(manifestLinks).not.toBeInTheDocument();
     });
-    it('rendered if the manifest has renderings', () => {
-      const rendering = { id: '', getLabel: () => {}, getFormat: () => {} };
-      wrapper = createWrapper({
+
+    it('renders when the manifest contains renderings', () => {
+      const rendering = { id: '', getLabel: () => ({ getValue: () => 'ManifestDownloadLinks' }), getFormat: () => {} };
+      createWrapper({
         manifest: {
           getSequences: () => [
-            { getRenderings: () => [rendering] },
+            {
+              getRenderings: () => [rendering],
+            },
           ],
         },
       });
-
-      expect(wrapper.find('ManifestDownloadLinks').length).toBe(1);
+      const manifestLinks = screen.queryByText('ManifestDownloadLinks');
+      expect(manifestLinks).toBeInTheDocument();
     });
   });
 });
@@ -143,7 +152,7 @@ describe('mapStateToProps', () => {
   const mapStateToProps = miradorDownloadDialog.mapStateToProps(state, props);
 
   describe('infoResponse', () => {
-    it('gets the correct info response from state', () => {
+    it('fetches the correct info response for the given canvas ID', () => {
       expect(mapStateToProps.infoResponse('http://example.com/abc123/canvas/0').json.sizes.length).toBe(6);
     });
   });

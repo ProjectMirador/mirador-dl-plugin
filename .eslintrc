@@ -1,16 +1,19 @@
 {
-  "env": {
-    "jest/globals": true
-  },
-  "extends": ["airbnb"],
+  "env": {},
+  "extends": ["airbnb", "plugin:jest/recommended"],
   "globals": {
-    "page": true,
     "document": true
   },
-  "parser": "babel-eslint",
-  "plugins": ["jest"],
+  "parser": "@babel/eslint-parser",
+  "plugins": ["babel", "jest", "react", "react-hooks"],
   "rules": {
+    "import/prefer-default-export": "off",
+    "import/no-extraneous-dependencies": "off",
+    "no-console": "warn",
     "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
+    "react/jsx-fragments": "off",
+    "react/jsx-props-no-spreading": "off",
     "react/prefer-stateless-function": "off",
+    "react/function-component-definition": "off"
   }
 }

@@ -1,11 +1,9 @@
 import React from 'react';
-import { shallow } from 'enzyme';
-import Typography from '@material-ui/core/Typography';
 import ManifestDownloadLinks from '../src/ManifestDownloadLinks';
-import RenderingDownloadLink from '../src/RenderingDownloadLink';
+import { render, screen } from './test-utils';
 
 function createWrapper(props) {
-  return shallow(
+  return render(
     <ManifestDownloadLinks
       classes={{}}
       renderings={[]}
@@ -28,19 +26,22 @@ describe('ManifestDownloadLinks', () => {
     },
   ];
 
-  it('renders the heading', () => {
-    const wrapper = createWrapper({ renderings });
+  it('displays the heading "Other download options" as an H3 element', () => {
+    createWrapper({ renderings });
 
-    expect(
-      wrapper.find(Typography)
-        .find({ variant: 'h3' })
-        .props().children,
-    ).toEqual('Other download options');
+    screen.getByRole('heading');
+    const headingElement = screen.getByText('Other download options');
+    expect(headingElement).toBeInTheDocument();
+    expect(headingElement.tagName).toBe('H3');
   });
 
-  it('renders a RenderingDownloadLink for each rendering', () => {
-    const wrapper = createWrapper({ renderings });
+  it('renders a download link for each item in the renderings list', () => {
+    createWrapper({ renderings });
 
-    expect(wrapper.find(RenderingDownloadLink).length).toBe(2);
+    const pdfLinkElement = screen.getByRole('link', { name: /Link to the PDF/i });
+    expect(pdfLinkElement).toBeInTheDocument();
+
+    const ocrLinkElement = screen.getByRole('link', { name: /Link to the OCR/i });
+    expect(ocrLinkElement).toBeInTheDocument();
   });
 });

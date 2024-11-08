@@ -1,11 +1,9 @@
 import React from 'react';
-import { shallow } from 'enzyme';
-import ListItemText from '@material-ui/core/ListItemText';
-import MenuItem from '@material-ui/core/MenuItem';
 import miradorDownloadPlugin from '../src/miradorDownloadPlugin';
+import { fireEvent, render, screen } from './test-utils';
 
 function createWrapper(props) {
-  return shallow(
+  return render(
     <miradorDownloadPlugin.component
       handleClose={() => {}}
       openDownloadDialog={() => {}}
@@ -15,24 +13,26 @@ function createWrapper(props) {
 }
 
 describe('miradorDownloadPlugin', () => {
-  it('has the correct target', () => {
+  it('sets the correct target to "WindowTopBarPluginMenu"', () => {
     expect(miradorDownloadPlugin.target).toBe('WindowTopBarPluginMenu');
   });
-  describe('renders a component', () => {
-    it('renders a thing', () => {
-      const wrapper = createWrapper();
-      expect(wrapper.find(ListItemText).props().children).toEqual('Download');
+  describe('Component Rendering', () => {
+    it('displays a "Download" element when rendered', () => {
+      createWrapper();
+      const downloadElement = screen.queryByText(/Download/i);
+      expect(downloadElement).toBeInTheDocument();
     });
   });
+});
 
-  describe('MenuItem', () => {
-    it('calls the openShareDialog and handleClose props when clicked', () => {
-      const handleClose = jest.fn();
-      const openDownloadDialog = jest.fn();
-      const wrapper = createWrapper({ handleClose, openDownloadDialog });
-      wrapper.find(MenuItem).simulate('click');
-      expect(handleClose).toHaveBeenCalled();
-      expect(openDownloadDialog).toHaveBeenCalled();
-    });
+describe('MenuItem', () => {
+  it('triggers both openDownloadDialog and handleClose when "Download" is clicked', async () => {
+    const handleClose = jest.fn();
+    const openDownloadDialog = jest.fn();
+    createWrapper({ handleClose, openDownloadDialog });
+    const openDownloadDialogButton = await screen.findByText(/Download/);
+    fireEvent.click(openDownloadDialogButton);
+    expect(handleClose).toHaveBeenCalled();
+    expect(openDownloadDialog).toHaveBeenCalled();
   });
 });
