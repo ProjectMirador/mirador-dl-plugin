@@ -11,7 +11,7 @@ function createWrapper(props) {
       closeDialog={() => {}}
       containerId="container-123"
       infoResponse={() => ({})}
-      manifest={{ getSequences: () => [] }}
+      manifest={{ getRenderings: () => undefined, getSequences: () => [] }}
       open
       t={(k) => k}
       viewType="single"
@@ -58,14 +58,15 @@ describe('Dialog', () => {
   describe('ManifestDownloadLinks', () => {
     it('does not render when there are no manifest renderings', () => {
       createWrapper();
-      const manifestLinks = screen.queryByText('ManifestDownloadLinks');
-      expect(manifestLinks).not.toBeInTheDocument();
+      const manifestLinksHeading = screen.queryByText('Other download options');
+      expect(manifestLinksHeading).not.toBeInTheDocument();
     });
 
-    it('renders when the manifest contains renderings', () => {
-      const rendering = { id: '', getLabel: () => ({ getValue: () => 'ManifestDownloadLinks' }), getFormat: () => {} };
+    it('renders when the default sequence contains renderings', () => {
+      const rendering = { id: '', getLabel: () => ({ getValue: () => 'Rendering from sequence' }), getFormat: () => {} };
       createWrapper({
         manifest: {
+          getRenderings: () => undefined,
           getSequences: () => [
             {
               getRenderings: () => [rendering],
@@ -73,7 +74,23 @@ describe('Dialog', () => {
           ],
         },
       });
-      const manifestLinks = screen.queryByText('ManifestDownloadLinks');
+      const manifestLinksHeading = screen.queryByText('Other download options');
+      expect(manifestLinksHeading).toBeInTheDocument();
+      const manifestLinks = screen.queryByText('Rendering from sequence');
+      expect(manifestLinks).toBeInTheDocument();
+    });
+
+    it('renders when the manifest contains renderings', () => {
+      const rendering = { id: '', getLabel: () => ({ getValue: () => 'Rendering from manifest' }), getFormat: () => {} };
+      createWrapper({
+        manifest: {
+          getRenderings: () => [rendering],
+          getSequences: () => undefined,
+        },
+      });
+      const manifestLinksHeading = screen.queryByText('Other download options');
+      expect(manifestLinksHeading).toBeInTheDocument();
+      const manifestLinks = screen.queryByText('Rendering from manifest');
       expect(manifestLinks).toBeInTheDocument();
     });
   });
