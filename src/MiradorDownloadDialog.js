@@ -55,16 +55,12 @@ export function MiradorDownloadDialog({
 }) {
   const { t } = useTranslation();
   const renderings = useMemo(() => {
-    if (
-      !(
-        manifest
+    const manifestRenderings = (manifest && manifest.getRenderings()) || [];
+    const sequenceRenderings = (manifest
         && manifest.getSequences()
         && manifest.getSequences()[0]
-        && manifest.getSequences()[0].getRenderings()
-      )
-    ) return [];
-
-    return manifest.getSequences()[0].getRenderings();
+        && manifest.getSequences()[0].getRenderings()) || [];
+    return [...manifestRenderings, ...sequenceRenderings];
   }, [manifest]);
 
   if (!open) return '';
@@ -138,6 +134,7 @@ MiradorDownloadDialog.propTypes = {
   infoResponse: PropTypes.func.isRequired,
   manifest: PropTypes.shape({
     getSequences: PropTypes.func,
+    getRenderings: PropTypes.func,
   }),
   open: PropTypes.bool,
   restrictDownloadOnSizeDefinition: PropTypes.bool,
