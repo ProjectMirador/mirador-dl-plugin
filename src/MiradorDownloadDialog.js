@@ -42,16 +42,12 @@ const mapStateToProps = (state, { windowId }) => ({
 export class MiradorDownloadDialog extends Component {
   renderings() {
     const { manifest } = this.props;
-    if (
-      !(
-        manifest
+    const manifestRenderings = (manifest && manifest.getRenderings()) || [];
+    const sequenceRenderings = (manifest
         && manifest.getSequences()
         && manifest.getSequences()[0]
-        && manifest.getSequences()[0].getRenderings()
-      )
-    ) return [];
-
-    return manifest.getSequences()[0].getRenderings();
+        && manifest.getSequences()[0].getRenderings()) || [];
+    return [...manifestRenderings, ...sequenceRenderings];
   }
 
   /**
@@ -140,6 +136,7 @@ MiradorDownloadDialog.propTypes = {
   infoResponse: PropTypes.func.isRequired,
   manifest: PropTypes.shape({
     getSequences: PropTypes.func,
+    getRenderings: PropTypes.func,
   }),
   open: PropTypes.bool,
   restrictDownloadOnSizeDefinition: PropTypes.bool,
