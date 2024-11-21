@@ -12,7 +12,7 @@ function createWrapper(props) {
       canvasId="abc123"
       canvasLabel="My Canvas Label"
       classes={{}}
-      fullSizeParam="max_full"
+      isVersion3={false}
       infoResponse={{}}
       restrictDownloadOnSizeDefinition={false}
       viewType="single"
@@ -180,7 +180,7 @@ describe('CanvasDownloadLinks', () => {
 
       const link = screen.getByRole('link', { name: /Whole image \(4000 x 1000px\)/i });
       expect(link).toBeInTheDocument();
-      expect(link).toHaveAttribute('href', 'http://example.com/iiif/abc123/full/max_full/0/default.jpg?download=true');
+      expect(link).toHaveAttribute('href', 'http://example.com/iiif/abc123/full/full/0/default.jpg?download=true');
     });
 
     describe('For Images Wider Than 1000px', () => {
@@ -188,7 +188,7 @@ describe('CanvasDownloadLinks', () => {
         createWrapper({ canvas });
 
         const link1 = screen.getByRole('link', { name: /Whole image \(4000 x 1000px\)/i });
-        expect(link1).toHaveAttribute('href', 'http://example.com/iiif/abc123/full/max_full/0/default.jpg?download=true');
+        expect(link1).toHaveAttribute('href', 'http://example.com/iiif/abc123/full/full/0/default.jpg?download=true');
 
         const link2 = screen.getByRole('link', { name: /Whole image \(1000 x 250px\)/i });
         expect(link2).toHaveAttribute('href', 'http://example.com/iiif/abc123/full/1000,/0/default.jpg?download=true');
