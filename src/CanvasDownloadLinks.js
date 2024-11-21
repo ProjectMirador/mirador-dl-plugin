@@ -34,30 +34,31 @@ export default class CanvasDownloadLinks extends Component {
   }
 
   zoomedImageUrl() {
-    const { canvas, fullSizeParam } = this.props;
+    const { canvas, isVersion3 } = this.props;
     const bounds = this.currentBounds();
     const boundsUrl = canvas
       .getCanonicalImageUri()
       .replace(
         /\/full\/.*\/0\//,
-        `/${bounds.x},${bounds.y},${bounds.width},${bounds.height}/${fullSizeParam}/0/`,
+        `/${bounds.x},${bounds.y},${bounds.width},${bounds.height}/${isVersion3 ? `${bounds.width},${bounds.height}` : 'full'}/0/`,
       );
 
     return `${boundsUrl}?download=true`;
   }
 
   imageUrlForSize(size) {
-    const { canvas } = this.props;
+    const { canvas, isVersion3 } = this.props;
 
-    return `${canvas.getCanonicalImageUri(size.width)}?download=true`;
+    return isVersion3 ? `${canvas.getCanonicalImageUri().replace(/\/full\/.*\/0\//, `/full/${size.width},${size.height}/0/`)}?download=true`
+      : `${canvas.getCanonicalImageUri(size.width)}?download=true`;
   }
 
   fullImageUrl() {
-    const { canvas, fullSizeParam } = this.props;
+    const { canvas, isVersion3 } = this.props;
 
     return `${canvas
       .getCanonicalImageUri()
-      .replace(/\/full\/.*\/0\//, `/full/${fullSizeParam}/0/`)}?download=true`;
+      .replace(/\/full\/.*\/0\//, `/full/${isVersion3 ? 'max' : 'full'}/0/`)}?download=true`;
   }
 
   thousandPixelWideImage() {
@@ -224,7 +225,6 @@ CanvasDownloadLinks.propTypes = {
     getWidth: PropTypes.func.isRequired,
   }).isRequired,
   canvasLabel: PropTypes.string.isRequired, // canvasLabel is passed because we need access to redux
-  fullSizeParam: PropTypes.string.isRequired,
   infoResponse: PropTypes.shape({
     json: PropTypes.shape({
       height: PropTypes.number,
@@ -234,6 +234,7 @@ CanvasDownloadLinks.propTypes = {
       width: PropTypes.number,
     }),
   }).isRequired,
+  isVersion3: PropTypes.bool.isRequired,
   restrictDownloadOnSizeDefinition: PropTypes.bool.isRequired,
   t: PropTypes.func.isRequired,
   viewType: PropTypes.string.isRequired,
