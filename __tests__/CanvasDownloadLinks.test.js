@@ -11,7 +11,7 @@ function createWrapper(props) {
       canvasId="abc123"
       canvasLabel="My Canvas Label"
       classes={{}}
-      fullSizeParam="max_full"
+      isVersion3={false}
       infoResponse={{}}
       restrictDownloadOnSizeDefinition={false}
       viewType="single"
@@ -180,7 +180,7 @@ describe('CanvasDownloadLinks', () => {
 
       const link = screen.getByRole('link', { name: /mirador-dl-plugin\.whole_image {"width":4000,"height":1000}/i });
       expect(link).toBeInTheDocument();
-      expect(link).toHaveAttribute('href', 'http://example.com/iiif/abc123/full/max_full/0/default.jpg?download=true');
+      expect(link).toHaveAttribute('href', 'http://example.com/iiif/abc123/full/full/0/default.jpg?download=true');
     });
 
     describe('For Images Wider Than 1000px', () => {
@@ -188,7 +188,7 @@ describe('CanvasDownloadLinks', () => {
         createWrapper({ canvas });
 
         const link1 = screen.getByRole('link', { name: /mirador-dl-plugin\.whole_image {"width":4000,"height":1000}/i });
-        expect(link1).toHaveAttribute('href', 'http://example.com/iiif/abc123/full/max_full/0/default.jpg?download=true');
+        expect(link1).toHaveAttribute('href', 'http://example.com/iiif/abc123/full/full/0/default.jpg?download=true');
 
         const link2 = screen.getByRole('link', { name: /mirador-dl-plugin\.whole_image {"width":1000,"height":250}/i });
         expect(link2).toHaveAttribute('href', 'http://example.com/iiif/abc123/full/1000,/0/default.jpg?download=true');

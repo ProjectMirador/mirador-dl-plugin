@@ -89,14 +89,12 @@ export function MiradorDownloadDialog({
           } else if (typeof context === 'string') {
             contextArray = [context];
           }
-          const fullSizeParam = contextArray && contextArray.indexOf('http://iiif.io/api/image/3/context.json') > -1
-            ? 'max' : 'full';
-
+          const isVersion3 = contextArray && contextArray.indexOf('http://iiif.io/api/image/3/context.json') > -1;
           return (
             <CanvasDownloadLinks
               canvas={canvas}
               canvasLabel={canvasLabel(canvas.id)}
-              fullSizeParam={fullSizeParam}
+              isVersion3={isVersion3}
               infoResponse={infoResponse(canvas.id)}
               restrictDownloadOnSizeDefinition={
                   restrictDownloadOnSizeDefinition
