@@ -83,32 +83,19 @@ export class MiradorDownloadDialog extends Component {
           <Typography variant="h2" component="span">Download</Typography>
         </DialogTitle>
         <ScrollIndicatedDialogContent>
-          {canvases.map((canvas) => {
-            const imageInfo = infoResponse(canvas.id);
-            const context = imageInfo.json && imageInfo.json['@context'];
-            let contextArray;
-            if (Array.isArray(context)) {
-              contextArray = context;
-            } else if (typeof context === 'string') {
-              contextArray = [context];
-            }
-            const isVersion3 = contextArray && contextArray.indexOf('http://iiif.io/api/image/3/context.json') > -1;
-
-            return (
-              <CanvasDownloadLinks
-                canvas={canvas}
-                canvasLabel={canvasLabel(canvas.id)}
-                isVersion3={isVersion3}
-                infoResponse={infoResponse(canvas.id)}
-                restrictDownloadOnSizeDefinition={
-                    restrictDownloadOnSizeDefinition
-                  }
-                key={canvas.id}
-                viewType={viewType}
-                windowId={windowId}
-              />
-            );
-          })}
+          {canvases.map((canvas) => (
+            <CanvasDownloadLinks
+              canvas={canvas}
+              canvasLabel={canvasLabel(canvas.id)}
+              infoResponse={infoResponse(canvas.id)}
+              restrictDownloadOnSizeDefinition={
+                  restrictDownloadOnSizeDefinition
+                }
+              key={canvas.id}
+              viewType={viewType}
+              windowId={windowId}
+            />
+          ))}
           {this.renderings().length > 0 && (
           <ManifestDownloadLinks
             renderings={this.renderings()}

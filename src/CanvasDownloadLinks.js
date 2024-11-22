@@ -7,6 +7,7 @@ import Link from '@mui/material/Link';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import RenderingDownloadLink from './RenderingDownloadLink';
+import { calculateHeightForWidth, createCanonicalImageUrl } from './iiifImageFunctions';
 
 /**
  * CanvasDownloadLinks ~
@@ -20,51 +21,50 @@ export default class CanvasDownloadLinks extends Component {
   }
 
   fullImageLabel() {
-    const { canvas } = this.props;
-
-    return `Whole image (${canvas.getWidth()} x ${canvas.getHeight()}px)`;
+    const { infoResponse } = this.props;
+    const imageInfo = infoResponse && infoResponse.json;
+    return imageInfo && `Whole image (${imageInfo.width} x ${imageInfo.height}px)`;
   }
 
   smallImageLabel() {
-    const { canvas } = this.props;
+    const { infoResponse } = this.props;
+    const imageInfo = infoResponse && infoResponse.json;
 
     return `Whole image (1000 x ${Math.floor(
-      (1000 * canvas.getHeight()) / canvas.getWidth(),
+      (1000 * imageInfo.height) / imageInfo.width,
     )}px)`;
   }
 
   zoomedImageUrl() {
-    const { canvas, isVersion3 } = this.props;
+    const { infoResponse } = this.props;
+    const imageInfo = infoResponse && infoResponse.json;
     const bounds = this.currentBounds();
-    const boundsUrl = canvas
-      .getCanonicalImageUri()
-      .replace(
-        /\/full\/.*\/0\//,
-        `/${bounds.x},${bounds.y},${bounds.width},${bounds.height}/${isVersion3 ? `${bounds.width},${bounds.height}` : 'full'}/0/`,
-      );
-
-    return `${boundsUrl}?download=true`;
+    const boundsUrl = createCanonicalImageUrl(
+      imageInfo,
+      `${bounds.x},${bounds.y},${bounds.width},${bounds.height}`,
+      bounds.width,
+      bounds.height,
+    );
+    return imageInfo && `${boundsUrl}?download=true`;
   }
 
   imageUrlForSize(size) {
-    const { canvas, isVersion3 } = this.props;
-
-    return isVersion3 ? `${canvas.getCanonicalImageUri().replace(/\/full\/.*\/0\//, `/full/${size.width},${size.height}/0/`)}?download=true`
-      : `${canvas.getCanonicalImageUri(size.width)}?download=true`;
+    const { infoResponse } = this.props;
+    const imageInfo = infoResponse && infoResponse.json;
+    return imageInfo && `${createCanonicalImageUrl(imageInfo, 'full', size.width, size.height)}?download=true`;
   }
 
   fullImageUrl() {
-    const { canvas, isVersion3 } = this.props;
-
-    return `${canvas
-      .getCanonicalImageUri()
-      .replace(/\/full\/.*\/0\//, `/full/${isVersion3 ? 'max' : 'full'}/0/`)}?download=true`;
+    const { infoResponse } = this.props;
+    const imageInfo = infoResponse && infoResponse.json;
+    return imageInfo && `${createCanonicalImageUrl(imageInfo, 'full', imageInfo.width, imageInfo.height)}?download=true`;
   }
 
   thousandPixelWideImage() {
-    const { canvas } = this.props;
-
-    return `${canvas.getCanonicalImageUri('1000')}?download=true`;
+    const { infoResponse } = this.props;
+    const imageInfo = infoResponse && infoResponse.json;
+    const height = calculateHeightForWidth(imageInfo, 1000);
+    return imageInfo && `${createCanonicalImageUrl(imageInfo, 'full', 1000, height)}?download=true`;
   }
 
   osdViewport() {
@@ -143,9 +143,10 @@ export default class CanvasDownloadLinks extends Component {
   }
 
   thousandPixelWideLink() {
-    const { canvas } = this.props;
+    const { infoResponse } = this.props;
+    const imageInfo = infoResponse && infoResponse.json;
 
-    if (canvas.getWidth() < 1000) return '';
+    if (!imageInfo || imageInfo.width < 1000) return '';
 
     return (
       <ListItem disableGutters divider key={this.thousandPixelWideImage()}>
@@ -233,7 +234,6 @@ CanvasDownloadLinks.propTypes = {
       width: PropTypes.number,
     }),
   }).isRequired,
-  isVersion3: PropTypes.bool.isRequired,
   restrictDownloadOnSizeDefinition: PropTypes.bool.isRequired,
   viewType: PropTypes.string.isRequired,
   windowId: PropTypes.string.isRequired,
