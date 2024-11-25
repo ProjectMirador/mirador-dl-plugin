@@ -14,7 +14,7 @@ function createWrapper(props) {
       infoResponse={() => ({})}
       manifest={{ getSequences: () => [] }}
       open
-      t={k => k}
+      t={(k) => k}
       viewType="single"
       windowId="wid123"
       {...props}
@@ -51,7 +51,7 @@ describe('Dialog', () => {
   it('calls the closeDialog function when the close button is clicked', async () => {
     const closeDialog = jest.fn();
     createWrapper({ closeDialog });
-    const closeButton = await screen.findByText(/Close/);
+    const closeButton = await screen.findByText(/close/);
     fireEvent.click(closeButton);
     expect(closeDialog).toHaveBeenCalled();
   });

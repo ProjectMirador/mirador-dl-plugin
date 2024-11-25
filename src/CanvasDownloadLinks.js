@@ -26,7 +26,7 @@ export default class CanvasDownloadLinks extends Component {
   }
 
   smallImageLabel() {
-    const { canvas } = this.props;
+    const { canvas, t } = this.props;
 
     return `${t('whole_image')} (1000 x ${Math.floor(
       (1000 * canvas.getHeight()) / canvas.getWidth(),

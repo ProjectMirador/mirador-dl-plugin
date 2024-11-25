@@ -7,7 +7,7 @@ function createWrapper(props) {
     <miradorDownloadPlugin.component
       handleClose={() => {}}
       openDownloadDialog={() => {}}
-      t={k => k}
+      t={(k) => k}
       {...props}
     />,
   );
@@ -31,7 +31,7 @@ describe('MenuItem', () => {
     const handleClose = jest.fn();
     const openDownloadDialog = jest.fn();
     createWrapper({ handleClose, openDownloadDialog });
-    const openDownloadDialogButton = await screen.findByText(/Download/);
+    const openDownloadDialogButton = await screen.findByText(/download/);
     fireEvent.click(openDownloadDialogButton);
     expect(handleClose).toHaveBeenCalled();
     expect(openDownloadDialog).toHaveBeenCalled();

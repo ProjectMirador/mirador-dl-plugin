@@ -7,7 +7,7 @@ function createWrapper(props) {
     <ManifestDownloadLinks
       classes={{}}
       renderings={[]}
-      t={k => k}
+      t={(k) => k}
       {...props}
     />,
   );

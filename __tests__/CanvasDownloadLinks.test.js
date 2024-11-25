@@ -16,7 +16,7 @@ function createWrapper(props) {
       restrictDownloadOnSizeDefinition={false}
       viewType="single"
       windowId="wid123"
-      t={k => k}
+      t={(k) => k}
       {...props}
     />,
   );
@@ -63,7 +63,7 @@ describe('CanvasDownloadLinks', () => {
     it('includes a canvas-level rendering as a download link', () => {
       createWrapper({ canvas });
 
-      const downloadLink = screen.getByRole('link', { name: /Whole image \(4000 x 1000px\)/i });
+      const downloadLink = screen.getByRole('link', { name: /whole_image \(4000 x 1000px\)/i });
       expect(downloadLink).toBeInTheDocument();
     });
   });
