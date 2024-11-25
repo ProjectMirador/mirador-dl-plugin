@@ -63,7 +63,7 @@ describe('CanvasDownloadLinks', () => {
     it('includes a canvas-level rendering as a download link', () => {
       createWrapper({ canvas });
 
-      const downloadLink = screen.getByRole('link', { name: /whole_image {"width":4000,"height":1000}/i });
+      const downloadLink = screen.getByRole('link', { name: /mirador-dl-plugin\.whole_image {"width":4000,"height":1000}/i });
       expect(downloadLink).toBeInTheDocument();
     });
   });
