@@ -1,4 +1,13 @@
 const translations = {
+  de: {
+    'mirador-dl-plugin': {
+      close: 'Schließen',
+      download: 'Download',
+      other_download: 'Andere Download-Optionen',
+      whole_image: 'Gesamtes Bild ({{width}} x {{height}}px)',
+      zoomed_region: 'Aktueller Bildausschnitt ({{width}} x {{height}}px)',
+    },
+  },
   en: {
     'mirador-dl-plugin': {
       close: 'Close',
