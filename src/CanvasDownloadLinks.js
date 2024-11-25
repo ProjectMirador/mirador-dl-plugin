@@ -15,22 +15,22 @@ export default class CanvasDownloadLinks extends Component {
   zoomedImageLabel() {
     const { t } = this.props;
     const bounds = this.currentBounds();
-    return `${t('zoomed_region')} (${Math.floor(bounds.width)} x ${Math.floor(
-      bounds.height,
-    )}px)`;
+    return t('zoomed_region', {
+      width: Math.floor(bounds.width),
+      height: Math.floor(bounds.height),
+    });
   }
 
   fullImageLabel() {
     const { canvas, t } = this.props;
-    return `${t('whole_image')} (${canvas.getWidth()} x ${canvas.getHeight()}px)`;
+    return t('whole_image', { width: canvas.getWidth(), height: canvas.getHeight() });
   }
 
   smallImageLabel() {
     const { canvas, t } = this.props;
+    const height = Math.floor((1000 * canvas.getHeight()) / canvas.getWidth());
 
-    return `${t('whole_image')} (1000 x ${Math.floor(
-      (1000 * canvas.getHeight()) / canvas.getWidth(),
-    )}px)`;
+    return t('whole_image', { width: 1000, height });
   }
 
   zoomedImageUrl() {
@@ -170,7 +170,7 @@ export default class CanvasDownloadLinks extends Component {
           target="_blank"
           variant="body1"
         >
-          {`${t('whole_image')} (${size.width} x ${size.height}px)`}
+          {t('whole_image', { width: size.width, height: size.height })}
         </Link>
       </ListItem>
     ));
