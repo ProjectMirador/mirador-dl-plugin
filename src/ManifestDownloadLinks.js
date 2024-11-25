@@ -1,24 +1,27 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import List from '@material-ui/core/List';
-import Typography from '@material-ui/core/Typography';
+
+import Typography from '@mui/material/Typography';
+import List from '@mui/material/List';
 import RenderingDownloadLink from './RenderingDownloadLink';
 
 /**
  * ManifestDownloadLinks ~
-*/
+ */
 export default class ManifestDownloadLinks extends Component {
   /**
    * Returns the rendered component
-  */
+   */
   render() {
-    const { classes, renderings, t } = this.props;
+    const { renderings, t } = this.props;
 
     return (
       <React.Fragment>
-        <Typography variant="h3" className={classes.h3}>{t('other_download')}</Typography>
+        <Typography variant="h3" sx={{ marginTop: '20px' }}>
+          {t('other_download')}
+        </Typography>
         <List>
-          {renderings.map(rendering => (
+          {renderings.map((rendering) => (
             <RenderingDownloadLink rendering={rendering} key={rendering.id} />
           ))}
         </List>
@@ -28,9 +31,6 @@ export default class ManifestDownloadLinks extends Component {
 }
 
 ManifestDownloadLinks.propTypes = {
-  classes: PropTypes.shape({
-    h3: PropTypes.string,
-  }).isRequired,
   renderings: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
   t: PropTypes.func.isRequired,
 };

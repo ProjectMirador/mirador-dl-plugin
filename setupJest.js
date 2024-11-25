@@ -1,4 +1,4 @@
-import Enzyme from 'enzyme'; // eslint-disable-line import/no-extraneous-dependencies
-import Adapter from 'enzyme-adapter-react-16'; // eslint-disable-line import/no-extraneous-dependencies
+import '@testing-library/jest-dom';
+import sizeMe from 'react-sizeme';
 
-Enzyme.configure({ adapter: new Adapter() });
+sizeMe.noPlaceholders = true;
