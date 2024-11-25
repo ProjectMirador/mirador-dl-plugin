@@ -4,6 +4,7 @@ import MenuItem from '@mui/material/MenuItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import VerticalAlignBottomIcon from '@mui/icons-material/VerticalAlignBottom';
+import translations from './translations';
 
 // eslint-disable-next-line default-param-last
 const downloadDialogReducer = (state = {}, action) => {
@@ -40,13 +41,15 @@ class MiradorDownload extends Component {
   }
 
   render() {
+    const { t } = this.props;
+
     return (
       <MenuItem onClick={() => this.openDialogAndCloseMenu()}>
         <ListItemIcon>
           <VerticalAlignBottomIcon />
         </ListItemIcon>
         <ListItemText primaryTypographyProps={{ variant: 'body1' }}>
-          Download
+          {t('mirador-dl-plugin.download')}
         </ListItemText>
       </MenuItem>
     );
@@ -56,6 +59,7 @@ class MiradorDownload extends Component {
 MiradorDownload.propTypes = {
   handleClose: PropTypes.func,
   openDownloadDialog: PropTypes.func,
+  t: PropTypes.func.isRequired,
 };
 
 MiradorDownload.defaultProps = {
@@ -68,6 +72,9 @@ export default {
   mode: 'add',
   name: 'MiradorDownloadPlugin',
   component: MiradorDownload,
+  config: {
+    translations,
+  },
   mapDispatchToProps,
   reducers: {
     windowDialogs: downloadDialogReducer,

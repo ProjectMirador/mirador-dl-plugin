@@ -13,24 +13,24 @@ import RenderingDownloadLink from './RenderingDownloadLink';
  */
 export default class CanvasDownloadLinks extends Component {
   zoomedImageLabel() {
+    const { t } = this.props;
     const bounds = this.currentBounds();
-    return `Zoomed region (${Math.floor(bounds.width)} x ${Math.floor(
-      bounds.height,
-    )}px)`;
+    return t('mirador-dl-plugin.zoomed_region', {
+      width: Math.floor(bounds.width),
+      height: Math.floor(bounds.height),
+    });
   }
 
   fullImageLabel() {
-    const { canvas } = this.props;
-
-    return `Whole image (${canvas.getWidth()} x ${canvas.getHeight()}px)`;
+    const { canvas, t } = this.props;
+    return t('mirador-dl-plugin.whole_image', { width: canvas.getWidth(), height: canvas.getHeight() });
   }
 
   smallImageLabel() {
-    const { canvas } = this.props;
+    const { canvas, t } = this.props;
+    const height = Math.floor((1000 * canvas.getHeight()) / canvas.getWidth());
 
-    return `Whole image (1000 x ${Math.floor(
-      (1000 * canvas.getHeight()) / canvas.getWidth(),
-    )}px)`;
+    return t('mirador-dl-plugin.whole_image', { width: 1000, height });
   }
 
   zoomedImageUrl() {
@@ -161,6 +161,7 @@ export default class CanvasDownloadLinks extends Component {
   }
 
   linksForDefinedSizes() {
+    const { t } = this.props;
     return this.definedSizes().map((size) => (
       <ListItem disableGutters divider key={`${size.width}${size.height}`}>
         <Link
@@ -169,7 +170,7 @@ export default class CanvasDownloadLinks extends Component {
           target="_blank"
           variant="body1"
         >
-          {`Whole image (${size.width} x ${size.height}px)`}
+          {t('mirador-dl-plugin.whole_image', { width: size.width, height: size.height })}
         </Link>
       </ListItem>
     ));
@@ -233,6 +234,7 @@ CanvasDownloadLinks.propTypes = {
     }),
   }).isRequired,
   restrictDownloadOnSizeDefinition: PropTypes.bool.isRequired,
+  t: PropTypes.func.isRequired,
   viewType: PropTypes.string.isRequired,
   windowId: PropTypes.string.isRequired,
 };
