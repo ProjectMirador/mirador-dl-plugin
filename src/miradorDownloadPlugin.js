@@ -49,7 +49,7 @@ class MiradorDownload extends Component {
           <VerticalAlignBottomIcon />
         </ListItemIcon>
         <ListItemText primaryTypographyProps={{ variant: 'body1' }}>
-          {t('download')}
+          {t('mirador-dl-plugin.download')}
         </ListItemText>
       </MenuItem>
     );

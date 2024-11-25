@@ -15,7 +15,7 @@ export default class CanvasDownloadLinks extends Component {
   zoomedImageLabel() {
     const { t } = this.props;
     const bounds = this.currentBounds();
-    return t('zoomed_region', {
+    return t('mirador-dl-plugin.zoomed_region', {
       width: Math.floor(bounds.width),
       height: Math.floor(bounds.height),
     });
@@ -23,14 +23,14 @@ export default class CanvasDownloadLinks extends Component {
 
   fullImageLabel() {
     const { canvas, t } = this.props;
-    return t('whole_image', { width: canvas.getWidth(), height: canvas.getHeight() });
+    return t('mirador-dl-plugin.whole_image', { width: canvas.getWidth(), height: canvas.getHeight() });
   }
 
   smallImageLabel() {
     const { canvas, t } = this.props;
     const height = Math.floor((1000 * canvas.getHeight()) / canvas.getWidth());
 
-    return t('whole_image', { width: 1000, height });
+    return t('mirador-dl-plugin.whole_image', { width: 1000, height });
   }
 
   zoomedImageUrl() {
@@ -170,7 +170,7 @@ export default class CanvasDownloadLinks extends Component {
           target="_blank"
           variant="body1"
         >
-          {t('whole_image', { width: size.width, height: size.height })}
+          {t('mirador-dl-plugin.whole_image', { width: size.width, height: size.height })}
         </Link>
       </ListItem>
     ));

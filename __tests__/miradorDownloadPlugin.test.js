@@ -20,7 +20,7 @@ describe('miradorDownloadPlugin', () => {
   describe('Component Rendering', () => {
     it('displays a "Download" element when rendered', () => {
       createWrapper();
-      const downloadElement = screen.queryByText(/download/i);
+      const downloadElement = screen.queryByText(/mirador-dl-plugin.download/i);
       expect(downloadElement).toBeInTheDocument();
     });
   });
@@ -31,7 +31,7 @@ describe('MenuItem', () => {
     const handleClose = jest.fn();
     const openDownloadDialog = jest.fn();
     createWrapper({ handleClose, openDownloadDialog });
-    const openDownloadDialogButton = await screen.findByText(/download/);
+    const openDownloadDialogButton = await screen.findByText(/mirador-dl-plugin.download/);
     fireEvent.click(openDownloadDialogButton);
     expect(handleClose).toHaveBeenCalled();
     expect(openDownloadDialog).toHaveBeenCalled();

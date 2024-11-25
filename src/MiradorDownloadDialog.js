@@ -86,7 +86,7 @@ export class MiradorDownloadDialog extends Component {
         maxWidth="xs"
       >
         <DialogTitle sx={{ paddingBottom: 0 }}>
-          <Typography variant="h2" component="span">{t('download')}</Typography>
+          <Typography variant="h2" component="span">{t('mirador-dl-plugin.download')}</Typography>
         </DialogTitle>
         <ScrollIndicatedDialogContent>
           {canvases.map((canvas) => (
@@ -112,7 +112,7 @@ export class MiradorDownloadDialog extends Component {
         </ScrollIndicatedDialogContent>
         <DialogActions>
           <Button onClick={closeDialog} color="primary">
-            {t('close')}
+            {t('mirador-dl-plugin.close')}
           </Button>
         </DialogActions>
       </Dialog>

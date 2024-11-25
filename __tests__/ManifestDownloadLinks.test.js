@@ -31,7 +31,7 @@ describe('ManifestDownloadLinks', () => {
     createWrapper({ renderings });
 
     screen.getByRole('heading');
-    const headingElement = screen.getByText('other_download');
+    const headingElement = screen.getByText('mirador-dl-plugin.other_download');
     expect(headingElement).toBeInTheDocument();
     expect(headingElement.tagName).toBe('H3');
   });

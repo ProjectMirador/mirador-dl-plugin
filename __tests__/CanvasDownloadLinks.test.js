@@ -80,7 +80,7 @@ describe('CanvasDownloadLinks', () => {
 
       createWrapper({ canvas, infoResponse, windowId: 'zoomedOutWindow' });
 
-      const zoomedLink = screen.queryByText('zoomed_region {"width":6000,"height":1000}');
+      const zoomedLink = screen.queryByText('mirador-dl-plugin.zoomed_region {"width":6000,"height":1000}');
       expect(zoomedLink).not.toBeInTheDocument();
     });
 
@@ -91,7 +91,7 @@ describe('CanvasDownloadLinks', () => {
 
       createWrapper({ canvas, infoResponse, windowId: 'zoomedIntoNonImageSpaceWindow' });
 
-      const zoomedLink = screen.queryByText('zoomed_region {"width":2000,"height":500}');
+      const zoomedLink = screen.queryByText('mirador-dl-plugin.zoomed_region {"width":2000,"height":500}');
       expect(zoomedLink).not.toBeInTheDocument();
     });
 
@@ -102,7 +102,7 @@ describe('CanvasDownloadLinks', () => {
 
       createWrapper({ canvas, infoResponse, windowId: 'zoomedInWindow' });
 
-      const zoomedLink = screen.queryByText('zoomed_region {"width":2000,"height":500}');
+      const zoomedLink = screen.queryByText('mirador-dl-plugin.zoomed_region {"width":2000,"height":500}');
       expect(zoomedLink).toBeInTheDocument();
     });
 
@@ -114,13 +114,13 @@ describe('CanvasDownloadLinks', () => {
       createWrapper({
         canvas, infoResponse, viewType: 'book', windowId: 'zoomedInWindow',
       });
-      const zoomedLink = screen.queryByText('zoomed_region {"width":2000,"height":500}');
+      const zoomedLink = screen.queryByText('mirador-dl-plugin.zoomed_region {"width":2000,"height":500}');
       expect(zoomedLink).not.toBeInTheDocument();
 
       createWrapper({
         canvas, infoResponse, viewType: 'gallery', windowId: 'zoomedInWindow',
       });
-      const zoomedLinkGallery = screen.queryByText('zoomed_region {"width":2000,"height":500}');
+      const zoomedLinkGallery = screen.queryByText('mirador-dl-plugin.zoomed_region {"width":2000,"height":500}');
       expect(zoomedLinkGallery).not.toBeInTheDocument();
     });
 
@@ -139,7 +139,7 @@ describe('CanvasDownloadLinks', () => {
           windowId: 'zoomedInWindow',
         });
 
-        const downloadLink = screen.getByRole('link', { name: /whole_image {"width":400,"height":100}/i });
+        const downloadLink = screen.getByRole('link', { name: /mirador-dl-plugin\.whole_image {"width":400,"height":100}/i });
         expect(screen.getAllByRole('link')).toHaveLength(2); // Should only show small-size version and link to PDF.
         expect(downloadLink).toBeInTheDocument();
       });
@@ -164,9 +164,9 @@ describe('CanvasDownloadLinks', () => {
     it('renders download links for all specified sizes in the dialog', () => {
       createWrapper({ canvas, infoResponse: { json: { sizes } } });
 
-      const link1 = screen.getByRole('link', { name: /whole_image {"width":4000,"height":1000}/i });
-      const link2 = screen.getByRole('link', { name: /whole_image {"width":2000,"height":500}/i });
-      const link3 = screen.getByRole('link', { name: /whole_image {"width":1000,"height":250}/i });
+      const link1 = screen.getByRole('link', { name: /mirador-dl-plugin\.whole_image {"width":4000,"height":1000}/i });
+      const link2 = screen.getByRole('link', { name: /mirador-dl-plugin\.whole_image {"width":2000,"height":500}/i });
+      const link3 = screen.getByRole('link', { name: /mirador-dl-plugin\.whole_image {"width":1000,"height":250}/i });
 
       expect(link1).toBeInTheDocument();
       expect(link2).toBeInTheDocument();
@@ -178,7 +178,7 @@ describe('CanvasDownloadLinks', () => {
     it('renders a single link to the full-size image', () => {
       createWrapper({ canvas });
 
-      const link = screen.getByRole('link', { name: /whole_image {"width":4000,"height":1000}/i });
+      const link = screen.getByRole('link', { name: /mirador-dl-plugin\.whole_image {"width":4000,"height":1000}/i });
       expect(link).toBeInTheDocument();
       expect(link).toHaveAttribute('href', 'http://example.com/iiif/abc123/full/full/0/default.jpg?download=true');
     });
@@ -187,10 +187,10 @@ describe('CanvasDownloadLinks', () => {
       it('renders links for both full-size and 1000px wide versions', () => {
         createWrapper({ canvas });
 
-        const link1 = screen.getByRole('link', { name: /whole_image {"width":4000,"height":1000}/i });
+        const link1 = screen.getByRole('link', { name: /mirador-dl-plugin\.whole_image {"width":4000,"height":1000}/i });
         expect(link1).toHaveAttribute('href', 'http://example.com/iiif/abc123/full/full/0/default.jpg?download=true');
 
-        const link2 = screen.getByRole('link', { name: /whole_image {"width":1000,"height":250}/i });
+        const link2 = screen.getByRole('link', { name: /mirador-dl-plugin\.whole_image {"width":1000,"height":250}/i });
         expect(link2).toHaveAttribute('href', 'http://example.com/iiif/abc123/full/1000,/0/default.jpg?download=true');
       });
     });

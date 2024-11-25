@@ -51,7 +51,7 @@ describe('Dialog', () => {
   it('calls the closeDialog function when the close button is clicked', async () => {
     const closeDialog = jest.fn();
     createWrapper({ closeDialog });
-    const closeButton = await screen.findByText(/close/);
+    const closeButton = await screen.findByText(/mirador-dl-plugin.close/);
     fireEvent.click(closeButton);
     expect(closeDialog).toHaveBeenCalled();
   });

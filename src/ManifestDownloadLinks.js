@@ -18,7 +18,7 @@ export default class ManifestDownloadLinks extends Component {
     return (
       <React.Fragment>
         <Typography variant="h3" sx={{ marginTop: '20px' }}>
-          {t('other_download')}
+          {t('mirador-dl-plugin.other_download')}
         </Typography>
         <List>
           {renderings.map((rendering) => (
