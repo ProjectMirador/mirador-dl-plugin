@@ -67,6 +67,25 @@ function supportsAdditonalFeature(imageInfo, feature) {
   }
 }
 
+export function requestExceedsMaximum(imageInfo, width, height) {
+  const version = getImageApiVersion(imageInfo);
+  switch (version) {
+    case 2: {
+      const profile = getArrayFromInfoResponse(imageInfo, 'profile');
+      return (profile.maxWidth && profile.maxWidth < width)
+        || (profile.maxHeight && profile.maxHeight < height)
+        || (profile.maxArea && profile.maxArea < width * height);
+    }
+    case 3: {
+      return (imageInfo.maxWidth && imageInfo.maxWidth < width)
+        || (imageInfo.maxHeight && imageInfo.maxHeight < height)
+        || (imageInfo.maxArea && imageInfo.maxArea < width * height);
+    }
+    default:
+      return false;
+  }
+}
+
 function supportsArbitrarySizeInCanonicalForm(imageInfo) {
   const level = getComplianceLevel(imageInfo);
   const version = getImageApiVersion(imageInfo);
@@ -75,6 +94,19 @@ function supportsArbitrarySizeInCanonicalForm(imageInfo) {
     || (version < 3 && supportsAdditonalFeature(imageInfo, 'sizeByW'))
     || (version === 3 && supportsAdditonalFeature(imageInfo, 'sizeByWh'))) {
     return true;
+  }
+  return false;
+}
+
+function supportsRequest(imageInfo, region, width, height) {
+  if (supportsArbitrarySizeInCanonicalForm(imageInfo)) {
+    return true;
+  }
+  if (region === 'full') {
+    return imageInfo.sizes
+      && imageInfo.sizes.filter(
+        (size) => size.width === width && size.height === height,
+      ).length > 0;
   }
   return false;
 }
@@ -101,6 +133,8 @@ export function createCanonicalImageUrl(imageInfo, region, width, height) {
   if (!supportsArbitrarySizeInCanonicalForm(imageInfo)) {
     // TODO check if requested size is available for level 0, return undefined otherwise
   }
-  // TODO check if size exceeds maximum width / height / area
+  if (requestExceedsMaximum(imageInfo, width, height)) {
+    return undefined;
+  }
   return `${baseUri}/${region}/${size}/0/${quality}.jpg`;
 }
