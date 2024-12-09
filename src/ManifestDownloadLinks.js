@@ -13,12 +13,12 @@ export default class ManifestDownloadLinks extends Component {
    * Returns the rendered component
    */
   render() {
-    const { renderings } = this.props;
+    const { renderings, t } = this.props;
 
     return (
       <React.Fragment>
         <Typography variant="h3" sx={{ marginTop: '20px' }}>
-          Other download options
+          {t('mirador-dl-plugin.other_download')}
         </Typography>
         <List>
           {renderings.map((rendering) => (
@@ -32,4 +32,5 @@ export default class ManifestDownloadLinks extends Component {
 
 ManifestDownloadLinks.propTypes = {
   renderings: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
+  t: PropTypes.func.isRequired,
 };

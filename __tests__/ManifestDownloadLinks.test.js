@@ -7,6 +7,7 @@ function createWrapper(props) {
     <ManifestDownloadLinks
       classes={{}}
       renderings={[]}
+      t={(k) => k}
       {...props}
     />,
   );
@@ -30,7 +31,7 @@ describe('ManifestDownloadLinks', () => {
     createWrapper({ renderings });
 
     screen.getByRole('heading');
-    const headingElement = screen.getByText('Other download options');
+    const headingElement = screen.getByText('mirador-dl-plugin.other_download');
     expect(headingElement).toBeInTheDocument();
     expect(headingElement.tagName).toBe('H3');
   });
