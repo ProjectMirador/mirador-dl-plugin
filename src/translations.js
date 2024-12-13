@@ -17,6 +17,15 @@ const translations = {
       zoomed_region: 'Zoomed region ({{width}} x {{height}}px)',
     },
   },
+  et: {
+    'mirador-dl-plugin': {
+      close: 'Sulge',
+      download: 'Lae alla',
+      other_download: 'Teised allalaadimise valikud',
+      whole_image: 'Kogu pilt ({{width}} x {{height}}px)',
+      zoomed_region: 'Suurendatud piirkond ({{width}} x {{height}}px)',
+    },
+  },
   fr: {
     'mirador-dl-plugin': {
       close: 'Fermer',
