@@ -2,13 +2,13 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {
   getCanvasLabel,
+  getContainerId,
+  getManifestoInstance,
   getVisibleCanvases,
+  getWindowViewType,
   selectInfoResponse,
-} from 'mirador/dist/es/src/state/selectors/canvases';
-import { getWindowViewType } from 'mirador/dist/es/src/state/selectors/windows';
-import { getManifestoInstance } from 'mirador/dist/es/src/state/selectors/manifests';
-import { getContainerId } from 'mirador/dist/es/src/state/selectors/config';
-import ScrollIndicatedDialogContent from 'mirador/dist/es/src/containers/ScrollIndicatedDialogContent';
+  ScrollIndicatedDialogContent,
+} from 'mirador';
 import Typography from '@mui/material/Typography';
 import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';

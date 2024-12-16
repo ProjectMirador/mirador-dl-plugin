@@ -11,9 +11,9 @@ module.exports = {
     '<rootDir>/setupJest.js',
   ],
   testEnvironment: 'jsdom',
-  // Ignore Mirador/Manifesto code from jest transforms
+  // Ignore Mirador/Manifesto/dnd libs code from jest transforms
   transformIgnorePatterns: [
-    '<rootDir>/node_modules/(?!(mirador|manifesto.js))',
+    '<rootDir>/node_modules/(?!(mirador|manifesto.js|react-dnd|dnd-core|@react-dnd|dnd-multi-backend|rdndmb-html5-to-touch))',
   ],
   testPathIgnorePatterns: [
     '<rootDir>/__tests__/test-utils.js',
