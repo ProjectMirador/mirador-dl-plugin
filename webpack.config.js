@@ -36,9 +36,9 @@ const baseConfig = (mode) => ({
     ],
   },
   output: {
-    filename: 'mirador-image-tools.js',
+    filename: 'mirador-dl-plugin.js',
     hashFunction: 'md5',
-    library: 'MiradorImageTools',
+    library: 'MiradorDownloadPlugin',
     libraryExport: 'default',
     libraryTarget: 'umd',
     path: path.join(__dirname, 'umd'),
