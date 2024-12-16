@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import uniqBy from 'lodash/uniqBy';
-import { OSDReferences } from 'mirador/dist/es/src/plugins/OSDReferences';
+import { OSDReferences } from 'mirador';
 import Typography from '@mui/material/Typography';
 import Link from '@mui/material/Link';
 import List from '@mui/material/List';

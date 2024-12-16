@@ -1,5 +1,5 @@
 import React from 'react';
-import { OSDReferences } from 'mirador/dist/es/src/plugins/OSDReferences';
+import { OSDReferences } from 'mirador';
 import CanvasDownloadLinks from '../src/CanvasDownloadLinks';
 import { render, screen } from './test-utils';
 
