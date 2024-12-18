@@ -44,7 +44,7 @@ describe('CanvasDownloadLinks', () => {
   let currentBoundsSpy;
 
   beforeEach(() => {
-    currentBoundsSpy = jest.spyOn(CanvasDownloadLinks.prototype, 'currentBounds');
+    currentBoundsSpy = vi.spyOn(CanvasDownloadLinks.prototype, 'currentBounds');
   });
 
   afterEach(() => {
@@ -197,8 +197,8 @@ describe('CanvasDownloadLinks', () => {
 
     describe('For Images Less Than 1000px Wide', () => {
       it('does not render a smaller version link if image is under 1000px wide', () => {
-        canvas.getWidth = () => 999;
-        createWrapper({ canvas });
+        const smallCanvas = { ...canvas, getWidth: () => 999 };
+        createWrapper({ canvas: smallCanvas });
 
         const links = screen.getAllByRole('link');
         expect(links).toHaveLength(2); // Should only show full-size version and link to PDF.
