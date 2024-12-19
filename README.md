@@ -11,18 +11,18 @@
 ![mirador-download-options](https://user-images.githubusercontent.com/5402927/87057857-3d056e80-c1bc-11ea-8860-7662208c19fa.png)
 
 
-[build-badge]: https://img.shields.io/travis/projectmirador/mirador-dl-plugin/master.png?style=flat-square
+[build-badge]: https://img.shields.io/travis/projectmirador/mirador-dl-plugin/main.png?style=flat-square
 [build]: https://travis-ci.org/projectmirador/mirador-dl-plugin
 
 [npm-badge]: https://img.shields.io/npm/v/mirador-dl-plugin.png?style=flat-square
 [npm]: https://www.npmjs.org/package/mirador-dl-plugin
 
-[coveralls-badge]: https://img.shields.io/coveralls/user/repo/master.png?style=flat-square
+[coveralls-badge]: https://img.shields.io/coveralls/user/repo/main.png?style=flat-square
 [coveralls]: https://coveralls.io/github/user/repo
 
 ## Installation
 
-`mirador-dl-plugin` requires an instance of Mirador 4. See the [Mirador wiki](https://github.com/ProjectMirador/mirador/wiki) for examples of embedding Mirador within an application and additional information about plugins. See the [live demo's index.js](https://github.com/ProjectMirador/mirador-dl-plugin/blob/master/demo/src/index.js) for an example of importing and configuring `mirador-dl-plugin`.
+`mirador-dl-plugin` requires an instance of Mirador 4. See the [Mirador wiki](https://github.com/ProjectMirador/mirador/wiki) for examples of embedding Mirador within an application and additional information about plugins. See the [live demo's index.js](https://github.com/ProjectMirador/mirador-dl-plugin/blob/main/demo/src/index.js) for an example of importing and configuring `mirador-dl-plugin`.
 
 ## Configuration
 
