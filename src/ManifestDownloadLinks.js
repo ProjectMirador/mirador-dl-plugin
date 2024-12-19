@@ -16,7 +16,7 @@ export default class ManifestDownloadLinks extends Component {
     const { renderings, t } = this.props;
 
     return (
-      <React.Fragment>
+      <>
         <Typography variant="h3" sx={{ marginTop: '20px' }}>
           {t('mirador-dl-plugin.other_download')}
         </Typography>
@@ -25,7 +25,7 @@ export default class ManifestDownloadLinks extends Component {
             <RenderingDownloadLink rendering={rendering} key={rendering.id} />
           ))}
         </List>
-      </React.Fragment>
+      </>
     );
   }
 }

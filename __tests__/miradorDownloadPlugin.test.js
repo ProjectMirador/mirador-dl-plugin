@@ -28,8 +28,8 @@ describe('miradorDownloadPlugin', () => {
 
 describe('MenuItem', () => {
   it('triggers both openDownloadDialog and handleClose when "Download" is clicked', async () => {
-    const handleClose = jest.fn();
-    const openDownloadDialog = jest.fn();
+    const handleClose = vi.fn();
+    const openDownloadDialog = vi.fn();
     createWrapper({ handleClose, openDownloadDialog });
     const openDownloadDialogButton = await screen.findByText(/mirador-dl-plugin\.download/);
     fireEvent.click(openDownloadDialogButton);
