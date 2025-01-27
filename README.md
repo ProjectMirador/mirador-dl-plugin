@@ -1,6 +1,5 @@
 # mirador-dl-plugin
 
-[![Travis][build-badge]][build]
 [![npm package][npm-badge]][npm]
 [![Coveralls][coveralls-badge]][coveralls]
 
@@ -10,9 +9,6 @@
 
 ![mirador-download-options](https://user-images.githubusercontent.com/5402927/87057857-3d056e80-c1bc-11ea-8860-7662208c19fa.png)
 
-
-[build-badge]: https://img.shields.io/travis/projectmirador/mirador-dl-plugin/main.png?style=flat-square
-[build]: https://travis-ci.org/projectmirador/mirador-dl-plugin
 
 [npm-badge]: https://img.shields.io/npm/v/mirador-dl-plugin.png?style=flat-square
 [npm]: https://www.npmjs.org/package/mirador-dl-plugin
