@@ -1,5 +1,6 @@
-import React, { Component } from 'react';
+import React, { useCallback } from 'react';
 import PropTypes from 'prop-types';
+import { useTranslation } from 'react-i18next';
 import MenuItem from '@mui/material/MenuItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
@@ -32,39 +33,29 @@ const mapDispatchToProps = (dispatch, { windowId }) => ({
   openDownloadDialog: () => dispatch({ type: 'OPEN_WINDOW_DIALOG', windowId, dialogType: 'download' }),
 });
 
-class MiradorDownload extends Component {
-  openDialogAndCloseMenu() {
-    const { handleClose, openDownloadDialog } = this.props;
-
+function MiradorDownload({ handleClose = () => {}, openDownloadDialog = () => {} }) {
+  const openDialogAndCloseMenu = useCallback(() => {
     openDownloadDialog();
     handleClose();
-  }
+  }, [handleClose, openDownloadDialog]);
 
-  render() {
-    const { t } = this.props;
+  const { t } = useTranslation();
 
-    return (
-      <MenuItem onClick={() => this.openDialogAndCloseMenu()}>
-        <ListItemIcon>
-          <VerticalAlignBottomIcon />
-        </ListItemIcon>
-        <ListItemText primaryTypographyProps={{ variant: 'body1' }}>
-          {t('mirador-dl-plugin.download')}
-        </ListItemText>
-      </MenuItem>
-    );
-  }
+  return (
+    <MenuItem onClick={openDialogAndCloseMenu}>
+      <ListItemIcon>
+        <VerticalAlignBottomIcon />
+      </ListItemIcon>
+      <ListItemText primaryTypographyProps={{ variant: 'body1' }}>
+        {t('mirador-dl-plugin.download')}
+      </ListItemText>
+    </MenuItem>
+  );
 }
 
 MiradorDownload.propTypes = {
   handleClose: PropTypes.func,
   openDownloadDialog: PropTypes.func,
-  t: PropTypes.func.isRequired,
-};
-
-MiradorDownload.defaultProps = {
-  handleClose: () => {},
-  openDownloadDialog: () => {},
 };
 
 export default {
