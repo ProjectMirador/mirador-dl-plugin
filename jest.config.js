@@ -13,7 +13,7 @@ module.exports = {
   testEnvironment: 'jsdom',
   // Ignore Mirador/Manifesto/dnd libs code from jest transforms
   transformIgnorePatterns: [
-    '<rootDir>/node_modules/(?!(mirador|manifesto.js|react-dnd|dnd-core|@react-dnd|dnd-multi-backend|rdndmb-html5-to-touch))',
+    '<rootDir>/node_modules/(?!(mirador|manifesto.js|react-dnd|dnd-core|@react-dnd|dnd-multi-backend|rdndmb-html5-to-touch|react-mosaic-component2|lodash-es))',
   ],
   testPathIgnorePatterns: [
     '<rootDir>/__tests__/test-utils.js',

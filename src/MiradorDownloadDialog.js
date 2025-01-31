@@ -1,5 +1,6 @@
-import React, { Component } from 'react';
+import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
+import { useTranslation } from 'react-i18next';
 import {
   getCanvasLabel,
   getContainerId,
@@ -40,9 +41,20 @@ const mapStateToProps = (state, { windowId }) => ({
 /**
  * MiradorDownloadDialog ~
  */
-export class MiradorDownloadDialog extends Component {
-  renderings() {
-    const { manifest } = this.props;
+export function MiradorDownloadDialog({
+  canvases = [],
+  canvasLabel,
+  closeDialog,
+  containerId,
+  infoResponse,
+  manifest = {},
+  open = false,
+  restrictDownloadOnSizeDefinition = false,
+  viewType,
+  windowId,
+}) {
+  const { t } = useTranslation();
+  const renderings = useMemo(() => {
     if (
       !(
         manifest
@@ -53,71 +65,53 @@ export class MiradorDownloadDialog extends Component {
     ) return [];
 
     return manifest.getSequences()[0].getRenderings();
-  }
+  }, [manifest]);
 
-  /**
-   * Returns the rendered component
-   */
-  render() {
-    const {
-      canvases,
-      canvasLabel,
-      closeDialog,
-      containerId,
-      infoResponse,
-      open,
-      restrictDownloadOnSizeDefinition,
-      t,
-      viewType,
-      windowId,
-    } = this.props;
+  if (!open) return '';
 
-    if (!open) return '';
-
-    return (
-      <Dialog
-        data-testid="dialog-content"
-        container={document.querySelector(`#${containerId} .mirador-viewer`)}
-        disableEnforceFocus
-        onClose={closeDialog}
-        open={open}
-        scroll="paper"
-        fullWidth
-        maxWidth="xs"
-      >
-        <DialogTitle sx={{ paddingBottom: 0 }}>
-          <Typography variant="h2" component="span">{t('mirador-dl-plugin.download')}</Typography>
-        </DialogTitle>
-        <ScrollIndicatedDialogContent>
-          {canvases.map((canvas) => (
-            <CanvasDownloadLinks
-              canvas={canvas}
-              canvasLabel={canvasLabel(canvas.id)}
-              infoResponse={infoResponse(canvas.id)}
-              restrictDownloadOnSizeDefinition={
-                  restrictDownloadOnSizeDefinition
-                }
-              key={canvas.id}
-              t={t}
-              viewType={viewType}
-              windowId={windowId}
-            />
-          ))}
-          {this.renderings().length > 0 && (
-          <ManifestDownloadLinks
-            renderings={this.renderings()}
+  return (
+    <Dialog
+      data-testid="dialog-content"
+      container={document.querySelector(`#${containerId} .mirador-viewer`)}
+      disableEnforceFocus
+      onClose={closeDialog}
+      open={open}
+      scroll="paper"
+      fullWidth
+      maxWidth="xs"
+    >
+      <DialogTitle sx={{ paddingBottom: 0 }}>
+        <Typography variant="h2" component="span">{t('mirador-dl-plugin.download')}</Typography>
+      </DialogTitle>
+      <ScrollIndicatedDialogContent>
+        {canvases.map((canvas) => (
+          <CanvasDownloadLinks
+            canvas={canvas}
+            canvasLabel={canvasLabel(canvas.id)}
+            infoResponse={infoResponse(canvas.id)}
+            restrictDownloadOnSizeDefinition={
+                restrictDownloadOnSizeDefinition
+              }
+            key={canvas.id}
             t={t}
+            viewType={viewType}
+            windowId={windowId}
           />
-          )}
-        </ScrollIndicatedDialogContent>
-        <DialogActions>
-          <Button onClick={closeDialog} color="primary">
-            {t('mirador-dl-plugin.close')}
-          </Button>
-        </DialogActions>
-      </Dialog>
-    );
-  }
+        ))}
+        {renderings.length > 0 && (
+        <ManifestDownloadLinks
+          renderings={renderings}
+          t={t}
+        />
+        )}
+      </ScrollIndicatedDialogContent>
+      <DialogActions>
+        <Button onClick={closeDialog} color="primary">
+          {t('mirador-dl-plugin.close')}
+        </Button>
+      </DialogActions>
+    </Dialog>
+  );
 }
 
 MiradorDownloadDialog.propTypes = {
@@ -133,15 +127,8 @@ MiradorDownloadDialog.propTypes = {
   }),
   open: PropTypes.bool,
   restrictDownloadOnSizeDefinition: PropTypes.bool,
-  t: PropTypes.func.isRequired,
   viewType: PropTypes.string.isRequired,
   windowId: PropTypes.string.isRequired,
-};
-MiradorDownloadDialog.defaultProps = {
-  canvases: [],
-  manifest: {},
-  open: false,
-  restrictDownloadOnSizeDefinition: false,
 };
 
 export default {
