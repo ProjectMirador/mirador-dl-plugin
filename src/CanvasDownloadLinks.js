@@ -183,7 +183,7 @@ export default class CanvasDownloadLinks extends Component {
     const { canvas, canvasLabel } = this.props;
 
     return (
-      <React.Fragment>
+      <>
         <Typography noWrap variant="h3" sx={{ marginTop: '20px' }}>
           {canvasLabel}
         </Typography>
@@ -210,7 +210,7 @@ export default class CanvasDownloadLinks extends Component {
             <RenderingDownloadLink rendering={rendering} key={rendering.id} />
           ))}
         </List>
-      </React.Fragment>
+      </>
     );
   }
 }
