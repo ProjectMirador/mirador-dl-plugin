@@ -3,12 +3,16 @@
   "version": "1.0.0-alpha.2",
   "description": "mirador-dl-plugin React component",
   "main": "./dist/mirador-dl-plugin.js",
-  "module": "./dist/mirador-dl-pugin.es.js",
+  "module": "./dist/mirador-dl-plugin.es.js",
   "files": [
     "dist"
   ],
   "exports": {
-    "./src": "./src/index.js"
+    "./src": "./src/index.js",
+    ".": {
+        "import": "./dist/mirador-dl-plugin.es.js",
+        "require": "./dist/mirador-dl-plugin.js"
+    }
   },
   "scripts": {
     "build": "vite build --config vite.config.js",
