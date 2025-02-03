@@ -47,7 +47,7 @@ export function MiradorDownloadDialog({
   closeDialog,
   containerId,
   infoResponse,
-  manifest = {},
+  manifest = undefined,
   open = false,
   restrictDownloadOnSizeDefinition = false,
   viewType,
