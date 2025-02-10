@@ -1,6 +1,5 @@
 import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
-import { useTranslation } from 'react-i18next';
 import {
   getCanvasLabel,
   getContainerId,
@@ -9,6 +8,7 @@ import {
   getWindowViewType,
   selectInfoResponse,
   ScrollIndicatedDialogContent,
+  useTranslation,
 } from 'mirador';
 import Typography from '@mui/material/Typography';
 import Dialog from '@mui/material/Dialog';
