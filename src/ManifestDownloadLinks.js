@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from 'mirador';
 import Typography from '@mui/material/Typography';
 import List from '@mui/material/List';
 import RenderingDownloadLink from './RenderingDownloadLink';
