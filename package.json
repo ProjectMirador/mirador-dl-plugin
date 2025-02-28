@@ -1,6 +1,6 @@
 {
   "name": "mirador-dl-plugin",
-  "version": "1.0.0-alpha.3",
+  "version": "1.0.0-alpha.4",
   "description": "mirador-dl-plugin React component",
   "main": "./dist/mirador-dl-plugin.js",
   "module": "./dist/mirador-dl-plugin.es.js",
