@@ -1,4 +1,3 @@
-import '@mui/material/styles/styled';
 import miradorDownloadPlugin from './miradorDownloadPlugin';
 import miradorDownloadDialogPlugin from './MiradorDownloadDialog';
 
