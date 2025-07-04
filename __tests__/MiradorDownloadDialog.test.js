@@ -130,6 +130,7 @@ describe('mapStateToProps', () => {
                       resource: {
                         service: {
                           '@id': 'https://example.com/image/iiif/abc123_0001',
+                          profile: 'http://iiif.io/api/image/2/level1.json',
                         },
                       },
                     },
