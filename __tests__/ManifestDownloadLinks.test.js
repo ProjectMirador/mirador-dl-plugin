@@ -1,4 +1,3 @@
-import React from 'react';
 import ManifestDownloadLinks from '../src/ManifestDownloadLinks';
 import { render, screen } from './test-utils';
 

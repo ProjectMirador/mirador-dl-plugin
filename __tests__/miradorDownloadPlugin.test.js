@@ -1,4 +1,3 @@
-import React from 'react';
 import miradorDownloadPlugin from '../src/miradorDownloadPlugin';
 import { fireEvent, render, screen } from './test-utils';
 

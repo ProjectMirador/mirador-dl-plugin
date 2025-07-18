@@ -1,4 +1,3 @@
-import React from 'react';
 import { OSDReferences } from 'mirador';
 import CanvasDownloadLinks from '../src/CanvasDownloadLinks';
 import { render, screen } from './test-utils';
