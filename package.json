@@ -2,7 +2,6 @@
   "name": "mirador-dl-plugin",
   "version": "1.0.0-alpha.4",
   "description": "mirador-dl-plugin React component",
-  "main": "./dist/mirador-dl-plugin.js",
   "module": "./dist/mirador-dl-plugin.es.js",
   "files": [
     "dist"
@@ -10,8 +9,7 @@
   "exports": {
     "./src": "./src/index.js",
     ".": {
-        "import": "./dist/mirador-dl-plugin.es.js",
-        "require": "./dist/mirador-dl-plugin.js"
+      "import": "./dist/mirador-dl-plugin.es.js"
     }
   },
   "scripts": {
