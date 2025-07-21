@@ -1,4 +1,3 @@
-import React from 'react';
 import RenderingDownloadLink from '../src/RenderingDownloadLink';
 import { render, screen } from './test-utils';
 
