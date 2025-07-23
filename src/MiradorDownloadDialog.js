@@ -18,6 +18,7 @@ import Button from '@mui/material/Button';
 import ManifestDownloadLinks from './ManifestDownloadLinks';
 import translations from './translations';
 import CanvasDownloadLinks from './CanvasDownloadLinks';
+import { getImageApiVersion } from './iiifImageFunctions';
 
 const mapDispatchToProps = (dispatch, { windowId }) => ({
   closeDialog: () => dispatch({ type: 'CLOSE_WINDOW_DIALOG', windowId }),
@@ -81,15 +82,7 @@ export function MiradorDownloadDialog({
       </DialogTitle>
       <ScrollIndicatedDialogContent>
         {canvases.map((canvas) => {
-          const imageInfo = infoResponse(canvas.id);
-          const context = imageInfo.json && imageInfo.json['@context'];
-          let contextArray;
-          if (Array.isArray(context)) {
-            contextArray = context;
-          } else if (typeof context === 'string') {
-            contextArray = [context];
-          }
-          const isVersion3 = contextArray && contextArray.indexOf('http://iiif.io/api/image/3/context.json') > -1;
+          const isVersion3 = getImageApiVersion(infoResponse(canvas.id)) === 3;
           return (
             <CanvasDownloadLinks
               canvas={canvas}
