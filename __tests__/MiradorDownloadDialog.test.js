@@ -74,7 +74,7 @@ describe('Dialog', () => {
           ],
         },
       });
-      const manifestLinksHeading = screen.queryByText('Other download options');
+      const manifestLinksHeading = screen.queryByText('mirador-dl-plugin.other_download');
       expect(manifestLinksHeading).toBeInTheDocument();
       const manifestLinks = screen.queryByText('Rendering from sequence');
       expect(manifestLinks).toBeInTheDocument();
@@ -88,7 +88,7 @@ describe('Dialog', () => {
           getSequences: () => undefined,
         },
       });
-      const manifestLinksHeading = screen.queryByText('Other download options');
+      const manifestLinksHeading = screen.queryByText('mirador-dl-plugin.other_download');
       expect(manifestLinksHeading).toBeInTheDocument();
       const manifestLinks = screen.queryByText('Rendering from manifest');
       expect(manifestLinks).toBeInTheDocument();
