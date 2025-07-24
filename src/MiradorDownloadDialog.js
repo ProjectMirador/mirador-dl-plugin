@@ -5,6 +5,7 @@ import {
   getContainerId,
   getManifestoInstance,
   getVisibleCanvases,
+  getVisibleCanvasNonTiledResources,
   getWindowViewType,
   selectInfoResponse,
   ScrollIndicatedDialogContent,
@@ -29,6 +30,7 @@ const mapStateToProps = (state, { windowId }) => ({
   canvasLabel: (canvasId) => getCanvasLabel(state, { canvasId, windowId }),
   containerId: getContainerId(state),
   infoResponse: (canvasId) => selectInfoResponse(state, { windowId, canvasId }) || {},
+  nonTiledResources: getVisibleCanvasNonTiledResources(state, { windowId }),
   manifest: getManifestoInstance(state, { windowId }),
   restrictDownloadOnSizeDefinition:
     state.config.miradorDownloadPlugin
@@ -49,6 +51,7 @@ export function MiradorDownloadDialog({
   containerId,
   infoResponse,
   manifest = undefined,
+  nonTiledResources,
   open = false,
   restrictDownloadOnSizeDefinition = false,
   viewType,
@@ -89,6 +92,7 @@ export function MiradorDownloadDialog({
               canvasLabel={canvasLabel(canvas.id)}
               isVersion3={isVersion3}
               infoResponse={infoResponse(canvas.id)}
+              nonTiledResources={nonTiledResources}
               restrictDownloadOnSizeDefinition={
                   restrictDownloadOnSizeDefinition
                 }
@@ -127,6 +131,9 @@ MiradorDownloadDialog.propTypes = {
     getSequences: PropTypes.func,
     getRenderings: PropTypes.func,
   }),
+  nonTiledResources: PropTypes.arrayOf(
+    PropTypes.shape({ id: PropTypes.string, format: PropTypes.string }),
+  ).isRequired,
   open: PropTypes.bool,
   restrictDownloadOnSizeDefinition: PropTypes.bool,
   viewType: PropTypes.string.isRequired,
