@@ -1,6 +1,5 @@
 import { Component } from 'react';
 import PropTypes from 'prop-types';
-import uniqBy from 'lodash/uniqBy';
 import { OSDReferences } from 'mirador';
 import Typography from '@mui/material/Typography';
 import Link from '@mui/material/Link';
@@ -120,10 +119,13 @@ export default class CanvasDownloadLinks extends Component {
     const { infoResponse } = this.props;
     if (!(infoResponse && infoResponse.json && infoResponse.json.sizes)) return [];
 
-    return uniqBy(
-      infoResponse.json.sizes,
-      (size) => `${size.width}${size.height}`,
-    );
+    const sizeMap = new Map();
+    return infoResponse.json.sizes.filter((size) => {
+      const key = `${size.width}${size.height}`;
+      if (sizeMap.has(key)) return false;
+      sizeMap.set(key, true);
+      return true;
+    });
   }
 
   fullImageLink() {
