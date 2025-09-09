@@ -27,7 +27,6 @@
     "@emotion/react": "^11.10.6",
     "@emotion/styled": "^11.10.6",
     "react-i18next": "^13.0.0 || ^14.0.0 || ^15.0.0",
-    "lodash": "^4.17.11",
     "mirador": "^4.0.0-alpha.17",
     "react": "^18.0.0 || ^19.0.0",
     "react-dom": "^18.0.0 || ^19.0.0"
@@ -54,7 +53,6 @@
     "eslint-plugin-testing-library": "^6.2.0",
     "glob": "^10.3.0",
     "happy-dom": "^17.0.0",
-    "lodash": "^4.17.15",
     "mirador": "^4.0.0-alpha.17",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
