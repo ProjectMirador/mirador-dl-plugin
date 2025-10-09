@@ -1,6 +1,6 @@
 {
   "name": "mirador-dl-plugin",
-  "version": "1.0.0-rc.1",
+  "version": "1.0.0",
   "description": "mirador-dl-plugin React component",
   "module": "./dist/mirador-dl-plugin.es.js",
   "files": [
@@ -22,21 +22,21 @@
     "test:coverage": "npm run lint && npx vitest run --coverage"
   },
   "peerDependencies": {
-    "@mui/material": "7.x",
-    "@mui/system": "7.x",
+    "@mui/material": "^7.0.0",
+    "@mui/system": "^7.0.0",
     "@emotion/react": "^11.10.6",
     "@emotion/styled": "^11.10.6",
     "react-i18next": "^13.0.0 || ^14.0.0 || ^15.0.0",
     "lodash": "^4.17.11",
-    "mirador": "^4.0.0-alpha.17",
-    "react": "^18.0.0 || ^19.0.0",
-    "react-dom": "^18.0.0 || ^19.0.0"
+    "mirador": "^4.0.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
   },
   "devDependencies": {
     "@emotion/react": "^11.10.6",
     "@emotion/styled": "^11.10.6",
-    "@mui/material": "7.x",
-    "@mui/system": "7.x",
+    "@mui/material": "^7.0.0",
+    "@mui/system": "^7.0.0",
     "@testing-library/dom": "^10.4.0",
     "@testing-library/jest-dom": "^6.1.5",
     "@testing-library/react": "^16.0.0",
@@ -55,7 +55,7 @@
     "glob": "^10.3.0",
     "happy-dom": "^17.0.0",
     "lodash": "^4.17.15",
-    "mirador": "^4.0.0-alpha.17",
+    "mirador": "^4.0.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-i18next": "^13.0.0 || ^14.0.0 || ^15.0.0",
