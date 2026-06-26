@@ -2,6 +2,7 @@
   "name": "mirador-dl-plugin",
   "version": "1.0.0",
   "description": "mirador-dl-plugin React component",
+  "type": "module",
   "module": "./dist/mirador-dl-plugin.es.js",
   "files": [
     "dist"
