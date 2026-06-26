@@ -2,14 +2,7 @@ import ManifestDownloadLinks from '../src/ManifestDownloadLinks';
 import { render, screen } from './test-utils';
 
 function createWrapper(props) {
-  return render(
-    <ManifestDownloadLinks
-      classes={{}}
-      renderings={[]}
-      t={(k) => k}
-      {...props}
-    />,
-  );
+  return render(<ManifestDownloadLinks classes={{}} renderings={[]} t={(k) => k} {...props} />);
 }
 
 describe('ManifestDownloadLinks', () => {
