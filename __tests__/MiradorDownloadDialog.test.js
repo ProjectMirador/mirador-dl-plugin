@@ -5,7 +5,7 @@ import { fireEvent, render, screen } from './test-utils';
 function createWrapper(props) {
   return render(
     <miradorDownloadDialog.component
-      canvasLabel={(label) => (label || 'My Canvas Title')}
+      canvasLabel={(label) => label || 'My Canvas Title'}
       canvases={[]}
       classes={{}}
       closeDialog={() => {}}
@@ -24,7 +24,7 @@ function createWrapper(props) {
 describe('Dialog', () => {
   it('does not render content when the open prop is false', () => {
     createWrapper({ open: false });
-    expect(screen.queryByTestId('dialog-content')).toBeNull();
+    expect(screen.queryByTestId('dialog-content')).not.toBeInTheDocument();
   });
 
   it('renders a CanvasDownloadLinks component with headings for each canvas', () => {
@@ -38,11 +38,11 @@ describe('Dialog', () => {
     createWrapper({ canvases: [mockCanvas('abc123'), mockCanvas('xyz321')] });
 
     const headings = screen.getAllByRole('heading');
-    const headingAbc = headings.find((heading) => (heading.textContent === 'abc123'));
+    const headingAbc = headings.find((heading) => heading.textContent === 'abc123');
     expect(headingAbc).toBeInTheDocument();
     expect(headingAbc.tagName).toBe('H3');
 
-    const headingXyz = headings.find((heading) => (heading.textContent === 'xyz321'));
+    const headingXyz = headings.find((heading) => heading.textContent === 'xyz321');
     expect(headingXyz).toBeInTheDocument();
     expect(headingXyz.tagName).toBe('H3');
   });

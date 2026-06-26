@@ -7,7 +7,6 @@ import ListItemText from '@mui/material/ListItemText';
 import VerticalAlignBottomIcon from '@mui/icons-material/VerticalAlignBottom';
 import translations from './translations';
 
-// eslint-disable-next-line default-param-last
 const downloadDialogReducer = (state = {}, action) => {
   if (action.type === 'OPEN_WINDOW_DIALOG') {
     return {
@@ -46,9 +45,7 @@ function MiradorDownload({ handleClose = () => {}, openDownloadDialog = () => {}
       <ListItemIcon>
         <VerticalAlignBottomIcon />
       </ListItemIcon>
-      <ListItemText primaryTypographyProps={{ variant: 'body1' }}>
-        {t('mirador-dl-plugin.download')}
-      </ListItemText>
+      <ListItemText primaryTypographyProps={{ variant: 'body1' }}>{t('mirador-dl-plugin.download')}</ListItemText>
     </MenuItem>
   );
 }

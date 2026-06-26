@@ -117,13 +117,10 @@ export default class CanvasDownloadLinks extends Component {
 
     if (this.definedSizes().length !== 1) return false;
 
-    return (
-      this.definedSizes()[0].width <= width
-      && this.definedSizes()[0].height <= height
-    );
+    return this.definedSizes()[0].width <= width && this.definedSizes()[0].height <= height;
   }
 
-  displayCurrentZoomLink() {
+  displayCurrentZoomLinkdisplayCurrentZoomLink() {
     const { restrictDownloadOnSizeDefinition, infoResponse, viewType } = this.props;
 
     if (viewType !== 'single') return false;
@@ -185,12 +182,7 @@ export default class CanvasDownloadLinks extends Component {
 
     return (
       <ListItem disableGutters divider key={this.thousandPixelWideImage()}>
-        <Link
-          href={this.thousandPixelWideImage()}
-          rel="noopener noreferrer"
-          target="_blank"
-          variant="body1"
-        >
+        <Link href={this.thousandPixelWideImage()} rel="noopener noreferrer" target="_blank" variant="body1">
           {this.smallImageLabel()}
         </Link>
       </ListItem>
@@ -201,12 +193,7 @@ export default class CanvasDownloadLinks extends Component {
     const { t } = this.props;
     return this.definedSizes().filter((size) => this.imageUrlForSize(size)).map((size) => (
       <ListItem disableGutters divider key={`${size.width}${size.height}`}>
-        <Link
-          href={this.imageUrlForSize(size)}
-          rel="noopener noreferrer"
-          target="_blank"
-          variant="body1"
-        >
+        <Link href={this.imageUrlForSize(size)} rel="noopener noreferrer" target="_blank" variant="body1">
           {t('mirador-dl-plugin.whole_image', { width: size.width, height: size.height })}
         </Link>
       </ListItem>
@@ -242,21 +229,12 @@ export default class CanvasDownloadLinks extends Component {
         <List>
           {this.displayCurrentZoomLink() && (
             <ListItem disableGutters divider>
-              <Link
-                href={this.zoomedImageUrl()}
-                download
-                rel="noopener noreferrer"
-                target="_blank"
-                variant="body1"
-              >
+              <Link href={this.zoomedImageUrl()} download rel="noopener noreferrer" target="_blank" variant="body1">
                 {this.zoomedImageLabel()}
               </Link>
             </ListItem>
           )}
-          {this.definedSizes().length === 0 && [
-            this.fullImageLink(),
-            this.thousandPixelWideLink(),
-          ]}
+          {this.definedSizes().length === 0 && [this.fullImageLink(), this.thousandPixelWideLink()]}
           {this.definedSizes().length > 0 && this.linksForDefinedSizes()}
           {this.nonTiledImageLinks()}
           {canvas.getRenderings().map((rendering) => (
@@ -280,9 +258,7 @@ CanvasDownloadLinks.propTypes = {
   infoResponse: PropTypes.shape({
     json: PropTypes.shape({
       height: PropTypes.number,
-      sizes: PropTypes.arrayOf(
-        PropTypes.shape({ height: PropTypes.number, width: PropTypes.number }),
-      ),
+      sizes: PropTypes.arrayOf(PropTypes.shape({ height: PropTypes.number, width: PropTypes.number })),
       width: PropTypes.number,
     }),
   }).isRequired,

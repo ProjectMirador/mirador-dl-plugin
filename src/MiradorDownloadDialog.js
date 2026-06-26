@@ -32,11 +32,8 @@ const mapStateToProps = (state, { windowId }) => ({
   nonTiledResources: getVisibleCanvasNonTiledResources(state, { windowId }),
   manifest: getManifestoInstance(state, { windowId }),
   restrictDownloadOnSizeDefinition:
-    state.config.miradorDownloadPlugin
-    && state.config.miradorDownloadPlugin.restrictDownloadOnSizeDefinition,
-  open:
-    state.windowDialogs[windowId]
-    && state.windowDialogs[windowId].openDialog === 'download',
+    state.config.miradorDownloadPlugin && state.config.miradorDownloadPlugin.restrictDownloadOnSizeDefinition,
+  open: state.windowDialogs[windowId] && state.windowDialogs[windowId].openDialog === 'download',
   viewType: getWindowViewType(state, { windowId }),
 });
 
@@ -58,12 +55,10 @@ export function MiradorDownloadDialog({
 }) {
   const { t } = useTranslation();
   const renderings = useMemo(() => {
-    const manifestRenderings = (manifest && manifest.getRenderings()) || [];
-    const sequenceRenderings = (manifest
-        && manifest.getSequences()
-        && manifest.getSequences()[0]
-        && manifest.getSequences()[0].getRenderings()) || [];
-    return [...manifestRenderings, ...sequenceRenderings];
+    if (!(manifest && manifest.getSequences() && manifest.getSequences()[0] && manifest.getSequences()[0].getRenderings()))
+      return [];
+
+    return manifest.getSequences()[0].getRenderings();
   }, [manifest]);
 
   if (!open) return '';
@@ -80,7 +75,9 @@ export function MiradorDownloadDialog({
       maxWidth="xs"
     >
       <DialogTitle sx={{ paddingBottom: 0 }}>
-        <Typography variant="h2" component="span">{t('mirador-dl-plugin.download')}</Typography>
+        <Typography variant="h2" component="span">
+          {t('mirador-dl-plugin.download')}
+        </Typography>
       </DialogTitle>
       <ScrollIndicatedDialogContent>
         {canvases.map((canvas) => (
@@ -114,9 +111,7 @@ export function MiradorDownloadDialog({
 
 MiradorDownloadDialog.propTypes = {
   canvasLabel: PropTypes.func.isRequired,
-  canvases: PropTypes.arrayOf(
-    PropTypes.shape({ id: PropTypes.string, index: PropTypes.number }),
-  ),
+  canvases: PropTypes.arrayOf(PropTypes.shape({ id: PropTypes.string, index: PropTypes.number })),
   closeDialog: PropTypes.func.isRequired,
   containerId: PropTypes.string.isRequired,
   infoResponse: PropTypes.func.isRequired,

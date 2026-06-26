@@ -13,18 +13,10 @@ export default class RenderingDownloadLink extends Component {
     return (
       <ListItem disableGutters divider key={rendering.id}>
         <ListItemText primaryTypographyProps={{ variant: 'body1' }}>
-          <Link
-            href={rendering.id}
-            download
-            rel="noopener noreferrer"
-            target="_blank"
-            variant="body1"
-          >
+          <Link href={rendering.id} download rel="noopener noreferrer" target="_blank" variant="body1">
             {rendering.getLabel().getValue()}
           </Link>
-          {rendering.getFormat()
-            && rendering.getFormat().value
-            && ` (${rendering.getFormat().value})`}
+          {rendering.getFormat() && rendering.getFormat().value && ` (${rendering.getFormat().value})`}
         </ListItemText>
       </ListItem>
     );

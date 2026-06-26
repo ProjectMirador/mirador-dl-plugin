@@ -2,14 +2,7 @@ import miradorDownloadPlugin from '../src/miradorDownloadPlugin';
 import { fireEvent, render, screen } from './test-utils';
 
 function createWrapper(props) {
-  return render(
-    <miradorDownloadPlugin.component
-      handleClose={() => {}}
-      openDownloadDialog={() => {}}
-      t={(k) => k}
-      {...props}
-    />,
-  );
+  return render(<miradorDownloadPlugin.component handleClose={() => {}} openDownloadDialog={() => {}} t={(k) => k} {...props} />);
 }
 
 describe('miradorDownloadPlugin', () => {
