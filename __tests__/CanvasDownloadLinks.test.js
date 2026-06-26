@@ -24,11 +24,10 @@ function createWrapper(props) {
 describe('CanvasDownloadLinks', () => {
   const canvas = {
     id: 'abc123',
-    getCanonicalImageUri: (width) => (
+    getCanonicalImageUri: (width) =>
       width
         ? `http://example.com/iiif/abc123/full/${width},/0/default.jpg`
-        : 'http://example.com/iiif/abc123/full/4000,/0/default.jpg'
-    ),
+        : 'http://example.com/iiif/abc123/full/4000,/0/default.jpg',
     getHeight: () => 1000,
     getWidth: () => 4000,
     getRenderings: () => [
@@ -74,7 +73,10 @@ describe('CanvasDownloadLinks', () => {
 
     it('does not render a zoom link when viewer is zoomed out to full image', () => {
       currentBoundsSpy.mockImplementation(() => ({
-        x: 0, y: 0, width: 6000, height: 1000,
+        x: 0,
+        y: 0,
+        width: 6000,
+        height: 1000,
       }));
 
       createWrapper({ canvas, infoResponse, windowId: 'zoomedOutWindow' });
@@ -85,7 +87,10 @@ describe('CanvasDownloadLinks', () => {
 
     it('does not render a zoom link when zoomed into an area outside of the image bounds', () => {
       currentBoundsSpy.mockImplementation(() => ({
-        x: -100, y: 100, width: 2000, height: 500,
+        x: -100,
+        y: 100,
+        width: 2000,
+        height: 500,
       }));
 
       createWrapper({ canvas, infoResponse, windowId: 'zoomedIntoNonImageSpaceWindow' });
@@ -96,7 +101,10 @@ describe('CanvasDownloadLinks', () => {
 
     it('renders a zoomed region link when zoomed into a valid area of the image', () => {
       currentBoundsSpy.mockImplementation(() => ({
-        x: 0, y: 0, width: 2000, height: 500,
+        x: 0,
+        y: 0,
+        width: 2000,
+        height: 500,
       }));
 
       createWrapper({ canvas, infoResponse, windowId: 'zoomedInWindow' });
@@ -107,17 +115,26 @@ describe('CanvasDownloadLinks', () => {
 
     it('does not render a zoomed region link in non-single view types (e.g., book, gallery views)', () => {
       currentBoundsSpy.mockImplementation(() => ({
-        x: 0, y: 0, width: 2000, height: 500,
+        x: 0,
+        y: 0,
+        width: 2000,
+        height: 500,
       }));
 
       createWrapper({
-        canvas, infoResponse, viewType: 'book', windowId: 'zoomedInWindow',
+        canvas,
+        infoResponse,
+        viewType: 'book',
+        windowId: 'zoomedInWindow',
       });
       const zoomedLink = screen.queryByText('mirador-dl-plugin.zoomed_region {"width":2000,"height":500}');
       expect(zoomedLink).not.toBeInTheDocument();
 
       createWrapper({
-        canvas, infoResponse, viewType: 'gallery', windowId: 'zoomedInWindow',
+        canvas,
+        infoResponse,
+        viewType: 'gallery',
+        windowId: 'zoomedInWindow',
       });
       const zoomedLinkGallery = screen.queryByText('mirador-dl-plugin.zoomed_region {"width":2000,"height":500}');
       expect(zoomedLinkGallery).not.toBeInTheDocument();
@@ -154,7 +171,10 @@ describe('CanvasDownloadLinks', () => {
 
     const viewport = {
       getBounds: () => ({
-        x: 0, y: 0, width: 4000, height: 1000,
+        x: 0,
+        y: 0,
+        width: 4000,
+        height: 1000,
       }),
     };
     OSDReferences.set('wid123', {

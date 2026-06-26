@@ -37,10 +37,7 @@ export default class CanvasDownloadLinks extends Component {
     const bounds = this.currentBounds();
     const boundsUrl = canvas
       .getCanonicalImageUri()
-      .replace(
-        /\/full\/.*\/0\//,
-        `/${bounds.x},${bounds.y},${bounds.width},${bounds.height}/full/0/`,
-      );
+      .replace(/\/full\/.*\/0\//, `/${bounds.x},${bounds.y},${bounds.width},${bounds.height}/full/0/`);
 
     return `${boundsUrl}?download=true`;
   }
@@ -54,9 +51,7 @@ export default class CanvasDownloadLinks extends Component {
   fullImageUrl() {
     const { canvas } = this.props;
 
-    return `${canvas
-      .getCanonicalImageUri()
-      .replace(/\/full\/.*\/0\//, '/full/full/0/')}?download=true`;
+    return `${canvas.getCanonicalImageUri().replace(/\/full\/.*\/0\//, '/full/full/0/')}?download=true`;
   }
 
   thousandPixelWideImage() {
@@ -87,29 +82,18 @@ export default class CanvasDownloadLinks extends Component {
 
     if (this.definedSizes().length !== 1) return false;
 
-    return (
-      this.definedSizes()[0].width <= width
-      && this.definedSizes()[0].height <= height
-    );
+    return this.definedSizes()[0].width <= width && this.definedSizes()[0].height <= height;
   }
 
   displayCurrentZoomLink() {
     const { restrictDownloadOnSizeDefinition, infoResponse, viewType } = this.props;
 
     if (viewType !== 'single') return false;
-    if (
-      restrictDownloadOnSizeDefinition
-      && this.definedSizesRestrictsDownload()
-    ) return false;
+    if (restrictDownloadOnSizeDefinition && this.definedSizesRestrictsDownload()) return false;
     if (!(infoResponse && infoResponse.json)) return false;
 
     const bounds = this.currentBounds();
-    return (
-      bounds.height < infoResponse.json.height
-      && bounds.width < infoResponse.json.width
-      && bounds.x >= 0
-      && bounds.y >= 0
-    );
+    return bounds.height < infoResponse.json.height && bounds.width < infoResponse.json.width && bounds.x >= 0 && bounds.y >= 0;
   }
 
   /**
@@ -131,12 +115,7 @@ export default class CanvasDownloadLinks extends Component {
   fullImageLink() {
     return (
       <ListItem disableGutters divider key={this.fullImageUrl()}>
-        <Link
-          href={this.fullImageUrl()}
-          rel="noopener noreferrer"
-          target="_blank"
-          variant="body1"
-        >
+        <Link href={this.fullImageUrl()} rel="noopener noreferrer" target="_blank" variant="body1">
           {this.fullImageLabel()}
         </Link>
       </ListItem>
@@ -150,12 +129,7 @@ export default class CanvasDownloadLinks extends Component {
 
     return (
       <ListItem disableGutters divider key={this.thousandPixelWideImage()}>
-        <Link
-          href={this.thousandPixelWideImage()}
-          rel="noopener noreferrer"
-          target="_blank"
-          variant="body1"
-        >
+        <Link href={this.thousandPixelWideImage()} rel="noopener noreferrer" target="_blank" variant="body1">
           {this.smallImageLabel()}
         </Link>
       </ListItem>
@@ -166,12 +140,7 @@ export default class CanvasDownloadLinks extends Component {
     const { t } = this.props;
     return this.definedSizes().map((size) => (
       <ListItem disableGutters divider key={`${size.width}${size.height}`}>
-        <Link
-          href={this.imageUrlForSize(size)}
-          rel="noopener noreferrer"
-          target="_blank"
-          variant="body1"
-        >
+        <Link href={this.imageUrlForSize(size)} rel="noopener noreferrer" target="_blank" variant="body1">
           {t('mirador-dl-plugin.whole_image', { width: size.width, height: size.height })}
         </Link>
       </ListItem>
@@ -192,21 +161,12 @@ export default class CanvasDownloadLinks extends Component {
         <List>
           {this.displayCurrentZoomLink() && (
             <ListItem disableGutters divider>
-              <Link
-                href={this.zoomedImageUrl()}
-                download
-                rel="noopener noreferrer"
-                target="_blank"
-                variant="body1"
-              >
+              <Link href={this.zoomedImageUrl()} download rel="noopener noreferrer" target="_blank" variant="body1">
                 {this.zoomedImageLabel()}
               </Link>
             </ListItem>
           )}
-          {this.definedSizes().length === 0 && [
-            this.fullImageLink(),
-            this.thousandPixelWideLink(),
-          ]}
+          {this.definedSizes().length === 0 && [this.fullImageLink(), this.thousandPixelWideLink()]}
           {this.definedSizes().length > 0 && this.linksForDefinedSizes()}
           {canvas.getRenderings().map((rendering) => (
             <RenderingDownloadLink rendering={rendering} key={rendering.id} />
@@ -229,9 +189,7 @@ CanvasDownloadLinks.propTypes = {
   infoResponse: PropTypes.shape({
     json: PropTypes.shape({
       height: PropTypes.number,
-      sizes: PropTypes.arrayOf(
-        PropTypes.shape({ height: PropTypes.number, width: PropTypes.number }),
-      ),
+      sizes: PropTypes.arrayOf(PropTypes.shape({ height: PropTypes.number, width: PropTypes.number })),
       width: PropTypes.number,
     }),
   }).isRequired,
