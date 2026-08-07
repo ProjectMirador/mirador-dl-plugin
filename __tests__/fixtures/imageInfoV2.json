@@ -1,0 +1,24 @@
+{
+  "@context": "http://iiif.io/api/image/2/context.json",
+  "@id": "https://stacks.stanford.edu/image/iiif/fv114zn4386/LD3047_Q4_v090_1985_0001",
+  "protocol": "http://iiif.io/api/image",
+  "width": 4056,
+  "height": 5182,
+  "sizes": [
+    { "width": 127, "height": 162 },
+    { "width": 254, "height": 324 },
+    { "width": 507, "height": 648 },
+    { "width": 1014, "height": 1296 },
+    { "width": 2028, "height": 2591 },
+    { "width": 4056, "height": 5182 },
+    { "width": 4056, "height": 5182 }
+  ],
+  "tiles": [
+    {
+      "width": 1024,
+      "height": 1024,
+      "scaleFactors": [1, 2, 4, 8, 16, 32]
+    }
+  ],
+  "profile": ["http://iiif.io/api/image/2/level2.json"]
+}

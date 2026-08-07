@@ -50,15 +50,19 @@ export function getImageApiVersion(imageInfo) {
   return undefined;
 }
 
+function getProfileCapabilities(imageInfo) {
+  const profile = getArrayFromInfoResponse(imageInfo, 'profile');
+  return profile && profile.length > 1 && profile[1];
+}
+
 function supportsAdditonalFeature(imageInfo, feature) {
   const version = getImageApiVersion(imageInfo);
   switch (version) {
     case 2: {
-      const profile = getArrayFromInfoResponse(imageInfo, 'profile');
-      return profile
-        && profile.length > 1
-        && profile[1].supports
-        && profile[1].supports.indexOf(feature) > -1;
+      const capabilities = getProfileCapabilities(imageInfo);
+      return capabilities
+        && capabilities.supports
+        && capabilities.supports.indexOf(feature) > -1;
     }
     case 3:
       return imageInfo.extraFeatures && imageInfo.extraFeatures.indexOf(feature) > -1;
@@ -71,15 +75,19 @@ export function requestExceedsMaximum(imageInfo, width, height) {
   const version = getImageApiVersion(imageInfo);
   switch (version) {
     case 2: {
-      const profile = getArrayFromInfoResponse(imageInfo, 'profile');
-      return (profile.maxWidth && profile.maxWidth < width)
-        || (profile.maxHeight && profile.maxHeight < height)
-        || (profile.maxArea && profile.maxArea < width * height);
+      const capabilities = getProfileCapabilities(imageInfo);
+      return Boolean(capabilities && (
+        (capabilities.maxWidth && capabilities.maxWidth < width)
+        || (capabilities.maxHeight && capabilities.maxHeight < height)
+        || (capabilities.maxArea && capabilities.maxArea < width * height)
+      ));
     }
     case 3: {
-      return (imageInfo.maxWidth && imageInfo.maxWidth < width)
+      return Boolean(
+        (imageInfo.maxWidth && imageInfo.maxWidth < width)
         || (imageInfo.maxHeight && imageInfo.maxHeight < height)
-        || (imageInfo.maxArea && imageInfo.maxArea < width * height);
+        || (imageInfo.maxArea && imageInfo.maxArea < width * height),
+      );
     }
     default:
       return false;
