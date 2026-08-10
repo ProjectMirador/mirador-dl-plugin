@@ -124,7 +124,7 @@ export function calculateHeightForWidth(imageInfo, width) {
     return undefined;
   }
   if (imageInfo.width === width) {
-    return imageInfo.width;
+    return imageInfo.height;
   }
   return Math.floor((imageInfo.height * width) / imageInfo.width);
 }
@@ -135,8 +135,9 @@ export function createCanonicalImageUrl(imageInfo, region, width, height) {
   baseUri = baseUri && baseUri.replace(/\/$/, '');
   let size = `${width},${version === 3 ? height : ''}`;
   const quality = version === 1 ? 'native' : 'default';
-  if (version < 3 && imageInfo.width === width && imageInfo.height === height) {
-    size = 'full';
+  if (imageInfo.width === width && imageInfo.height === height) {
+    // Image API 3 replaced the `full` size keyword with `max`
+    size = version === 3 ? 'max' : 'full';
   }
   if (!supportsArbitrarySizeInCanonicalForm(imageInfo)) {
     // TODO check if requested size is available for level 0, return undefined otherwise

@@ -19,7 +19,6 @@ import Button from '@mui/material/Button';
 import ManifestDownloadLinks from './ManifestDownloadLinks';
 import translations from './translations';
 import CanvasDownloadLinks from './CanvasDownloadLinks';
-import { getImageApiVersion } from './iiifImageFunctions';
 
 const mapDispatchToProps = (dispatch, { windowId }) => ({
   closeDialog: () => dispatch({ type: 'CLOSE_WINDOW_DIALOG', windowId }),
@@ -84,25 +83,19 @@ export function MiradorDownloadDialog({
         <Typography variant="h2" component="span">{t('mirador-dl-plugin.download')}</Typography>
       </DialogTitle>
       <ScrollIndicatedDialogContent>
-        {canvases.map((canvas) => {
-          const isVersion3 = getImageApiVersion(infoResponse(canvas.id)) === 3;
-          return (
-            <CanvasDownloadLinks
-              canvas={canvas}
-              canvasLabel={canvasLabel(canvas.id)}
-              isVersion3={isVersion3}
-              infoResponse={infoResponse(canvas.id)}
-              nonTiledResources={nonTiledResources}
-              restrictDownloadOnSizeDefinition={
-                  restrictDownloadOnSizeDefinition
-                }
-              key={canvas.id}
-              t={t}
-              viewType={viewType}
-              windowId={windowId}
-            />
-          );
-        })}
+        {canvases.map((canvas) => (
+          <CanvasDownloadLinks
+            canvas={canvas}
+            canvasLabel={canvasLabel(canvas.id)}
+            infoResponse={infoResponse(canvas.id)}
+            nonTiledResources={nonTiledResources}
+            restrictDownloadOnSizeDefinition={restrictDownloadOnSizeDefinition}
+            key={canvas.id}
+            t={t}
+            viewType={viewType}
+            windowId={windowId}
+          />
+        ))}
         {renderings.length > 0 && (
           <ManifestDownloadLinks
             renderings={renderings}

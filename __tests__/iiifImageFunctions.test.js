@@ -1,4 +1,8 @@
-import { requestExceedsMaximum } from '../src/iiifImageFunctions';
+import {
+  calculateHeightForWidth,
+  createCanonicalImageUrl,
+  requestExceedsMaximum,
+} from '../src/iiifImageFunctions';
 import v2ImageInfo from './fixtures/imageInfoV2.json';
 import v3ImageInfo from './fixtures/imageInfoV3.json';
 
@@ -20,6 +24,60 @@ const v3ImageInfoWithLimits = {
   maxHeight: 3500,
   maxArea: 8000000,
 };
+
+describe('calculateHeightForWidth', () => {
+  const imageInfo = { width: 1000, height: 1500 };
+
+  it('returns undefined when there is no imageInfo', () => {
+    expect(calculateHeightForWidth(undefined, 1000)).toBeUndefined();
+  });
+
+  it('returns the native height when the requested width is the native width', () => {
+    expect(calculateHeightForWidth(imageInfo, 1000)).toBe(1500);
+  });
+
+  it('scales the height proportionally for a smaller width', () => {
+    expect(calculateHeightForWidth(imageInfo, 500)).toBe(750);
+  });
+
+  it('scales the height proportionally for a larger width', () => {
+    expect(calculateHeightForWidth(imageInfo, 2000)).toBe(3000);
+  });
+
+  it('floors fractional heights', () => {
+    expect(calculateHeightForWidth({ width: 3, height: 10 }, 1)).toBe(3);
+  });
+});
+
+describe('createCanonicalImageUrl', () => {
+  describe('IIIF Image API 2 (stacks.stanford.edu fixture)', () => {
+    it('uses the `full` size keyword when the whole image is requested', () => {
+      expect(createCanonicalImageUrl(v2ImageInfo, 'full', 4056, 5182)).toBe(
+        'https://stacks.stanford.edu/image/iiif/fv114zn4386/LD3047_Q4_v090_1985_0001/full/full/0/default.jpg',
+      );
+    });
+
+    it('uses `w,` for a scaled request', () => {
+      expect(createCanonicalImageUrl(v2ImageInfo, 'full', 1000, 1277)).toBe(
+        'https://stacks.stanford.edu/image/iiif/fv114zn4386/LD3047_Q4_v090_1985_0001/full/1000,/0/default.jpg',
+      );
+    });
+  });
+
+  describe('IIIF Image API 3 (ndhadeliver.natlib.govt.nz fixture)', () => {
+    it('uses the `max` size keyword when the whole image is requested', () => {
+      expect(createCanonicalImageUrl(v3ImageInfo, 'full', 4145, 5389)).toBe(
+        'https://ndhadeliver.natlib.govt.nz/iiif/3/IE18987210:FL91807985.jp2/full/max/0/default.jpg',
+      );
+    });
+
+    it('uses `w,h` for a scaled request', () => {
+      expect(createCanonicalImageUrl(v3ImageInfo, 'full', 1000, 1300)).toBe(
+        'https://ndhadeliver.natlib.govt.nz/iiif/3/IE18987210:FL91807985.jp2/full/1000,1300/0/default.jpg',
+      );
+    });
+  });
+});
 
 describe('requestExceedsMaximum', () => {
   describe('IIIF Image API 2 (stacks.stanford.edu fixture)', () => {
