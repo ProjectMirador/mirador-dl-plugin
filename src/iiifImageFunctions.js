@@ -111,10 +111,14 @@ function supportsRequest(imageInfo, region, width, height) {
     return true;
   }
   if (region === 'full') {
-    return imageInfo.sizes
-      && imageInfo.sizes.filter(
-        (size) => size.width === width && size.height === height,
-      ).length > 0;
+    // every compliance level must serve the whole image at its native size
+    // (`full` in Image API 1/2, `max` in 3), whether or not it is listed in `sizes`
+    if (imageInfo.width === width && imageInfo.height === height) {
+      return true;
+    }
+    return Boolean(imageInfo.sizes && imageInfo.sizes.some(
+      (size) => size.width === width && size.height === height,
+    ));
   }
   return false;
 }
@@ -139,8 +143,8 @@ export function createCanonicalImageUrl(imageInfo, region, width, height) {
     // Image API 3 replaced the `full` size keyword with `max`
     size = version === 3 ? 'max' : 'full';
   }
-  if (!supportsArbitrarySizeInCanonicalForm(imageInfo)) {
-    // TODO check if requested size is available for level 0, return undefined otherwise
+  if (!supportsRequest(imageInfo, region, width, height)) {
+    return undefined;
   }
   if (requestExceedsMaximum(imageInfo, width, height)) {
     return undefined;

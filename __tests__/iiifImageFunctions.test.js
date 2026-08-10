@@ -49,7 +49,61 @@ describe('calculateHeightForWidth', () => {
   });
 });
 
+const v2Level0ImageInfo = {
+  '@context': 'http://iiif.io/api/image/2/context.json',
+  '@id': 'https://example.org/iiif/level0',
+  width: 4000,
+  height: 5000,
+  profile: ['http://iiif.io/api/image/2/level0.json'],
+  sizes: [
+    { width: 1000, height: 1250 },
+    { width: 500, height: 625 },
+  ],
+};
+
+const v3Level0ImageInfo = {
+  '@context': 'http://iiif.io/api/image/3/context.json',
+  id: 'https://example.org/iiif/3/level0',
+  width: 4000,
+  height: 5000,
+  profile: 'level0',
+  sizes: [{ width: 1000, height: 1250 }],
+};
+
 describe('createCanonicalImageUrl', () => {
+  describe('level 0 image servers', () => {
+    it('serves the whole image at its native size even when `sizes` omits it', () => {
+      expect(createCanonicalImageUrl(v2Level0ImageInfo, 'full', 4000, 5000)).toBe(
+        'https://example.org/iiif/level0/full/full/0/default.jpg',
+      );
+    });
+
+    it('uses `max` for a native-size Image API 3 request', () => {
+      expect(createCanonicalImageUrl(v3Level0ImageInfo, 'full', 4000, 5000)).toBe(
+        'https://example.org/iiif/3/level0/full/max/0/default.jpg',
+      );
+    });
+
+    it('serves a size that the server advertises in `sizes`', () => {
+      expect(createCanonicalImageUrl(v2Level0ImageInfo, 'full', 1000, 1250)).toBe(
+        'https://example.org/iiif/level0/full/1000,/0/default.jpg',
+      );
+    });
+
+    it('returns undefined for a size the server does not advertise', () => {
+      expect(createCanonicalImageUrl(v2Level0ImageInfo, 'full', 1234, 1543)).toBeUndefined();
+    });
+
+    it('returns undefined for a region other than the whole image', () => {
+      expect(createCanonicalImageUrl(v2Level0ImageInfo, '0,0,100,100', 100, 100)).toBeUndefined();
+    });
+
+    it('returns undefined when the server advertises no sizes at all', () => {
+      const noSizes = { ...v2Level0ImageInfo, sizes: undefined };
+      expect(createCanonicalImageUrl(noSizes, 'full', 1000, 1250)).toBeUndefined();
+    });
+  });
+
   describe('IIIF Image API 2 (stacks.stanford.edu fixture)', () => {
     it('uses the `full` size keyword when the whole image is requested', () => {
       expect(createCanonicalImageUrl(v2ImageInfo, 'full', 4056, 5182)).toBe(

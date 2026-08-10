@@ -46,29 +46,35 @@ export default class CanvasDownloadLinks extends Component {
     return t('mirador-dl-plugin.whole_image_labeled', { label: label || image.id });
   }
 
-  zoomedImageUrl() {
+  /**
+   * Builds a download URL, or returns undefined when the image server cannot
+   * fulfill the request, so that callers can omit the link entirely
+   */
+  downloadUrl(region, width, height) {
     const { infoResponse } = this.props;
     const imageInfo = infoResponse && infoResponse.json;
+    if (!imageInfo) return undefined;
+    const url = createCanonicalImageUrl(imageInfo, region, width, height);
+    return url && `${url}?download=true`;
+  }
+
+  zoomedImageUrl() {
     const bounds = this.currentBounds();
-    const boundsUrl = createCanonicalImageUrl(
-      imageInfo,
+    return this.downloadUrl(
       `${bounds.x},${bounds.y},${bounds.width},${bounds.height}`,
       bounds.width,
       bounds.height,
     );
-    return imageInfo && `${boundsUrl}?download=true`;
   }
 
   imageUrlForSize(size) {
-    const { infoResponse } = this.props;
-    const imageInfo = infoResponse && infoResponse.json;
-    return imageInfo && `${createCanonicalImageUrl(imageInfo, 'full', size.width, size.height)}?download=true`;
+    return this.downloadUrl('full', size.width, size.height);
   }
 
   fullImageUrl() {
     const { infoResponse } = this.props;
     const imageInfo = infoResponse && infoResponse.json;
-    return imageInfo && `${createCanonicalImageUrl(imageInfo, 'full', imageInfo.width, imageInfo.height)}?download=true`;
+    return imageInfo && this.downloadUrl('full', imageInfo.width, imageInfo.height);
   }
 
   nonTiledImagesForCanvas() {
@@ -86,7 +92,7 @@ export default class CanvasDownloadLinks extends Component {
     const { infoResponse } = this.props;
     const imageInfo = infoResponse && infoResponse.json;
     const height = calculateHeightForWidth(imageInfo, 1000);
-    return imageInfo && `${createCanonicalImageUrl(imageInfo, 'full', 1000, height)}?download=true`;
+    return this.downloadUrl('full', 1000, height);
   }
 
   osdViewport() {
@@ -133,6 +139,7 @@ export default class CanvasDownloadLinks extends Component {
       && bounds.width < infoResponse.json.width
       && bounds.x >= 0
       && bounds.y >= 0
+      && Boolean(this.zoomedImageUrl())
     );
   }
 
@@ -174,6 +181,7 @@ export default class CanvasDownloadLinks extends Component {
     const imageInfo = infoResponse && infoResponse.json;
 
     if (!imageInfo || imageInfo.width < 1000) return '';
+    if (!this.thousandPixelWideImage()) return '';
 
     return (
       <ListItem disableGutters divider key={this.thousandPixelWideImage()}>
@@ -191,7 +199,7 @@ export default class CanvasDownloadLinks extends Component {
 
   linksForDefinedSizes() {
     const { t } = this.props;
-    return this.definedSizes().map((size) => (
+    return this.definedSizes().filter((size) => this.imageUrlForSize(size)).map((size) => (
       <ListItem disableGutters divider key={`${size.width}${size.height}`}>
         <Link
           href={this.imageUrlForSize(size)}
