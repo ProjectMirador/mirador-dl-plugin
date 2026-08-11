@@ -271,10 +271,7 @@ export default class CanvasDownloadLinks extends Component {
 CanvasDownloadLinks.propTypes = {
   canvas: PropTypes.shape({
     id: PropTypes.string.isRequired,
-    getCanonicalImageUri: PropTypes.func.isRequired,
-    getHeight: PropTypes.func.isRequired,
     getRenderings: PropTypes.func.isRequired,
-    getWidth: PropTypes.func.isRequired,
     imageResources: PropTypes.arrayOf(
       PropTypes.shape({ id: PropTypes.string }),
     ),
