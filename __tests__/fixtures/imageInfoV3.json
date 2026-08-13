@@ -1,0 +1,45 @@
+{
+  "@context": "http://iiif.io/api/image/3/context.json",
+  "id": "https://ndhadeliver.natlib.govt.nz/iiif/3/IE18987210:FL91807985.jp2",
+  "type": "ImageService3",
+  "protocol": "http://iiif.io/api/image",
+  "profile": "level2",
+  "width": 4145,
+  "height": 5389,
+  "sizes": [
+    { "width": 65, "height": 84 },
+    { "width": 130, "height": 168 },
+    { "width": 259, "height": 337 },
+    { "width": 518, "height": 674 },
+    { "width": 1036, "height": 1347 },
+    { "width": 2073, "height": 2695 },
+    { "width": 4145, "height": 5389 }
+  ],
+  "tiles": [
+    {
+      "width": 1024,
+      "height": 1024,
+      "scaleFactors": [1, 2, 4, 8, 16, 32, 64]
+    }
+  ],
+  "extraQualities": ["bitonal", "color", "gray"],
+  "extraFormats": ["tif", "gif"],
+  "extraFeatures": [
+    "baseUriRedirect",
+    "canonicalLinkHeader",
+    "cors",
+    "jsonldMediaType",
+    "mirroring",
+    "profileLinkHeader",
+    "regionByPct",
+    "regionByPx",
+    "regionSquare",
+    "rotationArbitrary",
+    "rotationBy90s",
+    "sizeByConfinedWh",
+    "sizeByH",
+    "sizeByPct",
+    "sizeByW",
+    "sizeByWh"
+  ]
+}

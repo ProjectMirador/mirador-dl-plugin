@@ -5,6 +5,7 @@ import {
   getContainerId,
   getManifestoInstance,
   getVisibleCanvases,
+  getVisibleCanvasNonTiledResources,
   getWindowViewType,
   selectInfoResponse,
   ScrollIndicatedDialogContent,
@@ -28,6 +29,7 @@ const mapStateToProps = (state, { windowId }) => ({
   canvasLabel: (canvasId) => getCanvasLabel(state, { canvasId, windowId }),
   containerId: getContainerId(state),
   infoResponse: (canvasId) => selectInfoResponse(state, { windowId, canvasId }) || {},
+  nonTiledResources: getVisibleCanvasNonTiledResources(state, { windowId }),
   manifest: getManifestoInstance(state, { windowId }),
   restrictDownloadOnSizeDefinition:
     state.config.miradorDownloadPlugin
@@ -48,6 +50,7 @@ export function MiradorDownloadDialog({
   containerId,
   infoResponse,
   manifest = undefined,
+  nonTiledResources,
   open = false,
   restrictDownloadOnSizeDefinition = false,
   viewType,
@@ -55,16 +58,12 @@ export function MiradorDownloadDialog({
 }) {
   const { t } = useTranslation();
   const renderings = useMemo(() => {
-    if (
-      !(
-        manifest
+    const manifestRenderings = (manifest && manifest.getRenderings()) || [];
+    const sequenceRenderings = (manifest
         && manifest.getSequences()
         && manifest.getSequences()[0]
-        && manifest.getSequences()[0].getRenderings()
-      )
-    ) return [];
-
-    return manifest.getSequences()[0].getRenderings();
+        && manifest.getSequences()[0].getRenderings()) || [];
+    return [...manifestRenderings, ...sequenceRenderings];
   }, [manifest]);
 
   if (!open) return '';
@@ -89,9 +88,8 @@ export function MiradorDownloadDialog({
             canvas={canvas}
             canvasLabel={canvasLabel(canvas.id)}
             infoResponse={infoResponse(canvas.id)}
-            restrictDownloadOnSizeDefinition={
-                restrictDownloadOnSizeDefinition
-              }
+            nonTiledResources={nonTiledResources}
+            restrictDownloadOnSizeDefinition={restrictDownloadOnSizeDefinition}
             key={canvas.id}
             t={t}
             viewType={viewType}
@@ -99,10 +97,10 @@ export function MiradorDownloadDialog({
           />
         ))}
         {renderings.length > 0 && (
-        <ManifestDownloadLinks
-          renderings={renderings}
-          t={t}
-        />
+          <ManifestDownloadLinks
+            renderings={renderings}
+            t={t}
+          />
         )}
       </ScrollIndicatedDialogContent>
       <DialogActions>
@@ -124,7 +122,11 @@ MiradorDownloadDialog.propTypes = {
   infoResponse: PropTypes.func.isRequired,
   manifest: PropTypes.shape({
     getSequences: PropTypes.func,
+    getRenderings: PropTypes.func,
   }),
+  nonTiledResources: PropTypes.arrayOf(
+    PropTypes.shape({ id: PropTypes.string, format: PropTypes.string }),
+  ).isRequired,
   open: PropTypes.bool,
   restrictDownloadOnSizeDefinition: PropTypes.bool,
   viewType: PropTypes.string.isRequired,

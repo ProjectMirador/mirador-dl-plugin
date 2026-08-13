@@ -11,7 +11,6 @@ function createWrapper(props) {
       canvasId="abc123"
       canvasLabel="My Canvas Label"
       classes={{}}
-      infoResponse={{}}
       restrictDownloadOnSizeDefinition={false}
       viewType="single"
       windowId="wid123"
@@ -40,6 +39,18 @@ describe('CanvasDownloadLinks', () => {
     ],
   };
 
+  const infoResponse = {
+    json: {
+      '@context': 'http://iiif.io/api/image/2/context.json',
+      '@id': 'http://example.com/iiif/abc123/',
+      width: 4000,
+      height: 1000,
+      profile: [
+        'http://iiif.io/api/image/2/level1.json',
+      ],
+    },
+  };
+
   let currentBoundsSpy;
 
   beforeEach(() => {
@@ -51,7 +62,7 @@ describe('CanvasDownloadLinks', () => {
   });
 
   it('renders the canvas label as an h3 heading', () => {
-    createWrapper({ canvas });
+    createWrapper({ canvas, infoResponse });
 
     const headingElement = screen.getByText('My Canvas Label');
     expect(headingElement).toBeInTheDocument();
@@ -60,7 +71,7 @@ describe('CanvasDownloadLinks', () => {
 
   describe('Canvas Renderings', () => {
     it('includes a canvas-level rendering as a download link', () => {
-      createWrapper({ canvas });
+      createWrapper({ canvas, infoResponse });
 
       const downloadLink = screen.getByRole('link', { name: /mirador-dl-plugin\.whole_image {"width":4000,"height":1000}/i });
       expect(downloadLink).toBeInTheDocument();
@@ -68,10 +79,6 @@ describe('CanvasDownloadLinks', () => {
   });
 
   describe('Zoomed Region Links', () => {
-    const infoResponse = {
-      json: { width: 4000, height: 1000 },
-    };
-
     it('does not render a zoom link when viewer is zoomed out to full image', () => {
       currentBoundsSpy.mockImplementation(() => ({
         x: 0, y: 0, width: 6000, height: 1000,
@@ -129,8 +136,7 @@ describe('CanvasDownloadLinks', () => {
           canvas,
           infoResponse: {
             json: {
-              width: 4000,
-              height: 1000,
+              ...infoResponse.json,
               sizes: [{ width: 400, height: 100 }],
             },
           },
@@ -146,11 +152,16 @@ describe('CanvasDownloadLinks', () => {
   });
 
   describe('When Defined Sizes Are Present in infoResponse', () => {
-    const sizes = [
-      { width: 4000, height: 1000 },
-      { width: 2000, height: 500 },
-      { width: 1000, height: 250 },
-    ];
+    const infoResponseWithSizes = {
+      json: {
+        ...infoResponse.json,
+        sizes: [
+          { width: 4000, height: 1000 },
+          { width: 2000, height: 500 },
+          { width: 1000, height: 250 },
+        ],
+      },
+    };
 
     const viewport = {
       getBounds: () => ({
@@ -161,7 +172,7 @@ describe('CanvasDownloadLinks', () => {
       current: { viewport },
     });
     it('renders download links for all specified sizes in the dialog', () => {
-      createWrapper({ canvas, infoResponse: { json: { sizes } } });
+      createWrapper({ canvas, infoResponse: infoResponseWithSizes });
 
       const link1 = screen.getByRole('link', { name: /mirador-dl-plugin\.whole_image {"width":4000,"height":1000}/i });
       const link2 = screen.getByRole('link', { name: /mirador-dl-plugin\.whole_image {"width":2000,"height":500}/i });
@@ -173,9 +184,60 @@ describe('CanvasDownloadLinks', () => {
     });
   });
 
+  describe('When The Image Server Is Level 0', () => {
+    const level0InfoResponse = {
+      json: {
+        ...infoResponse.json,
+        profile: ['http://iiif.io/api/image/2/level0.json'],
+      },
+    };
+
+    it('renders the full-size link but not the unsupported 1000px wide link', () => {
+      createWrapper({ canvas, infoResponse: level0InfoResponse });
+
+      const fullLink = screen.getByRole('link', { name: /mirador-dl-plugin\.whole_image {"width":4000,"height":1000}/i });
+      expect(fullLink).toHaveAttribute('href', 'http://example.com/iiif/abc123/full/full/0/default.jpg?download=true');
+
+      expect(screen.queryByRole('link', { name: /mirador-dl-plugin\.whole_image {"width":1000,"height":250}/i })).not.toBeInTheDocument();
+    });
+
+    it('never renders a link with an undefined href', () => {
+      createWrapper({ canvas, infoResponse: level0InfoResponse });
+
+      screen.getAllByRole('link').forEach((link) => {
+        expect(link.getAttribute('href')).not.toMatch(/^undefined/);
+      });
+    });
+  });
+
+  describe('When The Request Exceeds The Server Maximum', () => {
+    const cappedInfoResponse = {
+      json: {
+        ...infoResponse.json,
+        profile: [
+          'http://iiif.io/api/image/2/level1.json',
+          { maxWidth: 2000 },
+        ],
+      },
+    };
+
+    it('omits the full-size link rather than rendering an undefined href', () => {
+      createWrapper({ canvas, infoResponse: cappedInfoResponse });
+
+      expect(screen.queryByRole('link', { name: /mirador-dl-plugin\.whole_image {"width":4000,"height":1000}/i })).not.toBeInTheDocument();
+
+      const smallLink = screen.getByRole('link', { name: /mirador-dl-plugin\.whole_image {"width":1000,"height":250}/i });
+      expect(smallLink).toHaveAttribute('href', 'http://example.com/iiif/abc123/full/1000,/0/default.jpg?download=true');
+
+      screen.getAllByRole('link').forEach((link) => {
+        expect(link.getAttribute('href')).not.toMatch(/^undefined/);
+      });
+    });
+  });
+
   describe('When No Sizes Are Defined in infoResponse', () => {
     it('renders a single link to the full-size image', () => {
-      createWrapper({ canvas });
+      createWrapper({ canvas, infoResponse });
 
       const link = screen.getByRole('link', { name: /mirador-dl-plugin\.whole_image {"width":4000,"height":1000}/i });
       expect(link).toBeInTheDocument();
@@ -184,7 +246,7 @@ describe('CanvasDownloadLinks', () => {
 
     describe('For Images Wider Than 1000px', () => {
       it('renders links for both full-size and 1000px wide versions', () => {
-        createWrapper({ canvas });
+        createWrapper({ canvas, infoResponse });
 
         const link1 = screen.getByRole('link', { name: /mirador-dl-plugin\.whole_image {"width":4000,"height":1000}/i });
         expect(link1).toHaveAttribute('href', 'http://example.com/iiif/abc123/full/full/0/default.jpg?download=true');
@@ -197,7 +259,13 @@ describe('CanvasDownloadLinks', () => {
     describe('For Images Less Than 1000px Wide', () => {
       it('does not render a smaller version link if image is under 1000px wide', () => {
         const smallCanvas = { ...canvas, getWidth: () => 999 };
-        createWrapper({ canvas: smallCanvas });
+        const smallInfoResponse = {
+          json: {
+            ...infoResponse.json,
+            width: 999,
+          },
+        };
+        createWrapper({ canvas: smallCanvas, infoResponse: smallInfoResponse });
 
         const links = screen.getAllByRole('link');
         expect(links).toHaveLength(2); // Should only show full-size version and link to PDF.
