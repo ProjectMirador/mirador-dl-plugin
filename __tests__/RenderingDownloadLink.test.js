@@ -2,12 +2,7 @@ import RenderingDownloadLink from '../src/RenderingDownloadLink';
 import { render, screen } from './test-utils';
 
 function createWrapper(props) {
-  return render(
-    <RenderingDownloadLink
-      rendering={{}}
-      {...props}
-    />,
-  );
+  return render(<RenderingDownloadLink rendering={{}} {...props} />);
 }
 
 describe('RenderingDownloadLink', () => {

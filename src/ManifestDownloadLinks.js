@@ -25,5 +25,5 @@ export default function ManifestDownloadLinks({ renderings }) {
 }
 
 ManifestDownloadLinks.propTypes = {
-  renderings: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
+  renderings: PropTypes.array.isRequired,
 };

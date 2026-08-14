@@ -1,8 +1,4 @@
-import {
-  calculateHeightForWidth,
-  createCanonicalImageUrl,
-  requestExceedsMaximum,
-} from '../src/iiifImageFunctions';
+import { calculateHeightForWidth, createCanonicalImageUrl, requestExceedsMaximum } from '../src/iiifImageFunctions';
 import v2ImageInfo from './fixtures/imageInfoV2.json';
 import v3ImageInfo from './fixtures/imageInfoV3.json';
 
