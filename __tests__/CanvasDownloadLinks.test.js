@@ -44,9 +44,7 @@ describe('CanvasDownloadLinks', () => {
       '@id': 'http://example.com/iiif/abc123/',
       width: 4000,
       height: 1000,
-      profile: [
-        'http://iiif.io/api/image/2/level1.json',
-      ],
+      profile: ['http://iiif.io/api/image/2/level1.json'],
     },
   };
 
@@ -218,7 +216,9 @@ describe('CanvasDownloadLinks', () => {
       const fullLink = screen.getByRole('link', { name: /mirador-dl-plugin\.whole_image {"width":4000,"height":1000}/i });
       expect(fullLink).toHaveAttribute('href', 'http://example.com/iiif/abc123/full/full/0/default.jpg?download=true');
 
-      expect(screen.queryByRole('link', { name: /mirador-dl-plugin\.whole_image {"width":1000,"height":250}/i })).not.toBeInTheDocument();
+      expect(
+        screen.queryByRole('link', { name: /mirador-dl-plugin\.whole_image {"width":1000,"height":250}/i }),
+      ).not.toBeInTheDocument();
     });
 
     it('never renders a link with an undefined href', () => {
@@ -234,17 +234,16 @@ describe('CanvasDownloadLinks', () => {
     const cappedInfoResponse = {
       json: {
         ...infoResponse.json,
-        profile: [
-          'http://iiif.io/api/image/2/level1.json',
-          { maxWidth: 2000 },
-        ],
+        profile: ['http://iiif.io/api/image/2/level1.json', { maxWidth: 2000 }],
       },
     };
 
     it('omits the full-size link rather than rendering an undefined href', () => {
       createWrapper({ canvas, infoResponse: cappedInfoResponse });
 
-      expect(screen.queryByRole('link', { name: /mirador-dl-plugin\.whole_image {"width":4000,"height":1000}/i })).not.toBeInTheDocument();
+      expect(
+        screen.queryByRole('link', { name: /mirador-dl-plugin\.whole_image {"width":4000,"height":1000}/i }),
+      ).not.toBeInTheDocument();
 
       const smallLink = screen.getByRole('link', { name: /mirador-dl-plugin\.whole_image {"width":1000,"height":250}/i });
       expect(smallLink).toHaveAttribute('href', 'http://example.com/iiif/abc123/full/1000,/0/default.jpg?download=true');

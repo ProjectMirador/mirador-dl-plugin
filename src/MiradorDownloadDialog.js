@@ -54,11 +54,12 @@ export function MiradorDownloadDialog({
   windowId,
 }) {
   const { t } = useTranslation();
-  const renderings = useMemo(() => {
-    if (!(manifest && manifest.getSequences() && manifest.getSequences()[0] && manifest.getSequences()[0].getRenderings()))
-      return [];
 
-    return manifest.getSequences()[0].getRenderings();
+  const renderings = useMemo(() => {
+    const manifestRenderings = (manifest && manifest.getRenderings()) || [];
+    const sequenceRenderings =
+      (manifest && manifest.getSequences() && manifest.getSequences()[0] && manifest.getSequences()[0].getRenderings()) || [];
+    return [...manifestRenderings, ...sequenceRenderings];
   }, [manifest]);
 
   if (!open) return '';
@@ -93,12 +94,7 @@ export function MiradorDownloadDialog({
             windowId={windowId}
           />
         ))}
-        {renderings.length > 0 && (
-          <ManifestDownloadLinks
-            renderings={renderings}
-            t={t}
-          />
-        )}
+        {renderings.length > 0 && <ManifestDownloadLinks renderings={renderings} t={t} />}
       </ScrollIndicatedDialogContent>
       <DialogActions>
         <Button onClick={closeDialog} color="primary">
@@ -119,9 +115,7 @@ MiradorDownloadDialog.propTypes = {
     getSequences: PropTypes.func,
     getRenderings: PropTypes.func,
   }),
-  nonTiledResources: PropTypes.arrayOf(
-    PropTypes.shape({ id: PropTypes.string, format: PropTypes.string }),
-  ).isRequired,
+  nonTiledResources: PropTypes.arrayOf(PropTypes.shape({ id: PropTypes.string, format: PropTypes.string })).isRequired,
   open: PropTypes.bool,
   restrictDownloadOnSizeDefinition: PropTypes.bool,
   viewType: PropTypes.string.isRequired,

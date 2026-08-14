@@ -43,8 +43,10 @@ export function getImageApiVersion(imageInfo) {
   if (context.indexOf('http://iiif.io/api/image/2/context.json') > -1) {
     return 2;
   }
-  if (context.indexOf('http://iiif.io/api/image/1/context.json') > -1
-    || context.indexOf('http://library.stanford.edu/iiif/image-api/1.1/context.json') > -1) {
+  if (
+    context.indexOf('http://iiif.io/api/image/1/context.json') > -1 ||
+    context.indexOf('http://library.stanford.edu/iiif/image-api/1.1/context.json') > -1
+  ) {
     return 1;
   }
   return undefined;
@@ -60,9 +62,7 @@ function supportsAdditonalFeature(imageInfo, feature) {
   switch (version) {
     case 2: {
       const capabilities = getProfileCapabilities(imageInfo);
-      return capabilities
-        && capabilities.supports
-        && capabilities.supports.indexOf(feature) > -1;
+      return capabilities && capabilities.supports && capabilities.supports.indexOf(feature) > -1;
     }
     case 3:
       return imageInfo.extraFeatures && imageInfo.extraFeatures.indexOf(feature) > -1;
@@ -76,17 +76,18 @@ export function requestExceedsMaximum(imageInfo, width, height) {
   switch (version) {
     case 2: {
       const capabilities = getProfileCapabilities(imageInfo);
-      return Boolean(capabilities && (
-        (capabilities.maxWidth && capabilities.maxWidth < width)
-        || (capabilities.maxHeight && capabilities.maxHeight < height)
-        || (capabilities.maxArea && capabilities.maxArea < width * height)
-      ));
+      return Boolean(
+        capabilities &&
+        ((capabilities.maxWidth && capabilities.maxWidth < width) ||
+          (capabilities.maxHeight && capabilities.maxHeight < height) ||
+          (capabilities.maxArea && capabilities.maxArea < width * height)),
+      );
     }
     case 3: {
       return Boolean(
-        (imageInfo.maxWidth && imageInfo.maxWidth < width)
-        || (imageInfo.maxHeight && imageInfo.maxHeight < height)
-        || (imageInfo.maxArea && imageInfo.maxArea < width * height),
+        (imageInfo.maxWidth && imageInfo.maxWidth < width) ||
+        (imageInfo.maxHeight && imageInfo.maxHeight < height) ||
+        (imageInfo.maxArea && imageInfo.maxArea < width * height),
       );
     }
     default:
@@ -98,9 +99,11 @@ function supportsArbitrarySizeInCanonicalForm(imageInfo) {
   const level = getComplianceLevel(imageInfo);
   const version = getImageApiVersion(imageInfo);
   // everything but undefined or 0 is fine
-  if (!!level
-    || (version < 3 && supportsAdditonalFeature(imageInfo, 'sizeByW'))
-    || (version === 3 && supportsAdditonalFeature(imageInfo, 'sizeByWh'))) {
+  if (
+    !!level ||
+    (version < 3 && supportsAdditonalFeature(imageInfo, 'sizeByW')) ||
+    (version === 3 && supportsAdditonalFeature(imageInfo, 'sizeByWh'))
+  ) {
     return true;
   }
   return false;
@@ -116,9 +119,7 @@ function supportsRequest(imageInfo, region, width, height) {
     if (imageInfo.width === width && imageInfo.height === height) {
       return true;
     }
-    return Boolean(imageInfo.sizes && imageInfo.sizes.some(
-      (size) => size.width === width && size.height === height,
-    ));
+    return Boolean(imageInfo.sizes && imageInfo.sizes.some((size) => size.width === width && size.height === height));
   }
   return false;
 }
