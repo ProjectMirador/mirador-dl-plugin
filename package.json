@@ -23,8 +23,8 @@
     "test:coverage": "npm run lint && npx vitest run --coverage"
   },
   "peerDependencies": {
-    "@mui/material": "^7.0.0",
-    "@mui/system": "^7.0.0",
+    "@mui/material": "^7.0.0 || ^9.0.0",
+    "@mui/system": "^7.0.0 || ^9.0.0",
     "@emotion/react": "^11.10.6",
     "@emotion/styled": "^11.10.6",
     "react-i18next": "^13.0.0 || ^14.0.0 || ^15.0.0",
@@ -37,8 +37,8 @@
     "@emotion/styled": "^11.10.6",
     "@eslint/compat": "^2.0.3",
     "@eslint/js": "^10.0.0",
-    "@mui/material": "^7.0.0",
-    "@mui/system": "^7.0.0",
+    "@mui/material": "^7.0.0 || ^9.0.0",
+    "@mui/system": "^7.0.0 || ^9.0.0",
     "@testing-library/dom": "^10.4.0",
     "@testing-library/jest-dom": "^6.1.5",
     "@testing-library/react": "^16.0.0",
