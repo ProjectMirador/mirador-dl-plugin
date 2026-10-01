@@ -1,8 +1,13 @@
 import miradorDownloadPlugin from '../src/miradorDownloadPlugin';
 import { fireEvent, render, screen } from './test-utils';
+import MenuList from '@mui/material/MenuList';
 
 function createWrapper(props) {
-  return render(<miradorDownloadPlugin.component handleClose={() => {}} openDownloadDialog={() => {}} t={(k) => k} {...props} />);
+  return render(
+    <MenuList>
+      <miradorDownloadPlugin.component handleClose={() => {}} openDownloadDialog={() => {}} t={(k) => k} {...props} />
+    </MenuList>,
+  );
 }
 
 describe('miradorDownloadPlugin', () => {
