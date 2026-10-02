@@ -45,7 +45,7 @@ function MiradorDownload({ handleClose = () => {}, openDownloadDialog = () => {}
       <ListItemIcon>
         <VerticalAlignBottomIcon />
       </ListItemIcon>
-      <ListItemText primaryTypographyProps={{ variant: 'body1' }}>{t('mirador-dl-plugin.download')}</ListItemText>
+      <ListItemText slotProps={{ primary: { variant: 'body1' } }}>{t('mirador-dl-plugin.download')}</ListItemText>
     </MenuItem>
   );
 }
